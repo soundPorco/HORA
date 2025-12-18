@@ -18,6 +18,7 @@ import { MdOutlineDataset } from "react-icons/md";
 import { RiDeleteBin6Line } from "react-icons/ri";
 
 // アンケート一覧ページコンポーネント
+import Menu from "../components/Menu";
 import ListMenuBtn from "../components/ListMenuBtn";
 
 const CreateList = () => {
@@ -79,7 +80,8 @@ const CreateList = () => {
     };
 
     return (
-        <div className="min-h-screen bg-gray-100 p-6">
+        <div className="min-h-screen bg-gray-100">
+            <Menu />
             <div className="max-w-2xl mx-auto bg-white rounded-xl shadow-md p-6">
                 <h1 className="text-2xl font-bold mb-6">
                     あなたのアンケート一覧

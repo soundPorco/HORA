@@ -1,6 +1,6 @@
 // src/pages/Create.jsx
 import { useState, useRef, useEffect } from "react";
-import { auth, signOut } from "../firebase";
+import { auth } from "../firebase";
 import { onAuthStateChanged } from "firebase/auth";
 import {
     collection,
@@ -19,6 +19,7 @@ import { useParams } from "react-router-dom";
 import autosize from "autosize";
 
 // コンポーネント
+import Menu from "../components/Menu";
 import Questions from "../components/Questions";
 import AddQuestionBtn from "../components/AddQuestionBtn";
 
@@ -132,10 +133,6 @@ const Create = () => {
         }));
     };
 
-    const handleLogout = async () => {
-        await signOut(auth);
-        navigate("/");
-    };
     // 自動でテキストエリアの高さを調整するための設定
     const textareaRef = useRef(null);
 
@@ -146,18 +143,9 @@ const Create = () => {
     }, []);
 
     return (
-        <div className="min-h-screen bg-gray-100 p-6">
+        <div className="min-h-screen bg-gray-100">
             {/* menu */}
-            <div className="flex justify-between items-center mb-6">
-                <h1 className="text-xl font-bold">アンケート作成</h1>
-                <button
-                    onClick={handleLogout}
-                    className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
-                >
-                    ログアウト
-                </button>
-            </div>
-
+            <Menu />
             {/* Form */}
             <div className="bg-slate-200 shadow-md rounded-lg p-6 mx-auto w-[min(calc(100%-2rem),800px)]">
                 {/* Title */}

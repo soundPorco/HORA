@@ -33,17 +33,10 @@ const Answer = () => {
 
     // 回答を更新する関数
     const updateAnswer = (questionId, value) => {
-        setAnswers((prev) => {
-            const exists = prev.find((a) => a.questionId === questionId);
-
-            if (exists) {
-                return prev.map((a) =>
-                    a.questionId === questionId ? { ...a, value } : a
-                );
-            }
-
-            return [...prev, { questionId, value }];
-        });
+        setAnswers((prev) => ({
+            ...prev,
+            [questionId]: value, // questionId をキーにして値を保存
+        }));
     };
 
     // 回答を更新する関数
@@ -52,7 +45,7 @@ const Answer = () => {
             formId,
             userId: auth.currentUser?.uid ?? null,
             answers,
-            createdAt: serverTimestamp(),
+            votedAt: serverTimestamp(),
         });
 
         alert("回答を送信しました！");
@@ -68,48 +61,67 @@ const Answer = () => {
                 <h1 className="text-2xl font-bold mb-2">{form.title}</h1>
                 <p className="mb-6 text-gray-600">{form.description}</p>
 
-                {form.questions.map((q, index) => (
-                    <div key={q.id} className="mb-6">
+                {form.questions.map((question, index) => (
+                    <div key={question.id} className="mb-6 ">
                         <p className="font-semibold mb-2">
-                            {index + 1}. {q.questionTitle}
-                            {q.required && (
+                            {index + 1}. {question.questionTitle}
+                            {question.required && (
                                 <span className="text-red-500 ml-1">*</span>
                             )}
                         </p>
 
                         {/* ラジオボタン */}
-                        {q.questionType === "ラジオボタン" &&
-                            q.options.map((opt, i) => (
+                        {question.questionType === "ラジオボタン" &&
+                            question.options.map((opt, i) => (
                                 <label key={i} className="block">
                                     <input
                                         type="radio"
-                                        name={q.id}
-                                        onChange={() => updateAnswer(q.id, opt)}
+                                        name={question.id}
+                                        onChange={() =>
+                                            updateAnswer(question.id, opt)
+                                        }
                                     />
                                     <span className="ml-2">{opt}</span>
                                 </label>
                             ))}
 
                         {/* チェックボックス */}
-                        {q.questionType === "チェックボックス" &&
-                            q.options.map((opt, i) => (
+                        {question.questionType === "チェックボックス" &&
+                            question.options.map((opt, i) => (
                                 <label key={i} className="block">
                                     <input
                                         type="checkbox"
                                         onChange={() => {
-                                            updateAnswer(q.id, opt);
+                                            updateAnswer(question.id, opt);
                                         }}
                                     />
                                     <span className="ml-2">{opt}</span>
                                 </label>
                             ))}
 
+                        {/* プルダウン */}
+                        {question.questionType === "プルダウン" && (
+                            <select
+                                className="w-full border p-2 rounded"
+                                onChange={(e) =>
+                                    updateAnswer(question.id, e.target.value)
+                                }
+                            >
+                                <option value="">選択してください</option>
+                                {question.options.map((opt, i) => (
+                                    <option key={i} value={opt}>
+                                        {opt}
+                                    </option>
+                                ))}
+                            </select>
+                        )}
+
                         {/* テキスト */}
-                        {q.questionType === "テキスト" && (
+                        {question.questionType === "テキスト" && (
                             <textarea
                                 className="w-full border p-2 rounded"
                                 onChange={(e) =>
-                                    updateAnswer(q.id, e.target.value)
+                                    updateAnswer(question.id, e.target.value)
                                 }
                             />
                         )}
