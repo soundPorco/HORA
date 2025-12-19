@@ -23,10 +23,6 @@ const Menu = () => {
         await signOut(auth);
         navigate("/");
     };
-    // const handlePublish = () => {
-    //     const url = `${window.location.origin}/answer/${formId}`;
-    //     alert(`このURLを共有してください\n\n${url}`);
-    // };
 
     return (
         <>
@@ -38,20 +34,25 @@ const Menu = () => {
                     {/* 右側メニュー */}
                     <div className="flex items-center gap-4">
                         {/* プレビューボタン */}
-                        <button className="relative text-2xl rounded-full p-2 hover:bg-gray-200 duration-200 group">
-                            <MdOutlineRemoveRedEye />
-                            {/* <span className="absolute z-50 bottom-[-30px] left-1/2 transform -translate-x-1/2 bg-gray-500 text-white text-sm px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap pointer-events-none">
+                        {formId && (
+                            <button className="relative text-2xl rounded-full p-2 hover:bg-gray-200 duration-200 group">
+                                <MdOutlineRemoveRedEye />
+                                {/* <span className="absolute z-50 bottom-[-30px] left-1/2 transform -translate-x-1/2 bg-gray-500 text-white text-sm px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap pointer-events-none">
                                 プレビュー
                             </span> */}
-                        </button>
+                            </button>
+                        )}
 
                         {/* 公開ボタン */}
-                        <button
-                            className="relative text-2xl rounded-full p-2 hover:bg-gray-200 duration-200 group"
-                            onClick={() => setOpenModal(true)}
-                        >
-                            <RiSendPlane2Line />
-                        </button>
+                        {formId && (
+                            <button
+                                className="relative text-2xl rounded-full p-2 hover:bg-gray-200 duration-200 group"
+                                onClick={() => setOpenModal(true)}
+                            >
+                                <RiSendPlane2Line />
+                            </button>
+                        )}
+
                         {/* アンケート一覧へ戻る */}
                         <button
                             className="relative text-2xl rounded-full p-2 hover:bg-gray-200 duration-200 group"
