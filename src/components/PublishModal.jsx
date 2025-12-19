@@ -1,3 +1,5 @@
+import { QRCodeCanvas } from "qrcode.react";
+
 // アイコン
 import { MdContentCopy } from "react-icons/md";
 import { MdCheck } from "react-icons/md";
@@ -32,11 +34,20 @@ const PublishModal = ({ isOpen, toggleCopy, setToggleCopy, onClose, url }) => {
 
             {/* モーダル本体 */}
             <div className="relative bg-white rounded-lg shadow-lg w-[90%] max-w-lg p-6 z-10">
-                <h2 className="text-xl font-bold mb-4">アンケート公開URL</h2>
+                <h2 className="text-xl font-bold mb-4 text-center">
+                    アンケート公開URL
+                </h2>
+                <div className="flex justify-center my-4">
+                    <QRCodeCanvas
+                        value={url} // ← QR化したい文字列（URL）
+                        size={200} // サイズ(px)
+                        level="M" // 誤り訂正レベル（L/M/Q/H）
+                    />
+                </div>
 
-                <p className="text-sm text-gray-600 mb-2">
+                {/* <p className="text-sm text-gray-600 mb-2">
                     以下のURLを共有してください
-                </p>
+                </p> */}
 
                 <div
                     className="bg-gray-100 p-3 rounded break-all flex
