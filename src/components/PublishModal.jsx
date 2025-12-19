@@ -51,9 +51,9 @@ const PublishModal = ({ isOpen, toggleCopy, setToggleCopy, onClose, url }) => {
 
                 <div
                     className="bg-gray-100 p-3 rounded break-all flex
-                    items-center justify-between gap-2"
+                    items-center justify-between gap-2 max-w-[80%] mx-auto"
                 >
-                    <div>{url}</div>
+                    <div className="truncate max-w-[90%]">{url}</div>
                     {/* コピー用ボタン */}
                     {toggleCopy ? (
                         <MdCheck className="text-xl" />
