@@ -17,6 +17,7 @@ const Menu = () => {
     const { formId } = useParams();
 
     const [openModal, setOpenModal] = useState(false);
+    const [toggleCopy, setToggleCopy] = useState(false);
 
     const handleLogout = async () => {
         await signOut(auth);
@@ -70,6 +71,8 @@ const Menu = () => {
                 {/* 公開モーダル */}
                 <PublishModal
                     isOpen={openModal}
+                    toggleCopy={toggleCopy}
+                    setToggleCopy={setToggleCopy}
                     onClose={() => setOpenModal(false)}
                     url={`${window.location.origin}/answer/${formId}`}
                 />
