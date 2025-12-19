@@ -1,6 +1,7 @@
 import { signOut } from "firebase/auth";
 import { auth } from "../firebase";
 import { useNavigate, useParams } from "react-router-dom";
+import { useState } from "react";
 
 // アイコン
 import { MdOutlineRemoveRedEye } from "react-icons/md"; // プレビューアイコン
@@ -8,18 +9,23 @@ import { RiSendPlane2Line } from "react-icons/ri"; // 公開アイコン
 import { MdFormatListBulleted } from "react-icons/md"; //一覧アイコン
 import { MdLogout } from "react-icons/md"; // ログアウトアイコン
 
+// コンポーネント
+import PublishModal from "./PublishModal";
+
 const Menu = () => {
     const navigate = useNavigate();
     const { formId } = useParams();
+
+    const [openModal, setOpenModal] = useState(false);
 
     const handleLogout = async () => {
         await signOut(auth);
         navigate("/");
     };
-    const handlePublish = () => {
-        const url = `${window.location.origin}/answer/${formId}`;
-        alert(`このURLを共有してください\n\n${url}`);
-    };
+    // const handlePublish = () => {
+    //     const url = `${window.location.origin}/answer/${formId}`;
+    //     alert(`このURLを共有してください\n\n${url}`);
+    // };
 
     return (
         <>
@@ -41,7 +47,7 @@ const Menu = () => {
                         {/* 公開ボタン */}
                         <button
                             className="relative text-2xl rounded-full p-2 hover:bg-gray-200 duration-200 group"
-                            onClick={handlePublish}
+                            onClick={() => setOpenModal(true)}
                         >
                             <RiSendPlane2Line />
                         </button>
@@ -61,6 +67,12 @@ const Menu = () => {
                         </button>
                     </div>
                 </div>
+                {/* 公開モーダル */}
+                <PublishModal
+                    isOpen={openModal}
+                    onClose={() => setOpenModal(false)}
+                    url={`${window.location.origin}/answer/${formId}`}
+                />
             </div>
             <div className="h-24"></div>
         </>
