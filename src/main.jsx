@@ -8,6 +8,7 @@ import Create from "./pages/Create.jsx"; // または ./pages/create.jsx（実�
 import CreateList from "./pages/CreateList.jsx";
 import Answer from "./pages/Answer.jsx";
 import Preview from "./pages/Preview.jsx";
+import Result from "./pages/Result.jsx";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
     <StrictMode>
@@ -18,6 +19,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
                 <Route path="/edit/:formId" element={<Create />} />
                 <Route path="/answer/:formId" element={<Answer />} />
                 <Route path="/preview/:formId" element={<Preview />} />
+                <Route path="/result/:formId" element={<Result />} />
                 <Route path="/create-list" element={<CreateList />} />
             </Routes>
         </BrowserRouter>

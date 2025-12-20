@@ -110,7 +110,7 @@ const CreateList = () => {
                             {/* 右側：操作ボタン */}
                             <ListMenuBtn
                                 onEdit={() => navigate(`/edit/${form.id}`)}
-                                onResult={() => navigate(`/answer/${form.id}`)}
+                                onResult={() => navigate(`/result/${form.id}`)}
                                 onDelete={() => deleteForm(form.id)}
                             />
                         </div>
