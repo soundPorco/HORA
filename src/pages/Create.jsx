@@ -217,6 +217,7 @@ const Create = () => {
                     setToggleCopy={setToggleCopy}
                     formId={formId}
                     published={formData.published}
+                    setFormData={setFormData}
                     url={`${window.location.origin}/answer/${formId}`}
                 />
             )}

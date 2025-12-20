@@ -17,6 +17,7 @@ const PublishModal = ({
     setToggleCopy,
     formId,
     published,
+    setFormData,
     url,
 }) => {
     if (!openModal) return null;
@@ -42,10 +43,15 @@ const PublishModal = ({
         setOpenModal(false);
     };
     const togglePublish = async () => {
+        const newValue = !published;
+        setFormData((prev) => ({
+            ...prev,
+            published: newValue,
+        }));
         const docRef = doc(db, "forms", formId);
 
         await updateDoc(docRef, {
-            published: !published,
+            published: newValue,
         });
     };
 
