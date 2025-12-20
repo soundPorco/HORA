@@ -201,12 +201,6 @@ const Create = () => {
                 >
                     フォームを保存
                 </button>
-                <button
-                    onClick={() => navigate("/create-list")}
-                    className="mt-4 w-full py-2 bg-green-500 text-white rounded hover:bg-green-600"
-                >
-                    CreateList
-                </button>
             </div>
             {/* 公開モーダル */}
             {openModal && (
