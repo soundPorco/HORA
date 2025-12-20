@@ -5,6 +5,7 @@ import { useNavigate, useParams } from "react-router-dom";
 // アイコン
 import { MdOutlineRemoveRedEye } from "react-icons/md"; // プレビューアイコン
 import { RiSendPlane2Line } from "react-icons/ri"; // 公開アイコン
+import { MdBarChart } from "react-icons/md"; // 結果アイコン
 import { MdFormatListBulleted } from "react-icons/md"; //一覧アイコン
 import { MdLogout } from "react-icons/md"; // ログアウトアイコン
 
@@ -48,6 +49,15 @@ const Menu = ({ setOpenModal }) => {
                                 onClick={() => setOpenModal(true)}
                             >
                                 <RiSendPlane2Line />
+                            </button>
+                        )}
+                        {/* 結果ボタン */}
+                        {formId && (
+                            <button
+                                className="relative text-2xl rounded-full p-2 hover:bg-gray-200 duration-200 group"
+                                onClick={() => navigate(`/result/${formId}`)}
+                            >
+                                <MdBarChart />
                             </button>
                         )}
 
