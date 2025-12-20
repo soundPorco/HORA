@@ -1,7 +1,6 @@
 import { signOut } from "firebase/auth";
 import { auth } from "../firebase";
 import { useNavigate, useParams } from "react-router-dom";
-import { useState } from "react";
 
 // アイコン
 import { MdOutlineRemoveRedEye } from "react-icons/md"; // プレビューアイコン
@@ -9,15 +8,9 @@ import { RiSendPlane2Line } from "react-icons/ri"; // 公開アイコン
 import { MdFormatListBulleted } from "react-icons/md"; //一覧アイコン
 import { MdLogout } from "react-icons/md"; // ログアウトアイコン
 
-// コンポーネント
-import PublishModal from "./PublishModal";
-
-const Menu = () => {
+const Menu = ({ setOpenModal }) => {
     const navigate = useNavigate();
     const { formId } = useParams();
-
-    const [openModal, setOpenModal] = useState(false);
-    const [toggleCopy, setToggleCopy] = useState(false);
 
     const handleLogout = async () => {
         await signOut(auth);
@@ -69,14 +62,6 @@ const Menu = () => {
                         </button>
                     </div>
                 </div>
-                {/* 公開モーダル */}
-                <PublishModal
-                    isOpen={openModal}
-                    toggleCopy={toggleCopy}
-                    setToggleCopy={setToggleCopy}
-                    onClose={() => setOpenModal(false)}
-                    url={`${window.location.origin}/answer/${formId}`}
-                />
             </div>
             <div className="h-24"></div>
         </>

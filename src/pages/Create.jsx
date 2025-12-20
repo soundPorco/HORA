@@ -22,6 +22,7 @@ import autosize from "autosize";
 import Menu from "../components/Menu";
 import Questions from "../components/Questions";
 import AddQuestionBtn from "../components/AddQuestionBtn";
+import PublishModal from "../components/PublishModal";
 
 const Create = () => {
     // 画面遷移用のフック
@@ -34,6 +35,7 @@ const Create = () => {
     // フォームのタイトルと説明
     const [formData, setFormData] = useState({
         userId: null,
+        published: false,
         title: "",
         description: "",
         questions: [],
@@ -133,6 +135,10 @@ const Create = () => {
         }));
     };
 
+    // 公開モーダルの状態管理
+    const [openModal, setOpenModal] = useState(false);
+    const [toggleCopy, setToggleCopy] = useState(false);
+
     // 自動でテキストエリアの高さを調整するための設定
     const textareaRef = useRef(null);
 
@@ -145,7 +151,7 @@ const Create = () => {
     return (
         <div className="min-h-screen bg-gray-100">
             {/* menu */}
-            <Menu />
+            <Menu setOpenModal={setOpenModal} />
             {/* Form */}
             <div className="bg-slate-200 shadow-md rounded-lg p-6 mx-auto w-[min(calc(100%-2rem),800px)]">
                 {/* Title */}
@@ -202,6 +208,18 @@ const Create = () => {
                     CreateList
                 </button>
             </div>
+            {/* 公開モーダル */}
+            {openModal && (
+                <PublishModal
+                    openModal={openModal}
+                    setOpenModal={setOpenModal}
+                    toggleCopy={toggleCopy}
+                    setToggleCopy={setToggleCopy}
+                    formId={formId}
+                    published={formData.published}
+                    url={`${window.location.origin}/answer/${formId}`}
+                />
+            )}
         </div>
     );
 };
