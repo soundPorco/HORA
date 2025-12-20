@@ -25,6 +25,7 @@ const Answer = () => {
 
             if (snap.exists()) {
                 setForm(snap.data());
+                console.log("フォームデータ:", snap.data());
             }
         };
 
@@ -41,6 +42,11 @@ const Answer = () => {
 
     // 回答を更新する関数
     const handleSubmit = async () => {
+        if (!form.published) {
+            alert("このアンケートは現在公開されていません。");
+            return;
+        }
+
         await addDoc(collection(db, "answers"), {
             formId,
             userId: auth.currentUser?.uid ?? null,
@@ -130,9 +136,14 @@ const Answer = () => {
 
                 <button
                     onClick={handleSubmit}
-                    className="w-full bg-blue-500 text-white py-3 rounded hover:bg-blue-600"
+                    className={`w-full text-white py-3 rounded ${
+                        form.published
+                            ? "bg-blue-500 hover:bg-blue-600"
+                            : "bg-gray-400 cursor-not-allowed"
+                    }`}
+                    disabled={!form.published}
                 >
-                    送信
+                    {form.published ? "回答を送信" : "アンケートは非公開です"}
                 </button>
             </div>
         </div>
