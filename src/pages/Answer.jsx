@@ -69,6 +69,7 @@ const Answer = () => {
             form={form}
             updateAnswer={updateAnswer}
             handleSubmit={handleSubmit}
+            Preview={false}
         />
     );
 };

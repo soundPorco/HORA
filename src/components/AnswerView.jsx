@@ -1,4 +1,4 @@
-const AnswerView = ({ form, updateAnswer, handleSubmit }) => {
+const AnswerView = ({ form, updateAnswer, handleSubmit, Preview }) => {
     return (
         <div className="min-h-screen bg-gray-100 p-6">
             <div className="max-w-2xl mx-auto bg-white p-6 rounded shadow">
@@ -72,17 +72,21 @@ const AnswerView = ({ form, updateAnswer, handleSubmit }) => {
                     </div>
                 ))}
 
-                <button
-                    onClick={handleSubmit}
-                    className={`w-full text-white py-3 rounded ${
-                        form.published
-                            ? "bg-blue-500 hover:bg-blue-600"
-                            : "bg-gray-400 cursor-not-allowed"
-                    }`}
-                    disabled={!form.published}
-                >
-                    {form.published ? "回答を送信" : "アンケートは非公開です"}
-                </button>
+                {!Preview && (
+                    <button
+                        onClick={handleSubmit}
+                        className={`w-full text-white py-3 rounded ${
+                            form.published
+                                ? "bg-blue-500 hover:bg-blue-600"
+                                : "bg-gray-400 cursor-not-allowed"
+                        }`}
+                        disabled={!form.published}
+                    >
+                        {form.published
+                            ? "回答を送信"
+                            : "アンケートは非公開です"}
+                    </button>
+                )}
             </div>
         </div>
     );

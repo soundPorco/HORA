@@ -8,6 +8,8 @@ import { RiSendPlane2Line } from "react-icons/ri"; // 公開アイコン
 import { MdFormatListBulleted } from "react-icons/md"; //一覧アイコン
 import { MdLogout } from "react-icons/md"; // ログアウトアイコン
 
+import {} from "react-router-dom";
+
 const Menu = ({ setOpenModal }) => {
     const navigate = useNavigate();
     const { formId } = useParams();
@@ -28,7 +30,10 @@ const Menu = ({ setOpenModal }) => {
                     <div className="flex items-center gap-4">
                         {/* プレビューボタン */}
                         {formId && (
-                            <button className="relative text-2xl rounded-full p-2 hover:bg-gray-200 duration-200 group">
+                            <button
+                                className="relative text-2xl rounded-full p-2 hover:bg-gray-200 duration-200 group"
+                                onClick={() => navigate(`/preview/${formId}`)}
+                            >
                                 <MdOutlineRemoveRedEye />
                                 {/* <span className="absolute z-50 bottom-[-30px] left-1/2 transform -translate-x-1/2 bg-gray-500 text-white text-sm px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap pointer-events-none">
                                 プレビュー
