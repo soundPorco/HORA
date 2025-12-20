@@ -1,5 +1,7 @@
 import { useRef, useEffect } from "react";
 import autosize from "autosize";
+
+// アイコン
 import { RiDeleteBin6Line } from "react-icons/ri";
 
 // アンケート作成ページコンポーネント

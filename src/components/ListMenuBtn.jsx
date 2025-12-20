@@ -1,5 +1,9 @@
 import { useState } from "react";
-import { FiEdit, FiBarChart2, FiTrash2 } from "react-icons/fi";
+
+// アイコン
+import { RiDeleteBin6Line } from "react-icons/ri";
+import { MdBarChart } from "react-icons/md";
+import { MdEdit } from "react-icons/md";
 import { HiDotsVertical } from "react-icons/hi";
 
 const MenuButton = ({ onEdit, onResult, onDelete }) => {
@@ -31,7 +35,7 @@ const MenuButton = ({ onEdit, onResult, onDelete }) => {
                         className="px-3 py-2 flex items-center gap-2
                                    hover:bg-gray-100 cursor-pointer"
                     >
-                        <FiEdit />
+                        <MdEdit />
                         編集
                     </li>
 
@@ -43,7 +47,7 @@ const MenuButton = ({ onEdit, onResult, onDelete }) => {
                         className="px-3 py-2 flex items-center gap-2
                                    hover:bg-gray-100 cursor-pointer"
                     >
-                        <FiBarChart2 />
+                        <MdBarChart />
                         結果
                     </li>
 
@@ -55,7 +59,7 @@ const MenuButton = ({ onEdit, onResult, onDelete }) => {
                         className="px-3 py-2 flex items-center gap-2
                                    text-red-600 hover:bg-red-50 cursor-pointer"
                     >
-                        <FiTrash2 />
+                        <RiDeleteBin6Line />
                         削除
                     </li>
                 </ul>
