@@ -4,6 +4,7 @@ import { db } from "../firebase";
 import { useEffect, useState } from "react";
 
 const Result = () => {
+    // ルーティングパラメータ(URL)から formId を取得
     const { formId } = useParams();
 
     const [answers, setAnswers] = useState([]);
@@ -46,13 +47,14 @@ const Result = () => {
     };
 
     useEffect(() => {
+        // 回答データの取得
         const fetchAnswers = async () => {
-            const q = query(
+            const answersQuery = query(
                 collection(db, "answers"),
                 where("formId", "==", formId)
             );
 
-            const snapshot = await getDocs(q);
+            const snapshot = await getDocs(answersQuery);
 
             const list = snapshot.docs.map((doc) => ({
                 id: doc.id,
