@@ -9,6 +9,7 @@ const Result = () => {
 
     const [answers, setAnswers] = useState([]);
     const [summary, setSummary] = useState({}); // ← 集計結果
+    const [questions, setQuestions] = useState([]);
 
     // ======================
     // 設問ごとの集計処理
@@ -19,7 +20,7 @@ const Result = () => {
         answersList.forEach((answerDoc) => {
             const answers = answerDoc.answers;
 
-            if (!answers) return; // answers フィールドが存在しない場合はスキップ
+            if (!answers) return; // answersが存在しない場合はスキップ
 
             Object.entries(answers).forEach(([questionId, value]) => {
                 if (!result[questionId]) {
@@ -27,6 +28,7 @@ const Result = () => {
                 }
 
                 // 複数選択（checkbox）
+                // Array.isArray() でvalueが配列かどうかを判定
                 if (Array.isArray(value)) {
                     value.forEach((v) => {
                         if (v) {
@@ -55,22 +57,45 @@ const Result = () => {
             );
 
             // snapshot = 特定の状態をコピーする変数の総称
-            const AnswerSnapshot = await getDocs(answersQuery);
+            const answerSnapshot = await getDocs(answersQuery);
 
-            const Answerlist = AnswerSnapshot.docs.map((doc) => ({
+            console.log("answerSnapshot:", answerSnapshot); // デバッグ用ログ
+
+            // 以下でデータを扱いやすいように変換
+            const answerList = answerSnapshot.docs.map((doc) => ({
                 id: doc.id,
                 ...doc.data(),
             }));
 
-            console.log("取得した回答データ:", Answerlist); // デバッグ用ログ
+            console.log("取得した回答データ:", answerList); // デバッグ用ログ
 
-            setAnswers(Answerlist);
+            setAnswers(answerList);
             // aggregate = 集計
-            aggregateAnswers(Answerlist); // ← 集計処理
+            aggregateAnswers(answerList); // ← 集計処理
+        };
+
+        // 設問データの取得
+        const fetchQuestions = async () => {
+            const formRef = collection(db, "forms");
+            const formSnapshot = await getDocs(
+                query(formRef, where("id", "==", formId))
+            );
+
+            if (!formSnapshot.empty) {
+                const formData = formSnapshot.docs[0].data();
+                setQuestions(formData.questions || []);
+            }
         };
 
         fetchAnswers();
+        fetchQuestions();
     }, [formId]);
+
+    // 設問IDに対応する設問タイトルを取得する関数
+    const getQuestionTitle = (questionId) => {
+        const question = questions.find((q) => q.id === questionId);
+        return question ? question.questionTitle : "不明な設問";
+    };
 
     return (
         <div className="p-6 max-w-3xl mx-auto">
@@ -82,7 +107,7 @@ const Result = () => {
                 Object.entries(summary).map(([questionId, counts]) => (
                     <div key={questionId} className="border rounded p-4 mb-4">
                         <h2 className="font-semibold mb-2">
-                            設問ID: {questionId}
+                            {getQuestionTitle(questionId)}
                         </h2>
 
                         {Object.entries(counts).map(([answer, count]) => (
