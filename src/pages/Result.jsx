@@ -54,17 +54,19 @@ const Result = () => {
                 where("formId", "==", formId)
             );
 
-            const snapshot = await getDocs(answersQuery);
+            // snapshot = 特定の状態をコピーする変数の総称
+            const AnswerSnapshot = await getDocs(answersQuery);
 
-            const list = snapshot.docs.map((doc) => ({
+            const Answerlist = AnswerSnapshot.docs.map((doc) => ({
                 id: doc.id,
                 ...doc.data(),
             }));
 
-            console.log("取得した回答データ:", list); // デバッグ用ログ
+            console.log("取得した回答データ:", Answerlist); // デバッグ用ログ
 
-            setAnswers(list);
-            aggregateAnswers(list); // ← 集計処理
+            setAnswers(Answerlist);
+            // aggregate = 集計
+            aggregateAnswers(Answerlist); // ← 集計処理
         };
 
         fetchAnswers();
