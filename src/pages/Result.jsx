@@ -100,6 +100,9 @@ const Result = () => {
     return (
         <div className="p-6 max-w-3xl mx-auto">
             <h1 className="text-2xl font-bold mb-6">回答結果</h1>
+            <h2 className="text-xl font-bold mb-4">
+                回答総数：{answers.length}
+            </h2>
 
             {answers.length === 0 || Object.keys(summary).length === 0 ? (
                 <div>まだ回答がありません</div>
