@@ -3,6 +3,9 @@ import { getDocs, where, collection, query } from "firebase/firestore";
 import { db } from "../firebase";
 import { useEffect, useState } from "react";
 
+// コンポーネント
+import Menu from "../components/Menu";
+
 const Result = () => {
     // ルーティングパラメータ(URL)から formId を取得
     const { formId } = useParams();
@@ -98,30 +101,39 @@ const Result = () => {
     };
 
     return (
-        <div className="p-6 max-w-3xl mx-auto">
-            <h1 className="text-2xl font-bold mb-6">回答結果</h1>
-            <h2 className="text-xl font-bold mb-4">
-                回答総数：{answers.length}
-            </h2>
+        <div className="min-h-screen bg-gray-100">
+            <Menu />
+            <div className="max-w-3xl mx-auto bg-white p-6 rounded-xl shadow mt-8 mb-10">
+                <h1 className="text-2xl font-bold mb-6">回答結果</h1>
+                <h2 className="text-xl font-bold mb-4">
+                    回答総数：{answers.length}
+                </h2>
 
-            {answers.length === 0 || Object.keys(summary).length === 0 ? (
-                <div>まだ回答がありません</div>
-            ) : (
-                Object.entries(summary).map(([questionId, counts]) => (
-                    <div key={questionId} className="border rounded p-4 mb-4">
-                        <h2 className="font-semibold mb-2">
-                            {getQuestionTitle(questionId)}
-                        </h2>
+                {answers.length === 0 || Object.keys(summary).length === 0 ? (
+                    <div>まだ回答がありません</div>
+                ) : (
+                    Object.entries(summary).map(([questionId, counts]) => (
+                        <div
+                            key={questionId}
+                            className="border rounded p-4 mb-4"
+                        >
+                            <h2 className="font-semibold mb-2">
+                                {getQuestionTitle(questionId)}
+                            </h2>
 
-                        {Object.entries(counts).map(([answer, count]) => (
-                            <div key={answer} className="flex justify-between">
-                                <span>{answer}</span>
-                                <span>{count} 件</span>
-                            </div>
-                        ))}
-                    </div>
-                ))
-            )}
+                            {Object.entries(counts).map(([answer, count]) => (
+                                <div
+                                    key={answer}
+                                    className="flex justify-between"
+                                >
+                                    <span>{answer}</span>
+                                    <span>{count} 件</span>
+                                </div>
+                            ))}
+                        </div>
+                    ))
+                )}
+            </div>
         </div>
     );
 };
