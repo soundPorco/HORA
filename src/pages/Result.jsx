@@ -111,10 +111,10 @@ const Result = () => {
     };
 
     // 設問IDに対応する設問タイプを取得する関数
-    // const getQuestionType = (questionId) => {
-    //     const question = questions.find((q) => q.id === questionId);
-    //     return question ? question.questionType : "不明な設問タイプ";
-    // };
+    const getQuestionType = (questionId) => {
+        const question = questions.find((q) => q.id === questionId);
+        return question ? question.questionType : "不明な設問タイプ";
+    };
 
     return (
         <div className="min-h-screen bg-gray-100">
@@ -137,6 +137,7 @@ const Result = () => {
                             >
                                 <h2 className="font-semibold mb-2">
                                     {getQuestionTitle(questionId)}
+                                    {getQuestionType(questionId)}
                                 </h2>
 
                                 {Object.entries(counts).map(
