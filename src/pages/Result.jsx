@@ -24,7 +24,7 @@ const Result = () => {
         responseList.forEach((responseItem) => {
             const questionAnswers = responseItem.answers;
             console.log(
-                "単一回答者の一つの設問に対する回答データ",
+                "単一回答者の各設問に対する回答データ",
                 questionAnswers
             ); // デバッグ用ログ
 
@@ -56,6 +56,7 @@ const Result = () => {
         });
 
         setResultSummary(result);
+        console.log("集計結果(resultSummary):", result); // デバッグ用ログ
     };
 
     useEffect(() => {
@@ -104,16 +105,61 @@ const Result = () => {
         fetchQuestions();
     }, [formId]);
 
+    // 設問IDに対応する設問データを取得する関数
+    const getQuestionById = (questionId) => {
+        return questions.find((q) => q.id === questionId);
+    };
+
     // 設問IDに対応する設問タイトルを取得する関数
     const getQuestionTitle = (questionId) => {
-        const question = questions.find((q) => q.id === questionId);
+        const question = getQuestionById(questionId);
         return question ? question.questionTitle : "不明な設問";
     };
 
     // 設問IDに対応する設問タイプを取得する関数
     const getQuestionType = (questionId) => {
-        const question = questions.find((q) => q.id === questionId);
+        const question = getQuestionById(questionId);
         return question ? question.questionType : "不明な設問タイプ";
+    };
+
+    // 設問タイプに応じた表示コンポーネントを返す関数
+    const renderResultByQuestionType = (questionType, values) => {
+        switch (questionType) {
+            case "ラジオボタン":
+            case "ドロップダウン":
+                return (
+                    <ul className="space-y-1">
+                        {Object.entries(values).map(([answer, count]) => (
+                            <li key={answer} className="flex justify-between">
+                                <span>{answer}</span>
+                                <span>{count} 件</span>
+                            </li>
+                        ))}
+                    </ul>
+                );
+
+            case "チェックボックス":
+                return (
+                    <ul className="space-y-1">
+                        {Object.entries(values).map(([answer, count]) => (
+                            <li key={answer} className="flex justify-between">
+                                <span>{answer}</span>
+                                <span>{count} 件</span>
+                            </li>
+                        ))}
+                    </ul>
+                );
+
+            case "テキスト":
+                return (
+                    <div className="text-sm text-gray-500">
+                        ※ 記述式回答は集計対象外です
+                    </div>
+                );
+
+            default:
+                return <div className="text-red-500">未対応の設問タイプ</div>;
+        }
     };
 
     return (
@@ -125,31 +171,24 @@ const Result = () => {
                     回答総数：{responseList.length}
                 </h2>
 
-                {responseList.length === 0 ||
-                Object.keys(resultSummary).length === 0 ? (
+                {/* 回答者がいない場合のメッセージ */}
+                {responseList.length === 0 ? (
                     <div>まだ回答がありません</div>
                 ) : (
                     Object.entries(resultSummary).map(
-                        ([questionId, counts]) => (
+                        ([questionId, values]) => (
+                            // valuesの例 {ダンス部: 3}
                             <div
                                 key={questionId}
                                 className="border rounded p-4 mb-4"
                             >
                                 <h2 className="font-semibold mb-2">
                                     {getQuestionTitle(questionId)}
-                                    {getQuestionType(questionId)}
                                 </h2>
 
-                                {Object.entries(counts).map(
-                                    ([answer, count]) => (
-                                        <div
-                                            key={answer}
-                                            className="flex justify-between"
-                                        >
-                                            <span>{answer}</span>
-                                            <span>{count} 件</span>
-                                        </div>
-                                    )
+                                {renderResultByQuestionType(
+                                    getQuestionType(questionId),
+                                    values
                                 )}
                             </div>
                         )
