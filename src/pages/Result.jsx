@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 
 // コンポーネント
 import Menu from "../components/Menu";
+import RenderResultByQuestionType from "../components/RenderResultByQuestionType";
 
 const Result = () => {
     // ルーティングパラメータ(URL)から formId を取得
@@ -122,46 +123,6 @@ const Result = () => {
         return question ? question.questionType : "不明な設問タイプ";
     };
 
-    // 設問タイプに応じた表示コンポーネントを返す関数
-    const renderResultByQuestionType = (questionType, values) => {
-        switch (questionType) {
-            case "ラジオボタン":
-            case "ドロップダウン":
-                return (
-                    <ul className="space-y-1">
-                        {Object.entries(values).map(([answer, count]) => (
-                            <li key={answer} className="flex justify-between">
-                                <span>{answer}</span>
-                                <span>{count} 件</span>
-                            </li>
-                        ))}
-                    </ul>
-                );
-
-            case "チェックボックス":
-                return (
-                    <ul className="space-y-1">
-                        {Object.entries(values).map(([answer, count]) => (
-                            <li key={answer} className="flex justify-between">
-                                <span>{answer}</span>
-                                <span>{count} 件</span>
-                            </li>
-                        ))}
-                    </ul>
-                );
-
-            case "テキスト":
-                return (
-                    <div className="text-sm text-gray-500">
-                        ※ 記述式回答は集計対象外です
-                    </div>
-                );
-
-            default:
-                return <div className="text-red-500">未対応の設問タイプ</div>;
-        }
-    };
-
     return (
         <div className="min-h-screen bg-gray-100">
             <Menu />
@@ -186,10 +147,10 @@ const Result = () => {
                                     {getQuestionTitle(questionId)}
                                 </h2>
 
-                                {renderResultByQuestionType(
-                                    getQuestionType(questionId),
-                                    values
-                                )}
+                                <RenderResultByQuestionType
+                                    questionType={getQuestionType(questionId)}
+                                    values={values}
+                                />
                             </div>
                         )
                     )
