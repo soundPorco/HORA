@@ -1,11 +1,22 @@
 // rechartsのインポート
-import { PieChart, Pie, Cell, Tooltip, Legend } from "recharts";
+import {
+    PieChart,
+    Pie,
+    Cell,
+    Tooltip,
+    Legend,
+    BarChart,
+    Bar,
+    XAxis,
+    YAxis,
+    ResponsiveContainer,
+} from "recharts";
 
 // 設問タイプに応じた表示を返すコンポーネント
 // renderとは「表示する」という意味
 const RenderResultByQuestionType = ({ questionType, values }) => {
     // Rechartsが要求するデータ形式に変換する関数
-    const convertToPieData = (values) => {
+    const convertToChartData = (values) => {
         return Object.entries(values).map(([key, value]) => ({
             name: key,
             value: value,
@@ -53,7 +64,7 @@ const RenderResultByQuestionType = ({ questionType, values }) => {
                     {/* 円グラフ表示 */}
                     <PieChart width={400} height={400} className="mx-auto">
                         <Pie
-                            data={convertToPieData(values)}
+                            data={convertToChartData(values)}
                             dataKey="value"
                             nameKey="name"
                             cx="50%"
@@ -61,7 +72,7 @@ const RenderResultByQuestionType = ({ questionType, values }) => {
                             outerRadius={160}
                             label={renderLabel} // ラベルをパーセント表示にする
                         >
-                            {convertToPieData(values).map((_, index) => (
+                            {convertToChartData(values).map((_, index) => (
                                 <Cell
                                     key={index}
                                     // 色の配列から順番に色を割り当てる、選択肢が多い場合は色がループする
@@ -92,6 +103,33 @@ const RenderResultByQuestionType = ({ questionType, values }) => {
                             <span>{count} 件</span>
                         </li>
                     ))}
+
+                    {/* 棒グラフ表示 */}
+                    <div className="w-full h-64">
+                        {/* <ResponsiveContainer>がないと表示されない場合があるらしい */}
+                        <ResponsiveContainer
+                            width="100%"
+                            height="100%"
+                            className="mx-auto"
+                        >
+                            <BarChart
+                                data={convertToChartData(values)}
+                                layout="vertical" // 横向きの棒グラフ
+                                margin={{
+                                    top: 10,
+                                    right: 30,
+                                    left: 20,
+                                    bottom: 10,
+                                }}
+                            >
+                                <XAxis type="number" /> {/* 横軸は数値 */}
+                                <YAxis dataKey="name" type="category" />
+                                {/* 縦軸はカテゴリ */}
+                                <Tooltip /> {/* ホバー時のツールチップ */}
+                                <Bar dataKey="value" />
+                            </BarChart>
+                        </ResponsiveContainer>
+                    </div>
                 </ul>
             );
 
