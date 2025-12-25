@@ -12,6 +12,33 @@ const RenderResultByQuestionType = ({ questionType, values }) => {
         }));
     };
 
+    // チャートの色の配列
+    const chartColors = [
+        "#3366CC",
+        "#DC3912",
+        "#FF9900",
+        "#109618",
+        "#990099",
+        "#0099C6",
+        "#DD4477",
+        "#66AA00",
+        "#B82E2E",
+        "#316395",
+        "#994499",
+        "#22AA99",
+        "#AAAA11",
+        "#6633CC",
+        "#E67300",
+        "#8B0707",
+        "#329262",
+        "#5574A6",
+        "#3B3EAC",
+    ];
+
+    // 円グラフのラベル表示をパーセントに変換する関数
+    // percentは0から1の値でrechartsから渡される、toFixed(0)で小数点以下を切り捨て
+    const renderLabel = ({ percent }) => `${(percent * 100).toFixed(0)}%`;
+
     switch (questionType) {
         case "ラジオボタン":
             return (
@@ -22,18 +49,35 @@ const RenderResultByQuestionType = ({ questionType, values }) => {
                             <span>{count} 件</span>
                         </li>
                     ))}
-                    <PieChart width={300} height={300}>
+
+                    {/* 円グラフ表示 */}
+                    <PieChart width={400} height={400} className="mx-auto">
                         <Pie
                             data={convertToPieData(values)}
                             dataKey="value"
                             nameKey="name"
                             cx="50%"
                             cy="50%"
-                            outerRadius={100}
-                            label
+                            outerRadius={160}
+                            label={renderLabel} // ラベルをパーセント表示にする
+                        >
+                            {convertToPieData(values).map((_, index) => (
+                                <Cell
+                                    key={index}
+                                    // 色の配列から順番に色を割り当てる、選択肢が多い場合は色がループする
+                                    fill={
+                                        chartColors[index % chartColors.length]
+                                    }
+                                />
+                            ))}
+                        </Pie>
+                        <Tooltip /> {/* ホバー時のツールチップ */}
+                        <Legend
+                        // layout="vertical"
+                        // align="right"
+                        // verticalAlign="middle"
                         />
-                        <Tooltip />
-                        <Legend />
+                        {/* 凡例 */}
                     </PieChart>
                 </ul>
             );
