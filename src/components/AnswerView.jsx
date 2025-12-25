@@ -35,8 +35,12 @@ const AnswerView = ({ form, updateAnswer, handleSubmit, Preview }) => {
                                 <label key={i} className="block">
                                     <input
                                         type="checkbox"
-                                        onChange={() => {
-                                            updateAnswer(question.id, opt);
+                                        onChange={(e) => {
+                                            updateAnswer(
+                                                question.id,
+                                                opt,
+                                                e.target.checked
+                                            );
                                         }}
                                     />
                                     <span className="ml-2">{opt}</span>

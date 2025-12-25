@@ -36,11 +36,33 @@ const Answer = () => {
     }, [formId]);
 
     // 回答を更新する関数
-    const updateAnswer = (questionId, value) => {
-        setAnswers((prev) => ({
-            ...prev,
-            [questionId]: value, // questionId をキーにして値を保存
-        }));
+    const updateAnswer = (questionId, value, checked) => {
+        setAnswers((prev) => {
+            // checked が undefined の場合（ラジオ/プルダウン/テキスト等）は単一回答として保存
+            if (typeof checked === "undefined") {
+                return {
+                    ...prev,
+                    [questionId]: value, // questionId をキーにして値を保存
+                };
+            }
+
+            // checkbox：配列で管理
+            const current = Array.isArray(prev[questionId])
+                ? prev[questionId]
+                : [];
+
+            if (checked) {
+                // 追加（重複防止）
+                if (current.includes(value)) return prev;
+                return { ...prev, [questionId]: [...current, value] };
+            } else {
+                // 削除
+                return {
+                    ...prev,
+                    [questionId]: current.filter((v) => v !== value),
+                };
+            }
+        });
     };
 
     // 回答を更新する関数

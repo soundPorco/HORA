@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 
 // コンポーネント
 import Menu from "../components/Menu";
-import RenderResultByQuestionType from "../components/RenderResultByQuestionType";
+import RenderResultByQuestionType from "../components/renderResultByQuestionType";
 
 const Result = () => {
     // ルーティングパラメータ(URL)から formId を取得
