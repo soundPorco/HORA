@@ -143,7 +143,7 @@ const Result = () => {
                                 key={questionId}
                                 className="border rounded p-4 mb-4"
                             >
-                                <h2 className="font-semibold mb-2">
+                                <h2 className="font-semibold mb-4 border-b pb-2 border-gray-300">
                                     {getQuestionTitle(questionId)}
                                 </h2>
 

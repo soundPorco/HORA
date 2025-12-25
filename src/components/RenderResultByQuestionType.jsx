@@ -135,9 +135,18 @@ const RenderResultByQuestionType = ({ questionType, values }) => {
 
         case "テキスト":
             return (
-                <div className="text-sm text-gray-500">
-                    ※ 記述式回答は集計対象外です
-                </div>
+                <ul className="space-y-2 max-h-96 overflow-y-auto">
+                    {Object.entries(values).map(([answer, count], index) => (
+                        // break-all で長いテキストも改行して表示
+                        <li
+                            key={index}
+                            className="bg-gray-100 px-3 py-2 rounded-md break-all"
+                        >
+                            {answer}{" "}
+                            <span className="text-gray-500">({count} 件)</span>
+                        </li>
+                    ))}
+                </ul>
             );
 
         default:
