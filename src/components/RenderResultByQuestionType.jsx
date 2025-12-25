@@ -25,25 +25,25 @@ const RenderResultByQuestionType = ({ questionType, values }) => {
 
     // チャートの色の配列
     const chartColors = [
-        "#3366CC",
-        "#DC3912",
-        "#FF9900",
-        "#109618",
-        "#990099",
-        "#0099C6",
-        "#DD4477",
-        "#66AA00",
-        "#B82E2E",
-        "#316395",
-        "#994499",
-        "#22AA99",
-        "#AAAA11",
-        "#6633CC",
-        "#E67300",
-        "#8B0707",
-        "#329262",
-        "#5574A6",
-        "#3B3EAC",
+        "#4F46E5",
+        "#EF4444",
+        "#F59E0B",
+        "#10B981",
+        "#8B5CF6",
+        "#06B6D4",
+        "#EC4899",
+        "#84CC16",
+        "#F97316",
+        "#3B82F6",
+        "#A855F7",
+        "#14B8A6",
+        "#EAB308",
+        "#6366F1",
+        "#FB923C",
+        "#DC2626",
+        "#22C55E",
+        "#60A5FA",
+        "#9333EA",
     ];
 
     // 円グラフのラベル表示をパーセントに変換する関数
@@ -93,7 +93,7 @@ const RenderResultByQuestionType = ({ questionType, values }) => {
                 </ul>
             );
 
-        case "ドロップダウン":
+        case "プルダウン":
         case "チェックボックス":
             return (
                 <ul className="space-y-1">
@@ -105,7 +105,7 @@ const RenderResultByQuestionType = ({ questionType, values }) => {
                     ))}
 
                     {/* 棒グラフ表示 */}
-                    <div className="w-full h-64">
+                    <div className="w-full h-80">
                         {/* <ResponsiveContainer>がないと表示されない場合があるらしい */}
                         <ResponsiveContainer
                             width="100%"
@@ -126,7 +126,7 @@ const RenderResultByQuestionType = ({ questionType, values }) => {
                                 <YAxis dataKey="name" type="category" />
                                 {/* 縦軸はカテゴリ */}
                                 <Tooltip /> {/* ホバー時のツールチップ */}
-                                <Bar dataKey="value" />
+                                <Bar dataKey="value" fill="#3e65a4" />
                             </BarChart>
                         </ResponsiveContainer>
                     </div>
