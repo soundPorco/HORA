@@ -9,7 +9,8 @@ import { MdBarChart } from "react-icons/md"; // 結果アイコン
 import { MdFormatListBulleted } from "react-icons/md"; //一覧アイコン
 import { MdLogout } from "react-icons/md"; // ログアウトアイコン
 
-import {} from "react-router-dom";
+// コンポーネント
+import SubMenu from "./SubMenu";
 
 const Menu = ({ setOpenModal }) => {
     const navigate = useNavigate();
@@ -23,7 +24,7 @@ const Menu = ({ setOpenModal }) => {
     return (
         <>
             <div className="fixed top-0 z-40">
-                <div className="bg-white w-screen flex items-center justify-between md:h-20 h-20 border-b px-6 border-gray-300 relative">
+                <div className="bg-[#00468b] text-white w-screen flex items-center justify-between h-20 px-8 relative">
                     {/* アイコン */}
                     <h1 className="md:text-3xl text-2xl font-bold">HORA</h1>
 
@@ -32,7 +33,7 @@ const Menu = ({ setOpenModal }) => {
                         {/* プレビューボタン */}
                         {formId && (
                             <button
-                                className="relative text-2xl rounded-full p-2 hover:bg-gray-200 duration-200 group"
+                                className="relative text-2xl rounded-full p-2 hover:bg-gray-400 duration-200 group"
                                 onClick={() => navigate(`/preview/${formId}`)}
                             >
                                 <MdOutlineRemoveRedEye />
@@ -45,25 +46,25 @@ const Menu = ({ setOpenModal }) => {
                         {/* 公開ボタン */}
                         {formId && (
                             <button
-                                className="relative text-2xl rounded-full p-2 hover:bg-gray-200 duration-200 group"
+                                className="relative text-2xl rounded-full p-2 hover:bg-gray-400 duration-200 group"
                                 onClick={() => setOpenModal(true)}
                             >
                                 <RiSendPlane2Line />
                             </button>
                         )}
                         {/* 結果ボタン */}
-                        {formId && (
+                        {/* {formId && (
                             <button
-                                className="relative text-2xl rounded-full p-2 hover:bg-gray-200 duration-200 group"
+                                className="relative text-2xl rounded-full p-2 hover:bg-gray-400 duration-200 group"
                                 onClick={() => navigate(`/result/${formId}`)}
                             >
                                 <MdBarChart />
                             </button>
-                        )}
+                        )} */}
 
                         {/* アンケート一覧へ戻る */}
                         <button
-                            className="relative text-2xl rounded-full p-2 hover:bg-gray-200 duration-200 group"
+                            className="relative text-2xl rounded-full p-2 hover:bg-gray-400 duration-200 group"
                             onClick={() => navigate("/create-list")}
                         >
                             <MdFormatListBulleted />
@@ -71,14 +72,16 @@ const Menu = ({ setOpenModal }) => {
 
                         <button
                             onClick={handleLogout}
-                            className="relative text-2xl rounded-full p-2 hover:bg-gray-200 duration-200 group"
+                            className="relative text-2xl rounded-full p-2 hover:bg-gray-400 duration-200 group"
                         >
                             <MdLogout />
                         </button>
                     </div>
                 </div>
+                <SubMenu formId={formId} navigate={navigate} />
             </div>
-            <div className="h-24"></div>
+            {/* Menu(20) + SubMenu(12) + 余白(8) = 40 */}
+            <div className="h-40"></div>
         </>
     );
 };
