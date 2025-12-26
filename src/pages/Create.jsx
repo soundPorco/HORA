@@ -8,7 +8,6 @@ import autosize from "autosize";
 // コンポーネント
 import Questions from "../components/Questions";
 import AddQuestionBtn from "../components/AddQuestionBtn";
-import PublishModal from "../components/PublishModal";
 
 const Create = () => {
     const { formData } = useOutletContext() || {};
