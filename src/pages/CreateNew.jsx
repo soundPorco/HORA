@@ -1,8 +1,9 @@
 // src/pages/CreateNew.jsx
 import { useState, useRef, useEffect } from "react";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
-import { db } from "../firebase";
+import { db, auth } from "../firebase";
 import autosize from "autosize";
+import { onAuthStateChanged } from "firebase/auth"; // ログイン状態が変化したときに実行される監視関数
 
 // components
 import Questions from "../components/Questions";
@@ -25,6 +26,22 @@ const CreateNew = () => {
     const textareaRef = useRef(null);
     useEffect(() => {
         if (textareaRef.current) autosize(textareaRef.current);
+    }, []);
+
+    useEffect(() => {
+        const unsubscribe = onAuthStateChanged(auth, (user) => {
+            //userには現在のユーザー情報が自動的に入る
+            if (user) {
+                setNewFormData((prev) => ({
+                    ...prev,
+                    userId: user.uid, // uidは固有名称
+                }));
+            } else {
+                return alert("フォームの保存に失敗しました。");
+            }
+        });
+
+        return () => unsubscribe(); // この部分はuseEffectのクリーンアップ関数として、コンポーネントが消える際に実行されるようにできている。
     }, []);
 
     // 設問を更新する関数（後で Question → Questions → Create の順で渡す）
@@ -61,10 +78,10 @@ const CreateNew = () => {
     };
 
     // フォームデータをFirestoreに保存する関数
-    const saveFormData = async (formData) => {
+    const saveFormData = async (NewFormData) => {
         try {
             const docRef = await addDoc(collection(db, "forms"), {
-                ...formData,
+                ...NewFormData,
                 createdAt: serverTimestamp(),
             });
             console.log("フォームが保存されました。ID: ", docRef.id);
@@ -130,7 +147,7 @@ const CreateNew = () => {
 
                 {/* Submit Button（まだ無効） */}
                 <button
-                    onClick={saveFormData}
+                    onClick={() => saveFormData(NewFormData)}
                     className="mt-4 w-full py-2 bg-green-500 text-white rounded hover:bg-green-600"
                 >
                     フォームを保存

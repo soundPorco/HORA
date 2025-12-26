@@ -25,8 +25,6 @@ const CreateList = () => {
     const [forms, setForms] = useState([]);
     const [userId, setUserId] = useState(null);
     const navigate = useNavigate();
-    // const [open, setOpen] = useState(false);
-    // ドロップダウンメニューの開閉状態
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
