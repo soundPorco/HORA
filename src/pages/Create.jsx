@@ -11,7 +11,7 @@ import AddQuestionBtn from "../components/AddQuestionBtn";
 import PublishModal from "../components/PublishModal";
 
 const Create = () => {
-    const { formData, setFormData } = useOutletContext() || {};
+    const { formData } = useOutletContext() || {};
     const formId = formData.id;
 
     // formId が undefined → 新規作成
@@ -80,10 +80,6 @@ const Create = () => {
         }));
     };
 
-    // 公開モーダルの状態管理
-    const [openModal, setOpenModal] = useState(false);
-    const [toggleCopy, setToggleCopy] = useState(false);
-
     // 自動でテキストエリアの高さを調整するための設定
     const textareaRef = useRef(null);
 
@@ -148,19 +144,6 @@ const Create = () => {
                     フォームを保存
                 </button>
             </div>
-            {/* 公開モーダル */}
-            {openModal && (
-                <PublishModal
-                    openModal={openModal}
-                    setOpenModal={setOpenModal}
-                    toggleCopy={toggleCopy}
-                    setToggleCopy={setToggleCopy}
-                    formId={formId}
-                    published={formData.published}
-                    setFormData={setFormData}
-                    url={`${window.location.origin}/answer/${formId}`}
-                />
-            )}
         </div>
     );
 };

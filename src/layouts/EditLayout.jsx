@@ -2,12 +2,19 @@ import { Outlet, useParams, useNavigate } from "react-router-dom";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../firebase";
 import { useEffect, useState } from "react";
+
+// コンポーネント
+import PublishModal from "../components/PublishModal";
 import Menu from "../components/Menu";
 import SubMenu from "../components/SubMenu";
 
 const EditLayout = () => {
     const { formId } = useParams();
     const navigate = useNavigate();
+
+    // 公開モーダルの状態管理
+    const [openModal, setOpenModal] = useState(false);
+    const [toggleCopy, setToggleCopy] = useState(false);
 
     const [formData, setFormData] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -36,7 +43,7 @@ const EditLayout = () => {
             {/* 共通UI */}
             {/* MenuとSubMenuの配置 */}
             <div className="fixed top-0 z-40">
-                <Menu />
+                <Menu setOpenModal={setOpenModal} />
                 <SubMenu
                     formId={formId}
                     navigate={navigate}
@@ -48,7 +55,18 @@ const EditLayout = () => {
             <div className="h-40"></div>
 
             {/* 子ページの表示場所 */}
-            <Outlet context={{ formData, setFormData }} />
+            <Outlet context={{ formData, openModal, setOpenModal }} />
+
+            {/* 公開モーダル */}
+            {openModal && (
+                <PublishModal
+                    openModal={openModal}
+                    setOpenModal={setOpenModal}
+                    toggleCopy={toggleCopy}
+                    setToggleCopy={setToggleCopy}
+                    url={`${window.location.origin}/answer/${formId}`}
+                />
+            )}
         </div>
     );
 };
