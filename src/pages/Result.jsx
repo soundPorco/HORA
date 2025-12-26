@@ -1,19 +1,18 @@
-import { useParams } from "react-router-dom";
 import { getDocs, where, collection, query } from "firebase/firestore";
 import { db } from "../firebase";
 import { useEffect, useState } from "react";
+import { useOutletContext } from "react-router-dom";
 
 // コンポーネント
-import Menu from "../components/Menu";
 import RenderResultByQuestionType from "../components/renderResultByQuestionType";
 
 const Result = () => {
-    // ルーティングパラメータ(URL)から formId を取得
-    const { formId } = useParams();
+    const { formData } = useOutletContext();
+    const formId = formData.id;
 
     const [responseList, setResponseList] = useState([]);
     const [resultSummary, setResultSummary] = useState({}); // ← 集計結果
-    const [questions, setQuestions] = useState([]);
+    const questions = formData.questions || [];
 
     // ======================
     // 設問ごとの集計処理
@@ -61,6 +60,7 @@ const Result = () => {
     };
 
     useEffect(() => {
+        if (!formId) return;
         // 全ての回答者のデータ(responseList)の取得
         const fetchResponseList = async () => {
             const responseListQuery = query(
@@ -70,7 +70,6 @@ const Result = () => {
 
             // snapshot = 特定の状態をコピーする変数の総称
             const responseListSnapshot = await getDocs(responseListQuery);
-
             console.log("responseListSnapshot:", responseListSnapshot); // デバッグ用ログ
 
             // 以下でデータを扱いやすいように変換
@@ -78,7 +77,6 @@ const Result = () => {
                 id: doc.id,
                 ...doc.data(),
             }));
-
             console.log(
                 "全ての回答者の回答データ(responseList):",
                 responseList
@@ -89,43 +87,20 @@ const Result = () => {
             aggregateResponses(responseList); // ← 集計処理
         };
 
-        // 設問データをformIDから取得、タイトルや設問タイプの表示に使用
-        const fetchQuestions = async () => {
-            const formRef = collection(db, "forms");
-            const formSnapshot = await getDocs(
-                query(formRef, where("id", "==", formId))
-            );
-
-            if (!formSnapshot.empty) {
-                const formData = formSnapshot.docs[0].data();
-                setQuestions(formData.questions || []);
-            }
-        };
-
         fetchResponseList();
-        fetchQuestions();
     }, [formId]);
 
-    // 設問IDに対応する設問データを取得する関数
-    const getQuestionById = (questionId) => {
-        return questions.find((q) => q.id === questionId);
-    };
+    const getQuestionById = (id) => questions.find((q) => q.id === id);
 
-    // 設問IDに対応する設問タイトルを取得する関数
-    const getQuestionTitle = (questionId) => {
-        const question = getQuestionById(questionId);
-        return question ? question.questionTitle : "不明な設問";
-    };
+    const getQuestionTitle = (id) =>
+        getQuestionById(id)?.questionTitle || "不明な設問";
 
-    // 設問IDに対応する設問タイプを取得する関数
-    const getQuestionType = (questionId) => {
-        const question = getQuestionById(questionId);
-        return question ? question.questionType : "不明な設問タイプ";
-    };
+    const getQuestionType = (id) =>
+        getQuestionById(id)?.questionType || "不明な設問タイプ";
 
     return (
-        <div className="min-h-screen bg-gray-100">
-            <Menu />
+        <div>
+            {/* 回答結果の表示 */}
             <div className="max-w-3xl mx-auto bg-white p-6 rounded-xl shadow mt-8 mb-10">
                 <h1 className="text-2xl font-bold mb-6">回答結果</h1>
                 <h2 className="text-xl font-bold mb-4">

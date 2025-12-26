@@ -1,39 +1,22 @@
 // src/pages/Create.jsx
 import { useState, useRef, useEffect } from "react";
-import { auth } from "../firebase";
-import { onAuthStateChanged } from "firebase/auth";
-import {
-    collection,
-    addDoc,
-    serverTimestamp,
-    doc,
-    getDoc,
-    updateDoc,
-} from "firebase/firestore";
+import { serverTimestamp, doc, updateDoc } from "firebase/firestore";
 import { db } from "../firebase"; // Firestore の初期化をインポート
-
-// 画面遷移するためのフック
-import { useNavigate } from "react-router-dom";
-// URLパラメータを取得するためのフック
-import { useParams } from "react-router-dom";
+import { useOutletContext } from "react-router-dom";
 import autosize from "autosize";
 
 // コンポーネント
-import Menu from "../components/Menu";
 import Questions from "../components/Questions";
 import AddQuestionBtn from "../components/AddQuestionBtn";
 import PublishModal from "../components/PublishModal";
 
 const Create = () => {
-    // 画面遷移用のフック
-    const navigate = useNavigate();
+    const { formData, setFormData } = useOutletContext() || {};
+    const formId = formData.id;
 
     // formId が undefined → 新規作成
-    // path="/edit/:formId"とpassを設定している（main.jsx）
-    // useParamsを使ってURL の :〇〇 部分をオブジェクトとして取得する Hook
-    const { formId } = useParams();
     // フォームのタイトルと説明
-    const [formData, setFormData] = useState({
+    const [localFormData, setLocalFormData] = useState({
         userId: null,
         published: false,
         title: "",
@@ -44,67 +27,28 @@ const Create = () => {
     });
     // ユーザーIDを取得してformDataにセット
     useEffect(() => {
-        if (formId) {
-            // 編集モードの場合は既存データを取得してセットする処理を追加予定
-            // fetchとは読み込むという意味
-            const fetchForm = async () => {
-                const docRef = doc(db, "forms", formId);
-                const snap = await getDoc(docRef);
-
-                if (snap.exists()) {
-                    setFormData({
-                        id: snap.id,
-                        ...snap.data(),
-                    });
-                } else {
-                    alert("フォームが見つかりません");
-                    navigate("/create-list");
-                }
-            };
-            fetchForm();
-        } else {
-            const unsubscribe = onAuthStateChanged(auth, (user) => {
-                if (user) {
-                    setFormData((prev) => ({
-                        ...prev,
-                        userId: user.uid,
-                    }));
-                }
-            });
-            return () => unsubscribe(); // クリーンアップ
-        }
-    }, [formId, navigate]);
+        setLocalFormData(formData);
+    }, [formData]);
 
     // フォームデータをFirestoreに保存する関数
     const saveFormData = async () => {
+        const ref = doc(db, "forms", formId);
         try {
-            if (formId) {
-                // 編集（更新）
-                const docRef = doc(db, "forms", formId);
-                await updateDoc(docRef, {
-                    ...formData,
-                    updatedAt: serverTimestamp(),
-                });
-                alert("フォームを更新しました");
-            } else {
-                const docRef = await addDoc(collection(db, "forms"), {
-                    ...formData,
-                    // createdAt: serverTimestamp(),
-                    updatedAt: serverTimestamp(),
-                }); // "forms" はコレクション名
-                console.log("フォームが保存されました。ID: ", docRef.id);
-                alert("フォームが保存されました！");
-            }
-            navigate("/create-list");
-        } catch (e) {
-            console.error("エラーが発生しました: ", e);
-            alert("フォームの保存に失敗しました。");
+            await updateDoc(ref, {
+                ...localFormData,
+                updatedAt: serverTimestamp(),
+            });
+        } catch (error) {
+            console.error("フォームの保存中にエラーが発生しました:", error);
         }
+
+        setLocalFormData(localFormData);
+        alert("フォームを保存しました");
     };
 
     // 設問を更新する関数（後で Question → Questions → Create の順で渡す）
     const updateQuestionData = (id, newData) => {
-        setFormData((prev) => ({
+        setLocalFormData((prev) => ({
             ...prev,
             questions: prev.questions.map((question) =>
                 question.id === id ? newData : question
@@ -121,7 +65,7 @@ const Create = () => {
             options: ["", ""], // 選択肢（typeが選択式の場合のみ使用）
             required: false, // 必須項目かどうか
         };
-        setFormData((prev) => ({
+        setLocalFormData((prev) => ({
             ...prev,
             questions: [...prev.questions, newQuestion],
         }));
@@ -129,7 +73,7 @@ const Create = () => {
 
     // 設問削除
     const deleteQuestion = (id) => {
-        setFormData((prev) => ({
+        setLocalFormData((prev) => ({
             ...prev,
             questions: prev.questions.filter((q) => q.id !== id),
         }));
@@ -149,18 +93,19 @@ const Create = () => {
     }, []);
 
     return (
-        <div className="min-h-screen bg-gray-100">
-            {/* menu */}
-            <Menu setOpenModal={setOpenModal} formData={formData} />
-            {/* Form */}
+        <div>
+            {/* アンケート作成フォーム */}
             <div className="bg-slate-200 shadow-md rounded-lg p-6 mx-auto w-[min(calc(100%-2rem),800px)]">
                 {/* Title */}
                 <div className="mb-4">
                     <input
                         type="text"
-                        value={formData.title}
+                        value={localFormData.title}
                         onChange={(e) =>
-                            setFormData({ ...formData, title: e.target.value })
+                            setLocalFormData({
+                                ...localFormData,
+                                title: e.target.value,
+                            })
                         }
                         className="w-full p-3 border rounded font-medium text-2xl"
                         placeholder="タイトルを入力してください"
@@ -170,10 +115,10 @@ const Create = () => {
                         placeholder="説明を入力してください"
                         rows={1}
                         ref={textareaRef}
-                        value={formData.description}
+                        value={localFormData.description}
                         onChange={(e) =>
-                            setFormData({
-                                ...formData,
+                            setLocalFormData({
+                                ...localFormData,
                                 description: e.target.value,
                             })
                         }
@@ -181,17 +126,17 @@ const Create = () => {
                 </div>
 
                 <Questions
-                    questionsData={formData.questions}
+                    questionsData={localFormData.questions}
                     updateQuestionData={updateQuestionData}
                     deleteQuestion={deleteQuestion}
                 />
                 {/* 追加ボタン */}
                 <AddQuestionBtn addQuestion={addQuestion} />
                 <button
-                    onClick={() => console.log(formData)}
+                    onClick={() => console.log(localFormData)}
                     className="mt-4 w-full py-2 bg-blue-500 text-white rounded hover:bg-blue-600 duration-200"
                 >
-                    console.log(formData)
+                    console.log(localFormData)
                 </button>
 
                 {/* Submit Button（まだ無効） */}
