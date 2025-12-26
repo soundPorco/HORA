@@ -119,7 +119,7 @@ const CreateList = () => {
 
                 {/* 新規作成 */}
                 <button
-                    onClick={() => navigate("/create")}
+                    onClick={() => navigate("/create-new")}
                     className="mt-8 w-full py-4 border-2 border-dashed rounded-lg
                        text-lg font-semibold text-gray-600
                        hover:bg-gray-100 transition"

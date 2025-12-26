@@ -1,22 +1,17 @@
-// src/pages/Create.jsx
+// src/pages/CreateNew.jsx
 import { useState, useRef, useEffect } from "react";
-import { serverTimestamp, doc, updateDoc } from "firebase/firestore";
-import { db } from "../firebase"; // Firestore の初期化をインポート
-import { useOutletContext } from "react-router-dom";
+import { addDoc, collection, serverTimestamp } from "firebase/firestore";
+import { db } from "../firebase";
 import autosize from "autosize";
 
-// コンポーネント
+// components
 import Questions from "../components/Questions";
 import AddQuestionBtn from "../components/AddQuestionBtn";
-import PublishModal from "../components/PublishModal";
+import Menu from "../components/Menu";
 
-const Create = () => {
-    const { formData, setFormData } = useOutletContext() || {};
-    const formId = formData.id;
-
-    // formId が undefined → 新規作成
-    // フォームのタイトルと説明
-    const [localFormData, setLocalFormData] = useState({
+const CreateNew = () => {
+    // 🔹 新規作成用の初期データ
+    const [NewFormData, setNewFormData] = useState({
         userId: null,
         published: false,
         title: "",
@@ -26,30 +21,15 @@ const Create = () => {
         updatedAt: null,
     });
 
-    // ユーザーIDを取得してformDataにセット
+    // textarea 自動リサイズ
+    const textareaRef = useRef(null);
     useEffect(() => {
-        setLocalFormData(formData);
-    }, [formData]);
-
-    // フォームデータをFirestoreに保存する関数
-    const saveFormData = async () => {
-        const ref = doc(db, "forms", formId);
-        try {
-            await updateDoc(ref, {
-                ...localFormData,
-                updatedAt: serverTimestamp(),
-            });
-        } catch (error) {
-            console.error("フォームの保存中にエラーが発生しました:", error);
-        }
-
-        setLocalFormData(localFormData);
-        alert("フォームを保存しました");
-    };
+        if (textareaRef.current) autosize(textareaRef.current);
+    }, []);
 
     // 設問を更新する関数（後で Question → Questions → Create の順で渡す）
     const updateQuestionData = (id, newData) => {
-        setLocalFormData((prev) => ({
+        setNewFormData((prev) => ({
             ...prev,
             questions: prev.questions.map((question) =>
                 question.id === id ? newData : question
@@ -66,7 +46,7 @@ const Create = () => {
             options: ["", ""], // 選択肢（typeが選択式の場合のみ使用）
             required: false, // 必須項目かどうか
         };
-        setLocalFormData((prev) => ({
+        setNewFormData((prev) => ({
             ...prev,
             questions: [...prev.questions, newQuestion],
         }));
@@ -74,37 +54,45 @@ const Create = () => {
 
     // 設問削除
     const deleteQuestion = (id) => {
-        setLocalFormData((prev) => ({
+        setNewFormData((prev) => ({
             ...prev,
             questions: prev.questions.filter((q) => q.id !== id),
         }));
     };
 
-    // 公開モーダルの状態管理
-    const [openModal, setOpenModal] = useState(false);
-    const [toggleCopy, setToggleCopy] = useState(false);
-
-    // 自動でテキストエリアの高さを調整するための設定
-    const textareaRef = useRef(null);
-
-    useEffect(() => {
-        if (textareaRef.current) {
-            autosize(textareaRef.current);
+    // フォームデータをFirestoreに保存する関数
+    const saveFormData = async (formData) => {
+        try {
+            const docRef = await addDoc(collection(db, "forms"), {
+                ...formData,
+                createdAt: serverTimestamp(),
+            });
+            console.log("フォームが保存されました。ID: ", docRef.id);
+            alert("フォームが保存されました！");
+        } catch (error) {
+            console.error("フォームの保存中にエラーが発生しました:", error);
+            alert("フォームの保存に失敗しました。");
         }
-    }, []);
+    };
 
     return (
-        <div>
+        <>
+            {/* 新規作成は Menu のみ */}
+            <div className="fixed top-0 z-40">
+                <Menu />
+            </div>
+            <div className="h-24"></div>
+
             {/* アンケート作成フォーム */}
             <div className="bg-slate-200 shadow-md rounded-lg p-6 mx-auto w-[min(calc(100%-2rem),800px)]">
                 {/* Title */}
                 <div className="mb-4">
                     <input
                         type="text"
-                        value={localFormData.title}
+                        value={NewFormData.title}
                         onChange={(e) =>
-                            setLocalFormData({
-                                ...localFormData,
+                            setNewFormData({
+                                ...NewFormData,
                                 title: e.target.value,
                             })
                         }
@@ -116,10 +104,10 @@ const Create = () => {
                         placeholder="説明を入力してください"
                         rows={1}
                         ref={textareaRef}
-                        value={localFormData.description}
+                        value={NewFormData.description}
                         onChange={(e) =>
-                            setLocalFormData({
-                                ...localFormData,
+                            setNewFormData({
+                                ...NewFormData,
                                 description: e.target.value,
                             })
                         }
@@ -127,17 +115,17 @@ const Create = () => {
                 </div>
 
                 <Questions
-                    questionsData={localFormData.questions}
+                    questionsData={NewFormData.questions}
                     updateQuestionData={updateQuestionData}
                     deleteQuestion={deleteQuestion}
                 />
                 {/* 追加ボタン */}
                 <AddQuestionBtn addQuestion={addQuestion} />
                 <button
-                    onClick={() => console.log(localFormData)}
+                    onClick={() => console.log(NewFormData)}
                     className="mt-4 w-full py-2 bg-blue-500 text-white rounded hover:bg-blue-600 duration-200"
                 >
-                    console.log(localFormData)
+                    console.log(NewFormData)
                 </button>
 
                 {/* Submit Button（まだ無効） */}
@@ -148,21 +136,8 @@ const Create = () => {
                     フォームを保存
                 </button>
             </div>
-            {/* 公開モーダル */}
-            {openModal && (
-                <PublishModal
-                    openModal={openModal}
-                    setOpenModal={setOpenModal}
-                    toggleCopy={toggleCopy}
-                    setToggleCopy={setToggleCopy}
-                    formId={formId}
-                    published={formData.published}
-                    setFormData={setFormData}
-                    url={`${window.location.origin}/answer/${formId}`}
-                />
-            )}
-        </div>
+        </>
     );
 };
 
-export default Create;
+export default CreateNew;
