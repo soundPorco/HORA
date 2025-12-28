@@ -90,14 +90,6 @@ const Result = () => {
         fetchResponseList();
     }, [formId]);
 
-    // const getQuestionById = (id) => questions.find((q) => q.id === id);
-
-    // const getQuestionTitle = (id) =>
-    //     getQuestionById(id)?.questionTitle || "不明な設問";
-
-    // const getQuestionType = (id) =>
-    //     getQuestionById(id)?.questionType || "不明な設問タイプ";
-
     return (
         <div>
             {/* 回答結果の表示 */}
@@ -111,24 +103,6 @@ const Result = () => {
                 {responseList.length === 0 ? (
                     <div>まだ回答がありません</div>
                 ) : (
-                    // Object.entries(resultSummary).map(
-                    //     ([questionId, values]) => (
-                    //         // valuesの例 {ダンス部: 3}
-                    //         <div
-                    //             key={questionId}
-                    //             className="border rounded p-4 mb-4"
-                    //         >
-                    //             <h2 className="font-semibold mb-4 border-b pb-2 border-gray-300">
-                    //                 {getQuestionTitle(questionId)}
-                    //             </h2>
-
-                    //             <RenderResultByQuestionType
-                    //                 questionType={getQuestionType(questionId)}
-                    //                 values={values}
-                    //             />
-                    //         </div>
-                    //     )
-                    // )
                     questions.map((question, index) => {
                         const questionId = question.id;
                         const values = resultSummary[questionId] || {}; // 集計結果がない場合は空オブジェクト

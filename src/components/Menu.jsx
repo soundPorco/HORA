@@ -38,7 +38,6 @@ const Menu = ({ setOpenModal }) => {
                             </span> */}
                         </button>
                     )}
-
                     {/* リンクボタン */}
                     <button
                         className="relative text-2xl rounded-full p-2 hover:bg-gray-400 duration-200 group"
