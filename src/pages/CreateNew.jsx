@@ -138,12 +138,6 @@ const CreateNew = () => {
                 />
                 {/* 追加ボタン */}
                 <AddQuestionBtn addQuestion={addQuestion} />
-                <button
-                    onClick={() => console.log(NewFormData)}
-                    className="mt-4 w-full py-2 bg-blue-500 text-white rounded hover:bg-blue-600 duration-200"
-                >
-                    console.log(NewFormData)
-                </button>
 
                 {/* Submit Button（まだ無効） */}
                 <button
