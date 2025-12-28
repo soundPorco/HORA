@@ -93,7 +93,7 @@ const Result = () => {
     return (
         <div>
             {/* 回答結果の表示 */}
-            <div className="max-w-3xl mx-auto bg-white p-6 rounded-xl shadow mt-8 mb-10">
+            <div className="max-w-3xl mx-auto bg-white p-6 rounded-xl shadow mb-10">
                 <h1 className="text-2xl font-bold mb-6">回答結果</h1>
                 <h2 className="text-xl font-bold mb-4">
                     回答総数：{responseList.length}

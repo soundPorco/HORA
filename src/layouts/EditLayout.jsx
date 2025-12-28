@@ -39,7 +39,7 @@ const EditLayout = () => {
     if (loading) return <div className="p-6">読み込み中...</div>;
 
     return (
-        <div className="min-h-screen bg-gray-100">
+        <div className="min-h-screen bg-gray-100 pb-20">
             {/* 共通UI */}
             {/* MenuとSubMenuの配置 */}
             <div className="fixed top-0 z-40">
@@ -51,8 +51,8 @@ const EditLayout = () => {
                     setFormData={setFormData}
                 />
             </div>
-            {/* Menu(20) + SubMenu(12) + 余白(8) = 40 */}
-            <div className="h-40"></div>
+            {/* Menu(20) + SubMenu(12) + 余白(12) = 44 */}
+            <div className="h-44"></div>
 
             {/* 子ページの表示場所 */}
             <Outlet context={{ formData }} />

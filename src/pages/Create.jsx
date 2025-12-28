@@ -89,9 +89,9 @@ const Create = () => {
     }, []);
 
     return (
-        <div>
+        <div className="bg-slate-200 shadow-md rounded-lg p-6 mx-auto w-[min(calc(100%-2rem),800px)]">
             {/* アンケート作成フォーム */}
-            <div className="bg-slate-200 shadow-md rounded-lg p-6 mx-auto w-[min(calc(100%-2rem),800px)]">
+            <div className="">
                 {/* Title */}
                 <div className="mb-4">
                     <input

@@ -39,23 +39,27 @@ const Menu = ({ setOpenModal }) => {
                         </button>
                     )}
                     {/* リンクボタン */}
-                    <button
-                        className="relative text-2xl rounded-full p-2 hover:bg-gray-400 duration-200 group"
-                        onClick={() => {
-                            setOpenModal(true);
-                            console.log("openModal set to true");
-                        }}
-                    >
-                        <MdLink />
-                    </button>
+                    {formId && (
+                        <button
+                            className="relative text-2xl rounded-full p-2 hover:bg-gray-400 duration-200 group"
+                            onClick={() => {
+                                setOpenModal(true);
+                                console.log("openModal set to true");
+                            }}
+                        >
+                            <MdLink />
+                        </button>
+                    )}
 
                     {/* アンケート一覧へ戻る */}
-                    <button
-                        className="relative text-2xl rounded-full p-2 hover:bg-gray-400 duration-200 group"
-                        onClick={() => navigate("/create-list")}
-                    >
-                        <MdFormatListBulleted />
-                    </button>
+                    {formId && (
+                        <button
+                            className="relative text-2xl rounded-full p-2 hover:bg-gray-400 duration-200 group"
+                            onClick={() => navigate("/create-list")}
+                        >
+                            <MdFormatListBulleted />
+                        </button>
+                    )}
 
                     <button
                         onClick={handleLogout}
