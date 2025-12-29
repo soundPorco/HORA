@@ -55,7 +55,7 @@ const EditLayout = () => {
             <div className="h-44"></div>
 
             {/* 子ページの表示場所 */}
-            <Outlet context={{ formData }} />
+            <Outlet context={{ formData, setFormData }} />
 
             {/* 公開モーダル */}
             {openModal && (

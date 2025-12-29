@@ -10,7 +10,7 @@ import Questions from "../components/Questions";
 import AddQuestionBtn from "../components/AddQuestionBtn";
 
 const Create = () => {
-    const { formData } = useOutletContext() || {};
+    const { formData, setFormData } = useOutletContext() || {};
     const formId = formData.id;
 
     // formId が undefined → 新規作成
@@ -38,12 +38,11 @@ const Create = () => {
                 ...localFormData,
                 updatedAt: serverTimestamp(),
             });
+            setFormData(localFormData);
+            alert("フォームを保存しました");
         } catch (error) {
             console.error("フォームの保存中にエラーが発生しました:", error);
         }
-
-        setLocalFormData(localFormData);
-        alert("フォームを保存しました");
     };
 
     // 設問を更新する関数（後で Question → Questions → Create の順で渡す）
