@@ -48,10 +48,11 @@ function App() {
     };
 
     return (
-        <div className="w-full h-screen flex items-center justify-center bg-gray-100">
+        <div className="w-full h-screen flex items-center justify-center bg-[#00468B] text-white">
             {!user ? (
-                <div id="loginScreen" className="text-center space-y-4">
-                    <h2 className="text-2xl font-bold">ログイン</h2>
+                <div className="text-center space-y-4">
+                    {/* フォントはOswald */}
+                    <h2 className="text-8xl font-bold font-Oswald">HORA</h2>
                     <button
                         className="p-2 bg-blue-500 text-white rounded"
                         onClick={handleGuestLogin}
@@ -67,7 +68,7 @@ function App() {
                     </button>
                 </div>
             ) : (
-                <div id="mainScreen" className="text-center space-y-4">
+                <div className="text-center space-y-4">
                     <h2 className="text-2xl font-bold">ログイン中</h2>
                     <p>UID: {user.uid}</p>
                     <button
