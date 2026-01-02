@@ -20,6 +20,9 @@ const Answer = () => {
 
     const [form, setForm] = useState(null);
     const [answers, setAnswers] = useState({});
+    // 回答済みかどうか
+    const [voted, setVoted] = useState(false);
+    const [uid, setUid] = useState(null);
 
     useEffect(() => {
         const fetchForm = async () => {
@@ -39,12 +42,29 @@ const Answer = () => {
             signInAnonymously(auth)
                 .then(() => {
                     console.log("匿名ログイン成功:", auth.currentUser.uid);
+                    setUid(auth.currentUser.uid);
                 })
                 .catch((err) => alert(err.message));
         }
+        // 既に回答済みか確認
+        const checkVoted = async () => {
+            const q = query(
+                collection(db, "answers"),
+                // 同じフォームIDかつ同じユーザーIDの回答を検索
+                where("formId", "==", formId),
+                where("userId", "==", uid)
+            );
+
+            const snapshot = await getDocs(q);
+
+            if (!snapshot.empty) {
+                setVoted(true);
+            }
+        };
 
         fetchForm();
-    }, [formId]);
+        checkVoted();
+    }, [formId, uid]);
 
     // 回答を更新する関数
     const updateAnswer = (questionId, value, checked) => {
@@ -91,7 +111,6 @@ const Answer = () => {
                 "ログイン状態を確認できません。再度ページを読み込んでください。"
             );
         }
-        const uid = auth.currentUser.uid;
 
         // 既に回答済みか確認
         const q = query(
@@ -116,6 +135,7 @@ const Answer = () => {
         });
 
         alert("回答を送信しました！");
+        setVoted(true);
     };
 
     if (!form) {
@@ -128,6 +148,7 @@ const Answer = () => {
             updateAnswer={updateAnswer}
             handleSubmit={handleSubmit}
             Preview={false}
+            voted={voted}
         />
     );
 };
