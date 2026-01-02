@@ -55,14 +55,14 @@ function App() {
                     <h2 className="text-9xl font-bold font-Oswald">HORA</h2>
                     <div className="flex flex-col gap-3 w-56 mx-auto mt-8">
                         <button
-                            className="text-black bg-[silver] font-bold rounded-full px-4 py-2"
+                            className="text-black bg-[silver] font-bold rounded-full px-4 py-2 hover:bg-black hover:text-white transition duration-300"
                             onClick={handleGuestLogin}
                         >
                             ゲストログイン
                         </button>
 
                         <button
-                            className="text-black bg-[silver] font-bold rounded-full px-4 py-2"
+                            className="text-black bg-[silver] font-bold rounded-full px-4 py-2 hover:bg-black hover:text-white transition duration-300"
                             onClick={handleGoogleLogin}
                         >
                             Googleログイン
