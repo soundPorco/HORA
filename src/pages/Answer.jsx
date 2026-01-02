@@ -2,11 +2,14 @@ import { useParams } from "react-router-dom";
 import {
     doc,
     getDoc,
+    getDocs,
     addDoc,
     collection,
+    query,
+    where,
     serverTimestamp,
 } from "firebase/firestore";
-import { db, auth } from "../firebase";
+import { db, auth, signInAnonymously } from "../firebase";
 import { useEffect, useState } from "react";
 
 // コンポーネント
@@ -31,6 +34,14 @@ const Answer = () => {
                 console.log("フォームデータ:", snap.data());
             }
         };
+
+        if (!auth.currentUser) {
+            signInAnonymously(auth)
+                .then(() => {
+                    console.log("匿名ログイン成功:", auth.currentUser.uid);
+                })
+                .catch((err) => alert(err.message));
+        }
 
         fetchForm();
     }, [formId]);
@@ -68,13 +79,38 @@ const Answer = () => {
     // 回答を更新する関数
     const handleSubmit = async () => {
         if (!form.published) {
-            alert("このアンケートは現在公開されていません。");
-            return;
+            return alert("このアンケートは現在公開されていません。");
         }
 
+        if (Object.keys(answers).length === 0) {
+            return alert("回答が入力されていません。");
+        }
+
+        if (!auth.currentUser) {
+            return alert(
+                "ログイン状態を確認できません。再度ページを読み込んでください。"
+            );
+        }
+        const uid = auth.currentUser.uid;
+
+        // 既に回答済みか確認
+        const q = query(
+            collection(db, "answers"),
+            // 同じフォームIDかつ同じユーザーIDの回答を検索
+            where("formId", "==", formId),
+            where("userId", "==", uid)
+        );
+
+        const snapshot = await getDocs(q);
+
+        if (!snapshot.empty) {
+            return alert("既に回答済みです。");
+        }
+
+        // Firestore に回答を保存
         await addDoc(collection(db, "answers"), {
             formId,
-            userId: auth.currentUser?.uid ?? null,
+            userId: uid,
             answers,
             votedAt: serverTimestamp(),
         });
