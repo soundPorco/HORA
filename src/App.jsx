@@ -52,20 +52,22 @@ function App() {
             {!user ? (
                 <div className="text-center space-y-4">
                     {/* フォントはOswald */}
-                    <h2 className="text-8xl font-bold font-Oswald">HORA</h2>
-                    <button
-                        className="p-2 bg-blue-500 text-white rounded"
-                        onClick={handleGuestLogin}
-                    >
-                        ゲストログイン
-                    </button>
+                    <h2 className="text-9xl font-bold font-Oswald">HORA</h2>
+                    <div className="flex flex-col gap-3 w-56 mx-auto mt-8">
+                        <button
+                            className="text-black bg-[silver] font-bold rounded-full px-4 py-2"
+                            onClick={handleGuestLogin}
+                        >
+                            ゲストログイン
+                        </button>
 
-                    <button
-                        className="p-2 bg-red-500 text-white rounded"
-                        onClick={handleGoogleLogin}
-                    >
-                        Googleログイン
-                    </button>
+                        <button
+                            className="text-black bg-[silver] font-bold rounded-full px-4 py-2"
+                            onClick={handleGoogleLogin}
+                        >
+                            Googleログイン
+                        </button>
+                    </div>
                 </div>
             ) : (
                 <div className="text-center space-y-4">
