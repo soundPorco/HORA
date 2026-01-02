@@ -76,6 +76,12 @@ function App() {
                     >
                         ログアウト
                     </button>
+                    <button
+                        onClick={() => navigate("/create-list")}
+                        className="p-2 bg-green-500 text-white rounded"
+                    >
+                        フォーム作成
+                    </button>
                 </div>
             )}
         </div>
