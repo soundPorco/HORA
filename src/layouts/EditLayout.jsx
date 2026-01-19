@@ -64,7 +64,7 @@ const EditLayout = () => {
                     setOpenModal={setOpenModal}
                     toggleCopy={toggleCopy}
                     setToggleCopy={setToggleCopy}
-                    url={`${window.location.origin}/answer/${formId}`}
+                    url={`${window.location.origin}/HORA/#/answer/${formId}`}
                 />
             )}
         </div>
