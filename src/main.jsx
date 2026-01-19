@@ -14,7 +14,7 @@ import EditLayout from "./layouts/EditLayout.jsx";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
     <StrictMode>
-        <BrowserRouter basename="/HORA/">
+        <HashRouter>
             <Routes>
                 <Route path="/" element={<App />} />
                 {/* 共通レイアウト */}
@@ -28,6 +28,6 @@ ReactDOM.createRoot(document.getElementById("root")).render(
                 <Route path="/answer/:formId" element={<Answer />} />
                 <Route path="/create-list" element={<CreateList />} />
             </Routes>
-        </BrowserRouter>
+        </HashRouter>
     </StrictMode>
 );
