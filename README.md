@@ -1,17 +1,182 @@
-# React + Vite
-
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
-
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## React Compiler
-
-The React Compiler is currently not compatible with SWC. See [this issue](https://github.com/vitejs/vite-plugin-react/issues/428) for tracking the progress.
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
 # HORA
+
+## 概要（Overview）
+
+**HORA** は、アンケート・フォーム作成から回答収集、結果集計までを一貫して行える Web アプリケーションです。
+
+「誰でも直感的にフォームを作成でき、かつ回答データの信頼性・管理性まで担保できること」をコンセプトに、個人開発として設計・実装しました。
+
+単なるフォーム作成ツールに留まらず、
+
+* 回答の不正防止
+* 管理者と回答者それぞれの UX 配慮
+* 実運用を想定した設定設計
+
+を重視して開発しています。
+
+---
+
+## 開発背景（Why HORA?）
+
+既存のアンケートツールを利用する中で、以下の課題を感じました。
+
+* 設定項目が多く、初心者には扱いづらい
+* 回答の信頼性（重複回答・期間制御など）がブラックボックス化している
+* 「なぜこの設計なのか」が見えにくい
+
+そこで **「フォーム作成に必要な本質的機能を、自分の手で設計・実装してみる」** ことを目的に HORA を開発しました。
+
+---
+
+## 主な機能（Features）
+
+### フォーム作成・編集
+
+* フォームの新規作成 / 編集
+* 設問の追加・削除・並び替え
+* 設問タイプ対応
+
+  * ラジオボタン
+  * チェックボックス
+  * テキスト入力
+* 必須 / 任意の切り替え
+* 選択肢の管理
+
+### フォーム設定（管理者向け）
+
+* フォームの公開 / 非公開管理
+* 回答受付期間の設定
+* 二重回答の制御（設計段階）
+* プレビュー表示
+* 公開 URL の発行
+
+### 回答機能
+
+* 回答画面の自動生成
+* 必須項目のバリデーション
+* 設問タイプに応じた UI 切り替え
+
+### 結果・集計
+
+* 回答データの取得・一覧化
+* 設問タイプ別の集計処理
+* 回答数の表示
+* 設問ごとの集計結果表示（棒グラフ / カウント）
+
+---
+
+## 画面構成と設計思想
+
+### 共通レイアウト設計
+
+複数画面（編集・結果・プレビュー）で同一のフォームデータを扱うため、
+**React Router の Outlet を用いた共通レイアウト（EditLayout）** を採用しました。
+
+* 親コンポーネントで Firestore からフォームデータを取得
+* 子ページへ context としてデータを受け渡し
+* 不要な再取得を防止
+
+これにより、
+
+> 「同じデータを必要とする画面は、共通の親で取得して配る」
+
+という React の基本思想を実装レベルで反映しています。
+
+---
+
+## 技術スタック（Tech Stack）
+
+### フロントエンド
+
+* HTML / CSS / JavaScript
+* React
+* React Router
+* Tailwind CSS
+
+### バックエンド / インフラ
+
+* Firebase
+
+  * Firestore（データベース）
+  * Firebase Authentication（認証）
+
+---
+
+## データ設計（例）
+
+```txt
+forms
+ └─ formId
+     ├─ title
+     ├─ description
+     ├─ questions[]
+     ├─ published
+     ├─ userId
+     └─ updatedAt
+
+answers
+ └─ answerId
+     ├─ formId
+     ├─ answers
+     └─ createdAt
+```
+
+* `userId` を保持することで、フォーム所有者の判別が可能
+* 集計・管理・権限制御を見据えた構成
+
+---
+
+## 工夫したポイント（Appeal Points）
+
+### 1. UX とデータ信頼性の両立
+
+* 選択肢シャッフルによるバイアス対策
+* 回答受付期間の設定
+* 二重投票防止を前提とした設計
+
+### 2. React 的な責務分離
+
+* 表示 UI とロジックの分離
+* 新規作成 / 編集ロジックの分離
+* 共通 UI のコンポーネント化
+
+### 3. 実運用を意識した設計
+
+* 管理者 / 回答者の役割分離
+* Firestore のデータ構造を意識した state 設計
+* 後から機能追加しやすい拡張性
+
+---
+
+## 学んだこと
+
+* React における状態管理とデータフロー設計
+* Firebase Authentication の監視とクリーンアップ
+* Firestore を用いたデータモデリング
+* 「機能」だけでなく「なぜその UI・設計なのか」を説明する重要性
+
+---
+
+## 今後の展望（Future Work）
+
+* 条件分岐設問の実装
+* 回答途中保存機能
+* CSV / Excel エクスポート
+* 回答データの分析機能（離脱率など）
+* 権限管理（管理者 / 閲覧者）
+
+---
+
+## 作者
+
+個人開発として、企画・設計・実装を一貫して担当。
+
+HORA は「作って終わり」ではなく、
+**実務で使われることを想定したプロダクト設計力を高めるためのプロジェクト** として継続的に改善しています。
+
+---
+
+## 備考
+
+本プロジェクトは学習・ポートフォリオ目的で開発されていますが、
+実際の業務利用を想定した設計・実装を意識しています。
