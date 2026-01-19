@@ -14,13 +14,14 @@ const AnswerView = ({ form, updateAnswer, handleSubmit, Preview, voted }) => {
     };
 
     useEffect(() => {
-        form.questions.map((question) => {
-            const shuffledOptions = shuffle(question.options);
-            setShuffledQuestions((prev) => [
-                ...prev,
-                { ...question, options: shuffledOptions },
-            ]);
-        });
+        if (!form?.questions) return;
+
+        const shuffled = form.questions.map((question) => ({
+            ...question,
+            options: shuffle(question.options),
+        }));
+
+        setShuffledQuestions(shuffled);
     }, [form]);
 
     return (
