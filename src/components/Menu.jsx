@@ -8,6 +8,7 @@ import { MdLink } from "react-icons/md"; //リンクアイコン
 import { MdLinkOff } from "react-icons/md"; //リンク解除アイコン
 import { MdFormatListBulleted } from "react-icons/md"; //一覧アイコン
 import { MdLogout } from "react-icons/md"; // ログアウトアイコン
+import { MdOutlineSettings } from "react-icons/md"; // 設定アイコン
 
 const Menu = ({ setOpenModal }) => {
     const navigate = useNavigate();
@@ -51,6 +52,16 @@ const Menu = ({ setOpenModal }) => {
                         </button>
                     )}
 
+                    {/* 設定ボタン */}
+                    {formId && (
+                        <button
+                            className="relative text-2xl rounded-full p-2 hover:bg-gray-400 duration-200 group"
+                            onClick={() => navigate("/settings")}
+                        >
+                            <MdOutlineSettings />
+                        </button>
+                    )}
+
                     {/* アンケート一覧へ戻る */}
                     {formId && (
                         <button
@@ -61,6 +72,7 @@ const Menu = ({ setOpenModal }) => {
                         </button>
                     )}
 
+                    {/* ログアウトボタン */}
                     <button
                         onClick={handleLogout}
                         className="relative text-2xl rounded-full p-2 hover:bg-gray-400 duration-200 group"

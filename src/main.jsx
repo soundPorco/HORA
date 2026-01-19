@@ -14,7 +14,7 @@ import EditLayout from "./layouts/EditLayout.jsx";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
     <StrictMode>
-        <BrowserRouter>
+        <BrowserRouter basename="/HORA/">
             <Routes>
                 <Route path="/" element={<App />} />
                 {/* 共通レイアウト */}

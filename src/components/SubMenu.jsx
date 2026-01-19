@@ -2,6 +2,8 @@ import { useLocation } from "react-router-dom";
 import { doc, updateDoc } from "firebase/firestore";
 import { db } from "../firebase";
 
+import { MdArrowDropDown } from "react-icons/md"; // 下向き矢印アイコン
+
 // コンポーネント
 import PublishToggle from "./PublishToggle";
 
@@ -53,10 +55,13 @@ const SubMenu = ({ formId, navigate, published, setFormData }) => {
 
             {/* 公開ボタン */}
             <div className="flex items-center justify-center gap-4 text-white">
-                <span className="font-medium">
-                    {published ? "公開中" : "非公開"}
-                </span>
-                <PublishToggle published={published} onToggle={togglePublish} />
+                {/* <span>{published ? "公開中" : "非公開"}</span>
+                <PublishToggle published={published} onToggle={togglePublish} /> */}
+
+                <div className="flex items-center">
+                    <span>設定</span>
+                    <MdArrowDropDown className="text-3xl" />
+                </div>
             </div>
         </div>
     );
