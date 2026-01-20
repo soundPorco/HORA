@@ -7,7 +7,13 @@ import { MdArrowDropDown } from "react-icons/md"; // 下向き矢印アイコン
 // コンポーネント
 import PublishToggle from "./PublishToggle";
 
-const SubMenu = ({ formId, navigate, published, setFormData }) => {
+const SubMenu = ({
+    formId,
+    navigate,
+    published,
+    setFormData,
+    setOpenSettingModal,
+}) => {
     const location = useLocation();
 
     const isEditPage = location.pathname === `/edit/${formId}`;
@@ -58,10 +64,13 @@ const SubMenu = ({ formId, navigate, published, setFormData }) => {
                 {/* <span>{published ? "公開中" : "非公開"}</span>
                 <PublishToggle published={published} onToggle={togglePublish} /> */}
 
-                <div className="flex items-center">
+                <button
+                    className="flex items-center"
+                    onClick={() => setOpenSettingModal(true)}
+                >
                     <span>設定</span>
                     <MdArrowDropDown className="text-3xl" />
-                </div>
+                </button>
             </div>
         </div>
     );

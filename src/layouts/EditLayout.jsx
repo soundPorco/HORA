@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import PublishModal from "../components/PublishModal";
 import Menu from "../components/Menu";
 import SubMenu from "../components/SubMenu";
+import SettingModal from "../components/SettingModal";
 
 const EditLayout = () => {
     const { formId } = useParams();
@@ -15,6 +16,9 @@ const EditLayout = () => {
     // 公開モーダルの状態管理
     const [openLinkModal, setOpenLinkModal] = useState(false);
     const [toggleCopy, setToggleCopy] = useState(false);
+
+    // 設定モーダルの状態管理
+    const [openSettingModal, setOpenSettingModal] = useState(false);
 
     const [formData, setFormData] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -49,6 +53,7 @@ const EditLayout = () => {
                     navigate={navigate}
                     published={!!formData?.published}
                     setFormData={setFormData}
+                    setOpenSettingModal={setOpenSettingModal}
                 />
             </div>
             {/* Menu(20) + SubMenu(12) + 余白(12) = 44 */}
@@ -65,6 +70,14 @@ const EditLayout = () => {
                     toggleCopy={toggleCopy}
                     setToggleCopy={setToggleCopy}
                     url={`${window.location.origin}/HORA/#/answer/${formId}`}
+                />
+            )}
+
+            {/* 設定モーダル */}
+            {openSettingModal && (
+                <SettingModal
+                    setOpenSettingModal={setOpenSettingModal}
+                    openSettingModal={openSettingModal}
                 />
             )}
         </div>
