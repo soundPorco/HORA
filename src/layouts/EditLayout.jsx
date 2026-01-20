@@ -13,7 +13,7 @@ const EditLayout = () => {
     const navigate = useNavigate();
 
     // 公開モーダルの状態管理
-    const [openModal, setOpenModal] = useState(false);
+    const [openLinkModal, setOpenLinkModal] = useState(false);
     const [toggleCopy, setToggleCopy] = useState(false);
 
     const [formData, setFormData] = useState(null);
@@ -43,7 +43,7 @@ const EditLayout = () => {
             {/* 共通UI */}
             {/* MenuとSubMenuの配置 */}
             <div className="fixed top-0 z-40">
-                <Menu setOpenModal={setOpenModal} />
+                <Menu setOpenModal={setOpenLinkModal} />
                 <SubMenu
                     formId={formId}
                     navigate={navigate}
@@ -58,10 +58,10 @@ const EditLayout = () => {
             <Outlet context={{ formData, setFormData }} />
 
             {/* 公開モーダル */}
-            {openModal && (
+            {openLinkModal && (
                 <PublishModal
-                    openModal={openModal}
-                    setOpenModal={setOpenModal}
+                    openModal={openLinkModal}
+                    setOpenModal={setOpenLinkModal}
                     toggleCopy={toggleCopy}
                     setToggleCopy={setToggleCopy}
                     url={`${window.location.origin}/HORA/#/answer/${formId}`}

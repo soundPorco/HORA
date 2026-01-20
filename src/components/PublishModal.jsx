@@ -6,13 +6,13 @@ import { MdContentCopy } from "react-icons/md";
 import { MdCheck } from "react-icons/md";
 
 const PublishModal = ({
-    openModal,
-    setOpenModal,
+    openLinkModal,
+    setOpenLinkModal,
     toggleCopy,
     setToggleCopy,
     url,
 }) => {
-    if (!openModal) return null;
+    if (!openLinkModal) return null;
     // ← 開いてない時は何も描画しない
 
     const handleCopy = () => {
@@ -32,7 +32,7 @@ const PublishModal = ({
             });
     };
     const onClose = () => {
-        setOpenModal(false);
+        setOpenLinkModal(false);
     };
 
     return (
