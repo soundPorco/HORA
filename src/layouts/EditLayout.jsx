@@ -43,7 +43,7 @@ const EditLayout = () => {
             {/* 共通UI */}
             {/* MenuとSubMenuの配置 */}
             <div className="fixed top-0 z-40">
-                <Menu setOpenModal={setOpenLinkModal} />
+                <Menu setOpenLinkModal={setOpenLinkModal} />
                 <SubMenu
                     formId={formId}
                     navigate={navigate}
