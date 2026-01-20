@@ -60,8 +60,8 @@ const EditLayout = () => {
             {/* 公開モーダル */}
             {openLinkModal && (
                 <PublishModal
-                    openModal={openLinkModal}
-                    setOpenModal={setOpenLinkModal}
+                    openLinkModal={openLinkModal}
+                    setOpenLinkModal={setOpenLinkModal}
                     toggleCopy={toggleCopy}
                     setToggleCopy={setToggleCopy}
                     url={`${window.location.origin}/HORA/#/answer/${formId}`}
