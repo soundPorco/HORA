@@ -10,7 +10,7 @@ import { MdFormatListBulleted } from "react-icons/md"; //一覧アイコン
 import { MdLogout } from "react-icons/md"; // ログアウトアイコン
 import { MdOutlineSettings } from "react-icons/md"; // 設定アイコン
 
-const Menu = ({ setOpenModal }) => {
+const Menu = ({ setOpenLinkModal }) => {
     const navigate = useNavigate();
     const { formId } = useParams();
 
@@ -44,8 +44,8 @@ const Menu = ({ setOpenModal }) => {
                         <button
                             className="relative text-2xl rounded-full p-2 hover:bg-gray-400 duration-200 group"
                             onClick={() => {
-                                setOpenModal(true);
-                                console.log("openModal set to true");
+                                setOpenLinkModal(true);
+                                console.log("openLinkModal set to true");
                             }}
                         >
                             <MdLink />
