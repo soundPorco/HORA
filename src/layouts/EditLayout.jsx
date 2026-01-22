@@ -40,6 +40,7 @@ const EditLayout = () => {
         fetchForm();
     }, [formId, navigate]);
 
+    // 公開状態切り替え関数、SettingModalから呼び出される
     const togglePublish = async () => {
         const newValue = !formData.published;
         setFormData((prev) => ({
@@ -53,6 +54,22 @@ const EditLayout = () => {
         });
 
         console.log("公開状態を更新しました:", newValue);
+    };
+
+    // シャッフル状態切り替え関数、SettingModalから呼び出される
+    const toggleShuffle = async () => {
+        const newValue = !formData.shuffleQuestions;
+        setFormData((prev) => ({
+            ...prev,
+            shuffleQuestions: newValue,
+        }));
+        const docRef = doc(db, "forms", formId);
+
+        await updateDoc(docRef, {
+            shuffleQuestions: newValue,
+        });
+
+        console.log("シャッフル状態を更新しました:", newValue);
     };
 
     if (loading) return <div className="p-6">読み込み中...</div>;
@@ -93,9 +110,11 @@ const EditLayout = () => {
                 <SettingModal
                     setOpenSettingModal={setOpenSettingModal}
                     openSettingModal={openSettingModal}
-                    published={!!formData?.published}
                     setFormData={setFormData}
+                    published={!!formData?.published}
                     togglePublish={togglePublish}
+                    shuffleQuestions={!!formData?.shuffleQuestions}
+                    toggleShuffle={toggleShuffle}
                 />
             )}
         </div>

@@ -7,6 +7,8 @@ const SettingModal = ({
     published,
     // setFormData,
     togglePublish,
+    toggleShuffle,
+    shuffleQuestions,
 }) => {
     if (!openSettingModal) return null;
 
@@ -60,6 +62,24 @@ const SettingModal = ({
                             <div
                                 className={`w-5 h-5 bg-white rounded-full shadow transform transition
                                 ${published ? "translate-x-5" : ""}`}
+                            />
+                        </button>
+                    </div>
+                    <div className="flex justify-between items-center mt-4">
+                        <div>
+                            <p>選択肢のシャッフル</p>
+                            <p className="text-sm text-gray-500">
+                                ※設問内の選択肢の並び順をランダムに表示します。
+                            </p>
+                        </div>
+                        <button
+                            onClick={toggleShuffle}
+                            className={`w-12 h-7 rounded-full flex items-center px-1 transition
+                            ${shuffleQuestions ? "bg-green-500" : "bg-gray-300"}`}
+                        >
+                            <div
+                                className={`w-5 h-5 bg-white rounded-full shadow transform transition
+                                ${shuffleQuestions ? "translate-x-5" : ""}`}
                             />
                         </button>
                     </div>

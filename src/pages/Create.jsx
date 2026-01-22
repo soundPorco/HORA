@@ -18,6 +18,7 @@ const Create = () => {
     const [localFormData, setLocalFormData] = useState({
         userId: null,
         published: false,
+        shuffleQuestions: false,
         title: "",
         description: "",
         questions: [],
