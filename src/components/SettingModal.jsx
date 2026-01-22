@@ -44,22 +44,25 @@ const SettingModal = ({
             />
 
             {/* モーダル本体 */}
-            <div className="relative bg-white rounded-lg shadow-lg w-[90%] max-w-lg p-6 z-10">
+            <div className="relative bg-white rounded-lg shadow-lg w-[90%] max-w-lg py-6 px-10 z-10">
                 {/* モーダル内容 */}
                 <div>
                     <h2 className="text-xl font-bold mb-4 text-center">
                         アンケート詳細設定
                     </h2>
-                    <button
-                        onClick={togglePublish}
-                        className={`w-12 h-7 rounded-full flex items-center px-1 transition
-                ${published ? "bg-green-500" : "bg-gray-300"}`}
-                    >
-                        <div
-                            className={`w-5 h-5 bg-white rounded-full shadow transform transition
-                    ${published ? "translate-x-5" : ""}`}
-                        />
-                    </button>
+                    <div className="flex justify-between items-center mt-4">
+                        <p>公開</p>
+                        <button
+                            onClick={togglePublish}
+                            className={`w-12 h-7 rounded-full flex items-center px-1 transition
+                            ${published ? "bg-green-500" : "bg-gray-300"}`}
+                        >
+                            <div
+                                className={`w-5 h-5 bg-white rounded-full shadow transform transition
+                                ${published ? "translate-x-5" : ""}`}
+                            />
+                        </button>
+                    </div>
                     {/* 閉じるボタン */}
                     <div className="flex justify-center mt-6 gap-2">
                         <button
