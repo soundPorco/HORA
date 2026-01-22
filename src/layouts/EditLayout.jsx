@@ -1,5 +1,5 @@
 import { Outlet, useParams, useNavigate } from "react-router-dom";
-import { doc, getDoc } from "firebase/firestore";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { db } from "../firebase";
 import { useEffect, useState } from "react";
 
@@ -40,6 +40,21 @@ const EditLayout = () => {
         fetchForm();
     }, [formId, navigate]);
 
+    const togglePublish = async () => {
+        const newValue = !formData.published;
+        setFormData((prev) => ({
+            ...prev,
+            published: newValue,
+        }));
+        const docRef = doc(db, "forms", formId);
+
+        await updateDoc(docRef, {
+            published: newValue,
+        });
+
+        console.log("公開状態を更新しました:", newValue);
+    };
+
     if (loading) return <div className="p-6">読み込み中...</div>;
 
     return (
@@ -78,6 +93,9 @@ const EditLayout = () => {
                 <SettingModal
                     setOpenSettingModal={setOpenSettingModal}
                     openSettingModal={openSettingModal}
+                    published={!!formData?.published}
+                    setFormData={setFormData}
+                    togglePublish={togglePublish}
                 />
             )}
         </div>

@@ -1,9 +1,39 @@
-const SettingModal = ({ openSettingModal, setOpenSettingModal }) => {
+import PublishToggle from "./PublishToggle";
+// import { doc, updateDoc } from "firebase/firestore";
+
+const SettingModal = ({
+    openSettingModal,
+    setOpenSettingModal,
+    published,
+    // setFormData,
+    togglePublish,
+}) => {
     if (!openSettingModal) return null;
 
     const onClose = () => {
         setOpenSettingModal(false);
     };
+
+    // const onToggle = async () => {
+    //     const newValue = !published;
+    //     setFormData((prev) => ({
+    //         ...prev,
+    //         published: newValue,
+    //     }));
+    //     console.log("新しい公開状態:", newValue);
+
+    //     // Firestore に変更を保存
+    //     try {
+    //         const ref = doc(db, "forms", formData.id);
+    //         await updateDoc(ref, { published: newValue });
+    //         console.log(
+    //             "新しい公開状態が Firestore に保存されました:",
+    //             newValue
+    //         );
+    //     } catch (error) {
+    //         console.error("公開状態の更新中にエラーが発生しました:", error);
+    //     }
+    // };
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center">
@@ -18,8 +48,18 @@ const SettingModal = ({ openSettingModal, setOpenSettingModal }) => {
                 {/* モーダル内容 */}
                 <div>
                     <h2 className="text-xl font-bold mb-4 text-center">
-                        アンケート公開URL
+                        アンケート詳細設定
                     </h2>
+                    <button
+                        onClick={togglePublish}
+                        className={`w-12 h-7 rounded-full flex items-center px-1 transition
+                ${published ? "bg-green-500" : "bg-gray-300"}`}
+                    >
+                        <div
+                            className={`w-5 h-5 bg-white rounded-full shadow transform transition
+                    ${published ? "translate-x-5" : ""}`}
+                        />
+                    </button>
                     {/* 閉じるボタン */}
                     <div className="flex justify-center mt-6 gap-2">
                         <button

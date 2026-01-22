@@ -10,27 +10,14 @@ import PublishToggle from "./PublishToggle";
 const SubMenu = ({
     formId,
     navigate,
-    published,
-    setFormData,
+    // published,
+    // setFormData,
     setOpenSettingModal,
 }) => {
     const location = useLocation();
 
     const isEditPage = location.pathname === `/edit/${formId}`;
     const isResultPage = location.pathname === `/result/${formId}`;
-
-    const togglePublish = async () => {
-        const newValue = !published;
-        setFormData((prev) => ({
-            ...prev,
-            published: newValue,
-        }));
-        const docRef = doc(db, "forms", formId);
-
-        await updateDoc(docRef, {
-            published: newValue,
-        });
-    };
 
     return (
         <div className="w-screen flex items-center justify-between h-12 border-b px-8 border-gray-300 bg-gray-500">
