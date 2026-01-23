@@ -65,7 +65,7 @@ const SettingModal = ({
                             <button
                                 onClick={togglePublish}
                                 className={`w-12 h-7 rounded-full flex items-center px-1 transition
-                            ${published ? "bg-green-500" : "bg-gray-300"}`}
+                            ${published ? "bg-blue-500" : "bg-gray-300"}`}
                             >
                                 <div
                                     className={`w-5 h-5 bg-white rounded-full shadow transform transition
@@ -85,7 +85,7 @@ const SettingModal = ({
                             <button
                                 onClick={toggleShuffle}
                                 className={`w-12 h-7 rounded-full flex items-center px-1 transition
-                            ${shuffleQuestions ? "bg-green-500" : "bg-gray-300"}`}
+                            ${shuffleQuestions ? "bg-blue-500" : "bg-gray-300"}`}
                             >
                                 <div
                                     className={`w-5 h-5 bg-white rounded-full shadow transform transition
@@ -100,7 +100,7 @@ const SettingModal = ({
                             <button
                                 onClick={toggleRestrictToOneResponse}
                                 className={`w-12 h-7 rounded-full flex items-center px-1 transition
-                            ${restrictToOneResponse ? "bg-green-500" : "bg-gray-300"}`}
+                            ${restrictToOneResponse ? "bg-blue-500" : "bg-gray-300"}`}
                             >
                                 <div
                                     className={`w-5 h-5 bg-white rounded-full shadow transform transition
@@ -109,12 +109,33 @@ const SettingModal = ({
                             </button>
                         </div>
                         {/* 閉じるボタン */}
-                        <div className="flex justify-center mt-6 gap-2">
+                        {/* <div className="flex justify-center mt-6 gap-2">
                             <button
                                 onClick={onClose}
                                 className="px-4 py-2 border rounded hover:bg-gray-100"
                             >
                                 閉じる
+                            </button>
+                        </div> */}
+                        <div className="flex justify-center mt-6 gap-2">
+                            {/* 保存ボタン */}
+                            <button
+                                onClick={() => {
+                                    // 保存処理を実行
+                                    console.log("設定を保存しました");
+                                    onClose();
+                                }}
+                                className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700"
+                            >
+                                保存
+                            </button>
+
+                            {/* キャンセルボタン */}
+                            <button
+                                onClick={onClose}
+                                className="px-4 py-2 border rounded hover:bg-gray-100"
+                            >
+                                キャンセル
                             </button>
                         </div>
                     </div>
