@@ -65,8 +65,9 @@ const Answer = () => {
         };
 
         fetchForm();
-        checkVoted();
-    }, [formId, uid]);
+
+        form?.restrictToOneResponse && checkVoted();
+    }, [formId, uid, form?.restrictToOneResponse]);
 
     // 回答を更新する関数
     const updateAnswer = (questionId, value, checked) => {
