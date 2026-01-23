@@ -6,6 +6,6 @@ export default defineConfig({
     plugins: [react()],
     base: "/HORA/", // ← リポジトリ名
     build: {
-        outDir: "docs",
+        outDir: "dist",
     },
 });
