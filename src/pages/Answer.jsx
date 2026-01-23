@@ -38,6 +38,8 @@ const Answer = () => {
             }
         };
 
+        // ------------- 以下二重投票を防ぐためのロジック -------------
+        // 匿名ログイン
         if (!auth.currentUser) {
             signInAnonymously(auth)
                 .then(() => {

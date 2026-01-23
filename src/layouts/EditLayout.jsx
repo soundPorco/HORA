@@ -72,6 +72,22 @@ const EditLayout = () => {
         console.log("シャッフル状態を更新しました:", newValue);
     };
 
+    // 一人一回答の制限状態切り替え関数、SettingModalから呼び出される
+    const toggleRestrictToOneResponse = async () => {
+        const newValue = !formData.restrictToOneResponse;
+        setFormData((prev) => ({
+            ...prev,
+            restrictToOneResponse: newValue,
+        }));
+        const docRef = doc(db, "forms", formId);
+
+        await updateDoc(docRef, {
+            restrictToOneResponse: newValue,
+        });
+
+        console.log("一人一回答の制限状態を更新しました:", newValue);
+    };
+
     if (loading) return <div className="p-6">読み込み中...</div>;
 
     return (
@@ -115,6 +131,8 @@ const EditLayout = () => {
                     togglePublish={togglePublish}
                     shuffleQuestions={!!formData?.shuffleQuestions}
                     toggleShuffle={toggleShuffle}
+                    restrictToOneResponse={!!formData?.restrictToOneResponse}
+                    toggleRestrictToOneResponse={toggleRestrictToOneResponse}
                 />
             )}
         </div>

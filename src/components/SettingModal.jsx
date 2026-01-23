@@ -4,11 +4,15 @@ import PublishToggle from "./PublishToggle";
 const SettingModal = ({
     openSettingModal,
     setOpenSettingModal,
+    // 公開状態の管理
     published,
-    // setFormData,
     togglePublish,
+    // シャッフル状態の管理
     toggleShuffle,
     shuffleQuestions,
+    // 一人一回答の制限状態の管理
+    restrictToOneResponse,
+    toggleRestrictToOneResponse,
 }) => {
     if (!openSettingModal) return null;
 
@@ -94,13 +98,13 @@ const SettingModal = ({
                         <div className="flex justify-between items-center">
                             <p>回答を一回に制限する</p>
                             <button
-                                onClick={toggleShuffle}
+                                onClick={toggleRestrictToOneResponse}
                                 className={`w-12 h-7 rounded-full flex items-center px-1 transition
-                            ${shuffleQuestions ? "bg-green-500" : "bg-gray-300"}`}
+                            ${restrictToOneResponse ? "bg-green-500" : "bg-gray-300"}`}
                             >
                                 <div
                                     className={`w-5 h-5 bg-white rounded-full shadow transform transition
-                                ${shuffleQuestions ? "translate-x-5" : ""}`}
+                                ${restrictToOneResponse ? "translate-x-5" : ""}`}
                                 />
                             </button>
                         </div>

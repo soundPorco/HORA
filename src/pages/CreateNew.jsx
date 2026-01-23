@@ -16,6 +16,7 @@ const CreateNew = () => {
         userId: null,
         published: false, // 公開状態
         shuffleQuestions: false, // 質問のシャッフル状態
+        restrictToOneResponse: false, // 一人一回答の制限
         title: "",
         description: "",
         questions: [],
