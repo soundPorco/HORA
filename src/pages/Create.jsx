@@ -17,8 +17,8 @@ const Create = () => {
     // フォームのタイトルと説明
     const [localFormData, setLocalFormData] = useState({
         userId: null,
-        published: false,
-        shuffleQuestions: false,
+        published: false, // 公開状態
+        shuffleQuestions: false, // 質問のシャッフル状態
         title: "",
         description: "",
         questions: [],

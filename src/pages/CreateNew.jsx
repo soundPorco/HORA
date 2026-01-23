@@ -14,7 +14,8 @@ const CreateNew = () => {
     // 🔹 新規作成用の初期データ
     const [NewFormData, setNewFormData] = useState({
         userId: null,
-        published: false,
+        published: false, // 公開状態
+        shuffleQuestions: false, // 質問のシャッフル状態
         title: "",
         description: "",
         questions: [],
