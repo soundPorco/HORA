@@ -33,7 +33,9 @@ const AnswerView = ({ form, updateAnswer, handleSubmit, Preview, voted }) => {
                     </h2>
                     <p>あなたの回答は正常に送信されました。</p>
                 </div>
-            ) : form.shuffleQuestions ? (
+            ) : // シャッフル設定の分岐
+            form.shuffleQuestions ? (
+                // シャッフル設定が有効な場合
                 <div className="max-w-2xl mx-auto bg-white p-6 rounded shadow">
                     <h1 className="text-2xl font-bold mb-2">{form.title}</h1>
                     <p className="mb-6 text-gray-600">{form.description}</p>
@@ -132,6 +134,7 @@ const AnswerView = ({ form, updateAnswer, handleSubmit, Preview, voted }) => {
                     )}
                 </div>
             ) : (
+                // シャッフル設定が無効な場合
                 <div className="max-w-2xl mx-auto bg-white p-6 rounded shadow">
                     <h1 className="text-2xl font-bold mb-2">{form.title}</h1>
                     <p className="mb-6 text-gray-600">{form.description}</p>

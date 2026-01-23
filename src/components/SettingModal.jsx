@@ -52,45 +52,67 @@ const SettingModal = ({
                     <h2 className="text-xl font-bold mb-4 text-center">
                         アンケート詳細設定
                     </h2>
-                    <div className="flex justify-between items-center mt-4">
-                        <p>公開</p>
-                        <button
-                            onClick={togglePublish}
-                            className={`w-12 h-7 rounded-full flex items-center px-1 transition
+
+                    {/* 詳細設定のflex */}
+                    <div className="flex flex-col gap-4">
+                        {/* 公開状態のトグル */}
+                        <div className="flex justify-between items-center">
+                            <p>公開</p>
+                            <button
+                                onClick={togglePublish}
+                                className={`w-12 h-7 rounded-full flex items-center px-1 transition
                             ${published ? "bg-green-500" : "bg-gray-300"}`}
-                        >
-                            <div
-                                className={`w-5 h-5 bg-white rounded-full shadow transform transition
+                            >
+                                <div
+                                    className={`w-5 h-5 bg-white rounded-full shadow transform transition
                                 ${published ? "translate-x-5" : ""}`}
-                            />
-                        </button>
-                    </div>
-                    <div className="flex justify-between items-center mt-4">
-                        <div>
-                            <p>選択肢のシャッフル</p>
-                            <p className="text-sm text-gray-500">
-                                ※設問内の選択肢の並び順をランダムに表示します。
-                            </p>
+                                />
+                            </button>
                         </div>
-                        <button
-                            onClick={toggleShuffle}
-                            className={`w-12 h-7 rounded-full flex items-center px-1 transition
+
+                        {/* 選択肢シャッフルのトグル */}
+                        <div className="flex justify-between items-center">
+                            <div>
+                                <p>選択肢のシャッフル</p>
+                                <p className="text-sm text-gray-500">
+                                    ※設問内の選択肢の並び順をランダムに表示します。
+                                </p>
+                            </div>
+                            <button
+                                onClick={toggleShuffle}
+                                className={`w-12 h-7 rounded-full flex items-center px-1 transition
                             ${shuffleQuestions ? "bg-green-500" : "bg-gray-300"}`}
-                        >
-                            <div
-                                className={`w-5 h-5 bg-white rounded-full shadow transform transition
+                            >
+                                <div
+                                    className={`w-5 h-5 bg-white rounded-full shadow transform transition
                                 ${shuffleQuestions ? "translate-x-5" : ""}`}
-                            />
-                        </button>
-                    </div>
-                    {/* 閉じるボタン */}
-                    <div className="flex justify-center mt-6 gap-2">
-                        <button
-                            onClick={onClose}
-                            className="px-4 py-2 border rounded hover:bg-gray-100"
-                        >
-                            閉じる
-                        </button>
+                                />
+                            </button>
+                        </div>
+
+                        {/* 回答を一回に制限するトグル */}
+                        <div className="flex justify-between items-center">
+                            <p>回答を一回に制限する</p>
+                            <button
+                                onClick={toggleShuffle}
+                                className={`w-12 h-7 rounded-full flex items-center px-1 transition
+                            ${shuffleQuestions ? "bg-green-500" : "bg-gray-300"}`}
+                            >
+                                <div
+                                    className={`w-5 h-5 bg-white rounded-full shadow transform transition
+                                ${shuffleQuestions ? "translate-x-5" : ""}`}
+                                />
+                            </button>
+                        </div>
+                        {/* 閉じるボタン */}
+                        <div className="flex justify-center mt-6 gap-2">
+                            <button
+                                onClick={onClose}
+                                className="px-4 py-2 border rounded hover:bg-gray-100"
+                            >
+                                閉じる
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
