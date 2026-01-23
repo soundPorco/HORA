@@ -24,6 +24,7 @@ const Answer = () => {
     const [voted, setVoted] = useState(false);
     const [uid, setUid] = useState(null);
 
+    // フォームデータを取得するuseEffect
     useEffect(() => {
         const fetchForm = async () => {
             // refとは参照の意味
@@ -37,7 +38,11 @@ const Answer = () => {
                 console.log("フォームデータ:", snap.data());
             }
         };
+        fetchForm();
+    }, [formId]);
 
+    // ユーザーIDを取得するuseEffect
+    useEffect(() => {
         // ------------- 以下二重投票を防ぐためのロジック -------------
         // 匿名ログイン
         if (!auth.currentUser) {
@@ -48,6 +53,16 @@ const Answer = () => {
                 })
                 .catch((err) => alert(err.message));
         }
+    }, []);
+
+    // 一人一回答の制限がある場合、既に回答済みか確認するuseEffect
+    useEffect(() => {
+        if (!uid) return;
+        if (!form) return;
+        if (!form.restrictToOneResponse) {
+            return;
+        }
+
         // 既に回答済みか確認
         const checkVoted = async () => {
             const q = query(
@@ -64,10 +79,8 @@ const Answer = () => {
             }
         };
 
-        fetchForm();
-
-        form?.restrictToOneResponse && checkVoted();
-    }, [formId, uid, form?.restrictToOneResponse]);
+        checkVoted();
+    }, [formId, uid, form]);
 
     // 回答を更新する関数
     const updateAnswer = (questionId, value, checked) => {

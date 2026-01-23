@@ -40,22 +40,6 @@ const EditLayout = () => {
         fetchForm();
     }, [formId, navigate]);
 
-    // 公開状態切り替え関数、SettingModalから呼び出される
-    const togglePublish = async () => {
-        const newValue = !formData.published;
-        setFormData((prev) => ({
-            ...prev,
-            published: newValue,
-        }));
-        const docRef = doc(db, "forms", formId);
-
-        await updateDoc(docRef, {
-            published: newValue,
-        });
-
-        console.log("公開状態を更新しました:", newValue);
-    };
-
     // 設定をまとめて保存する関数、SettingModalから呼び出される
     const saveSettings = async (newSettings) => {
         const docRef = doc(db, "forms", formId);
