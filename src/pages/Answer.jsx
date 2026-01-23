@@ -129,16 +129,16 @@ const Answer = () => {
         }
 
         // 既に回答済みか確認
-        const q = query(
-            collection(db, "answers"),
-            // 同じフォームIDかつ同じユーザーIDの回答を検索
-            where("formId", "==", formId),
-            where("userId", "==", uid)
-        );
+        // const q = query(
+        //     collection(db, "answers"),
+        //     // 同じフォームIDかつ同じユーザーIDの回答を検索
+        //     where("formId", "==", formId),
+        //     where("userId", "==", uid)
+        // );
 
-        const snapshot = await getDocs(q);
+        // const snapshot = await getDocs(q);
 
-        if (!snapshot.empty) {
+        if (voted) {
             return alert("既に回答済みです。");
         }
 
