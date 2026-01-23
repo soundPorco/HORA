@@ -216,6 +216,11 @@ const AnswerView = ({ form, updateAnswer, handleSubmit, Preview, voted }) => {
                         </div>
                     ))}
 
+                    <div>
+                        {/* デバッグ用：現在の設定を表示 */}
+                        <button onClick={() => console.log(form)}>debug</button>
+                    </div>
+
                     {!Preview && (
                         <button
                             onClick={handleSubmit}

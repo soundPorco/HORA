@@ -29,7 +29,6 @@ const Answer = () => {
         // refとは参照の意味
         const docRef = doc(db, "forms", formId);
 
-        // ↓↓↓Firestoreからデータが返ってくるまで待ってから、次へ進む
         const unsubscribe = onSnapshot(docRef, (snap) => {
             // snap は略語で、正式にはDocumentSnapshot（ドキュメントの写し）を指します。
 
@@ -77,6 +76,8 @@ const Answer = () => {
 
             if (!snapshot.empty) {
                 setVoted(true);
+            } else {
+                setVoted(false);
             }
         };
 
