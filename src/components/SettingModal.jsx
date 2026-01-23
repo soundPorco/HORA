@@ -1,45 +1,36 @@
-import PublishToggle from "./PublishToggle";
 // import { doc, updateDoc } from "firebase/firestore";
+import { useState } from "react";
 
 const SettingModal = ({
     openSettingModal,
     setOpenSettingModal,
-    // 公開状態の管理
-    published,
-    togglePublish,
-    // シャッフル状態の管理
-    toggleShuffle,
-    shuffleQuestions,
-    // 一人一回答の制限状態の管理
-    restrictToOneResponse,
-    toggleRestrictToOneResponse,
+    initialSettings, // 親から渡される初期設定
+    saveSettings, // 親へ設定をまとめて渡す関数
 }) => {
+    // ローカルで設定を管理するstate
+    const [settings, setSettings] = useState(initialSettings);
+
+    // モーダルが開いていない場合は何も表示しない
     if (!openSettingModal) return null;
+
+    // ローカルのstateを切り替える関数
+    const toggleSetting = (key) => {
+        setSettings((prev) => ({
+            ...prev,
+            [key]: !prev[key],
+        }));
+        console.log("値が変更されました:", key, !settings[key]);
+    };
+
+    // 設定保存用の関数
+    const handleSave = () => {
+        saveSettings(settings); // 親へまとめて渡す
+        setOpenSettingModal(false); // モーダルを閉じる
+    };
 
     const onClose = () => {
         setOpenSettingModal(false);
     };
-
-    // const onToggle = async () => {
-    //     const newValue = !published;
-    //     setFormData((prev) => ({
-    //         ...prev,
-    //         published: newValue,
-    //     }));
-    //     console.log("新しい公開状態:", newValue);
-
-    //     // Firestore に変更を保存
-    //     try {
-    //         const ref = doc(db, "forms", formData.id);
-    //         await updateDoc(ref, { published: newValue });
-    //         console.log(
-    //             "新しい公開状態が Firestore に保存されました:",
-    //             newValue
-    //         );
-    //     } catch (error) {
-    //         console.error("公開状態の更新中にエラーが発生しました:", error);
-    //     }
-    // };
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center">
@@ -63,13 +54,13 @@ const SettingModal = ({
                         <div className="flex justify-between items-center">
                             <p>公開</p>
                             <button
-                                onClick={togglePublish}
+                                onClick={() => toggleSetting("published")}
                                 className={`w-12 h-7 rounded-full flex items-center px-1 transition
-                            ${published ? "bg-blue-500" : "bg-gray-300"}`}
+                            ${settings.published ? "bg-blue-500" : "bg-gray-300"}`}
                             >
                                 <div
                                     className={`w-5 h-5 bg-white rounded-full shadow transform transition
-                                ${published ? "translate-x-5" : ""}`}
+                                ${settings.published ? "translate-x-5" : ""}`}
                                 />
                             </button>
                         </div>
@@ -83,13 +74,15 @@ const SettingModal = ({
                                 </p>
                             </div>
                             <button
-                                onClick={toggleShuffle}
+                                onClick={() =>
+                                    toggleSetting("shuffleQuestions")
+                                }
                                 className={`w-12 h-7 rounded-full flex items-center px-1 transition
-                            ${shuffleQuestions ? "bg-blue-500" : "bg-gray-300"}`}
+                            ${settings.shuffleQuestions ? "bg-blue-500" : "bg-gray-300"}`}
                             >
                                 <div
                                     className={`w-5 h-5 bg-white rounded-full shadow transform transition
-                                ${shuffleQuestions ? "translate-x-5" : ""}`}
+                                ${settings.shuffleQuestions ? "translate-x-5" : ""}`}
                                 />
                             </button>
                         </div>
@@ -98,33 +91,24 @@ const SettingModal = ({
                         <div className="flex justify-between items-center">
                             <p>回答を一回に制限する</p>
                             <button
-                                onClick={toggleRestrictToOneResponse}
+                                onClick={() =>
+                                    toggleSetting("restrictToOneResponse")
+                                }
                                 className={`w-12 h-7 rounded-full flex items-center px-1 transition
-                            ${restrictToOneResponse ? "bg-blue-500" : "bg-gray-300"}`}
+                            ${settings.restrictToOneResponse ? "bg-blue-500" : "bg-gray-300"}`}
                             >
                                 <div
                                     className={`w-5 h-5 bg-white rounded-full shadow transform transition
-                                ${restrictToOneResponse ? "translate-x-5" : ""}`}
+                                ${settings.restrictToOneResponse ? "translate-x-5" : ""}`}
                                 />
                             </button>
                         </div>
-                        {/* 閉じるボタン */}
-                        {/* <div className="flex justify-center mt-6 gap-2">
-                            <button
-                                onClick={onClose}
-                                className="px-4 py-2 border rounded hover:bg-gray-100"
-                            >
-                                閉じる
-                            </button>
-                        </div> */}
+
+                        {/* モーダルのフッター */}
                         <div className="flex justify-center mt-6 gap-2">
                             {/* 保存ボタン */}
                             <button
-                                onClick={() => {
-                                    // 保存処理を実行
-                                    console.log("設定を保存しました");
-                                    onClose();
-                                }}
+                                onClick={() => handleSave()}
                                 className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700"
                             >
                                 保存

@@ -56,36 +56,20 @@ const EditLayout = () => {
         console.log("公開状態を更新しました:", newValue);
     };
 
-    // シャッフル状態切り替え関数、SettingModalから呼び出される
-    const toggleShuffle = async () => {
-        const newValue = !formData.shuffleQuestions;
-        setFormData((prev) => ({
-            ...prev,
-            shuffleQuestions: newValue,
-        }));
+    // 設定をまとめて保存する関数、SettingModalから呼び出される
+    const saveSettings = async (newSettings) => {
         const docRef = doc(db, "forms", formId);
 
-        await updateDoc(docRef, {
-            shuffleQuestions: newValue,
-        });
-
-        console.log("シャッフル状態を更新しました:", newValue);
-    };
-
-    // 一人一回答の制限状態切り替え関数、SettingModalから呼び出される
-    const toggleRestrictToOneResponse = async () => {
-        const newValue = !formData.restrictToOneResponse;
+        // state更新
         setFormData((prev) => ({
             ...prev,
-            restrictToOneResponse: newValue,
+            ...newSettings,
         }));
-        const docRef = doc(db, "forms", formId);
 
-        await updateDoc(docRef, {
-            restrictToOneResponse: newValue,
-        });
+        // Firestore更新（1回だけ）
+        await updateDoc(docRef, newSettings);
 
-        console.log("一人一回答の制限状態を更新しました:", newValue);
+        console.log("設定をまとめて保存しました", newSettings);
     };
 
     if (loading) return <div className="p-6">読み込み中...</div>;
@@ -124,15 +108,18 @@ const EditLayout = () => {
             {/* 設定モーダル */}
             {openSettingModal && (
                 <SettingModal
+                    // モーダルの開閉管理
                     setOpenSettingModal={setOpenSettingModal}
                     openSettingModal={openSettingModal}
+                    // フォームデータの管理
                     setFormData={setFormData}
-                    published={!!formData?.published}
-                    togglePublish={togglePublish}
-                    shuffleQuestions={!!formData?.shuffleQuestions}
-                    toggleShuffle={toggleShuffle}
-                    restrictToOneResponse={!!formData?.restrictToOneResponse}
-                    toggleRestrictToOneResponse={toggleRestrictToOneResponse}
+                    // 初期設定の値を渡す
+                    initialSettings={{
+                        published: !!formData.published,
+                        shuffleQuestions: !!formData.shuffleQuestions,
+                        restrictToOneResponse: !!formData.restrictToOneResponse,
+                    }}
+                    saveSettings={saveSettings}
                 />
             )}
         </div>
