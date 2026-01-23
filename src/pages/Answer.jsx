@@ -1,13 +1,13 @@
 import { useParams } from "react-router-dom";
 import {
     doc,
-    getDoc,
     getDocs,
     addDoc,
     collection,
     query,
     where,
     serverTimestamp,
+    onSnapshot,
 } from "firebase/firestore";
 import { db, auth, signInAnonymously } from "../firebase";
 import { useEffect, useState } from "react";
@@ -26,19 +26,20 @@ const Answer = () => {
 
     // フォームデータを取得するuseEffect
     useEffect(() => {
-        const fetchForm = async () => {
-            // refとは参照の意味
-            const docRef = doc(db, "forms", formId);
-            // ↓↓↓Firestoreからデータが返ってくるまで 待ってから 次へ進む
-            const snap = await getDoc(docRef);
+        // refとは参照の意味
+        const docRef = doc(db, "forms", formId);
+
+        // ↓↓↓Firestoreからデータが返ってくるまで待ってから、次へ進む
+        const unsubscribe = onSnapshot(docRef, (snap) => {
             // snap は略語で、正式にはDocumentSnapshot（ドキュメントの写し）を指します。
 
             if (snap.exists()) {
-                setForm(snap.data());
-                console.log("フォームデータ:", snap.data());
+                setForm({ id: snap.id, ...snap.data() });
+                console.log("フォームデータ更新:", snap.data());
             }
-        };
-        fetchForm();
+        });
+        // コンポーネントが消えたら監視解除
+        return () => unsubscribe();
     }, [formId]);
 
     // ユーザーIDを取得するuseEffect
@@ -127,16 +128,6 @@ const Answer = () => {
                 "ログイン状態を確認できません。再度ページを読み込んでください。"
             );
         }
-
-        // 既に回答済みか確認
-        // const q = query(
-        //     collection(db, "answers"),
-        //     // 同じフォームIDかつ同じユーザーIDの回答を検索
-        //     where("formId", "==", formId),
-        //     where("userId", "==", uid)
-        // );
-
-        // const snapshot = await getDocs(q);
 
         if (voted) {
             return alert("既に回答済みです。");
