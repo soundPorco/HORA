@@ -1,6 +1,7 @@
 // src/pages/CreateNew.jsx
 import { useState, useRef, useEffect } from "react";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
+import { useNavigate } from "react-router-dom";
 import { db, auth } from "../firebase";
 import autosize from "autosize";
 import { onAuthStateChanged } from "firebase/auth"; // ログイン状態が変化したときに実行される監視関数
@@ -12,6 +13,8 @@ import Menu from "../components/Menu";
 import SaveFormBtn from "../components/SaveFormBtn";
 
 const CreateNew = () => {
+    const navigate = useNavigate(); // navigate フックを初期化
+
     // 🔹 新規作成用の初期データ
     const [NewFormData, setNewFormData] = useState({
         userId: null,
@@ -89,6 +92,9 @@ const CreateNew = () => {
             });
             console.log("フォームが保存されました。ID: ", docRef.id);
             alert("フォームが保存されました！");
+
+            // 保存後、クラス一覧ページにリダイレクト
+            navigate("/create-list");
         } catch (error) {
             console.error("フォームの保存中にエラーが発生しました:", error);
             alert("フォームの保存に失敗しました。");
