@@ -107,17 +107,16 @@ const Question = ({
                     updateQuestionData={updateQuestionData}
                     data={data}
                 />
-                <div className="flex gap-2 justify-end absolute bottom-5 right-5">
+                <div className="flex gap-3 justify-end items-center absolute bottom-5 right-5">
                     <RequiredToggle
                         data={data}
                         updateQuestionData={updateQuestionData}
                     />
                     <button
                         onClick={handleDelete}
-                        className="text-xl text-gray-500 hover:text-white hover:bg-gray-500 duration-200 px-3 py-1 rounded-full
-                border bg-gray-100  border-gray-300"
+                        className="mt-12 text-gray-400 rounded-full hover:text-red-500 duration-200"
                     >
-                        <RiDeleteBin6Line />
+                        <RiDeleteBin6Line className="text-2xl" />
                     </button>
                 </div>
             </div>

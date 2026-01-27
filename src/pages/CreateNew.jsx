@@ -138,7 +138,7 @@ const CreateNew = () => {
                     updateQuestionData={updateQuestionData}
                     deleteQuestion={deleteQuestion}
                 />
-                {/* 追加ボタン */}
+                {/* 設問追加ボタン */}
                 <AddQuestionBtn addQuestion={addQuestion} />
 
                 {/* Submit Button（まだ無効） */}

@@ -12,26 +12,13 @@ const RequiredToggle = ({ data, updateQuestionData }) => {
     return (
         <button
             onClick={toggleRequired}
-            className={`
-                flex items-center gap-1
-                px-3 py-1 rounded-full
-                border transition-all duration-300
-                ${
-                    data.required
-                        ? "bg-red-400 text-white border-red-400"
-                        : "bg-gray-100 text-gray-500 border-gray-300"
-                }
-            `}
+            className={`mt-12 transition-all duration-200 ${data.required ? " text-red-400 hover:text-red-500" : " text-gray-400 hover:text-gray-500"}`}
         >
-            <span
-                className={`
-                    text-xl transition-transform duration-300
-                    
-                `}
-            >
-                {data.required ? <FaToggleOn /> : <FaToggleOff />}
-            </span>
-            <span className="text-sm font-medium">必須</span>
+            {data.required ? (
+                <FaToggleOn className="text-3xl" />
+            ) : (
+                <FaToggleOff className="text-3xl" />
+            )}
         </button>
     );
 };
