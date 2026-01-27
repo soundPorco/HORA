@@ -107,6 +107,7 @@ const Create = () => {
                         }
                         className="w-full p-3 border rounded font-medium text-2xl"
                         placeholder="タイトルを入力してください"
+                        readOnly={localFormData.published}
                     />
                     <textarea
                         className="w-full p-3 border rounded mb-4 resize-none"
@@ -120,6 +121,7 @@ const Create = () => {
                                 description: e.target.value,
                             })
                         }
+                        readOnly={localFormData.published}
                     />
                 </div>
 
@@ -127,12 +129,19 @@ const Create = () => {
                     questionsData={localFormData.questions}
                     updateQuestionData={updateQuestionData}
                     deleteQuestion={deleteQuestion}
+                    published={localFormData.published}
                 />
                 {/* 設問追加ボタン */}
-                <AddQuestionBtn addQuestion={addQuestion} />
+                {!localFormData.published && (
+                    <AddQuestionBtn addQuestion={addQuestion} />
+                )}
 
                 {/* Submit Button */}
-                <SaveFormBtn saveFormData={() => saveFormData(localFormData)} />
+                {!localFormData.published && (
+                    <SaveFormBtn
+                        saveFormData={() => saveFormData(localFormData)}
+                    />
+                )}
             </div>
         </div>
     );

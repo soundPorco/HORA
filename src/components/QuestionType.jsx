@@ -7,7 +7,12 @@ import { BiAlignLeft } from "react-icons/bi"; // テキストアイコン
 
 // 質問タイプのドロップダウン管理
 
-const QuestionType = ({ questionData, updateQuestionData, className = "" }) => {
+const QuestionType = ({
+    questionData,
+    updateQuestionData,
+    className = "",
+    published,
+}) => {
     const [open, setOpen] = useState(false);
 
     const getIcon = (type) => {
@@ -35,14 +40,14 @@ const QuestionType = ({ questionData, updateQuestionData, className = "" }) => {
     return (
         <div className={`relative ${className}`}>
             <button
-                onClick={() => setOpen(!open)}
+                onClick={() => (published ? null : setOpen(!open))}
                 className="p-2 border rounded w-full flex items-center justify-between"
             >
                 <span className="flex items-center gap-2">
                     {getIcon(questionData.questionType)}{" "}
                     {questionData.questionType}
                 </span>
-                ▾
+                {published ? null : <span>▾</span>}
             </button>
             {open && (
                 <ul className="absolute z-10 bg-white border rounded w-full mt-1 divide-y divide-gray-300 shadow-lg">

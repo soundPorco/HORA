@@ -16,6 +16,7 @@ const Question = ({
     index,
     updateQuestionData,
     deleteQuestion,
+    published,
 }) => {
     const data = questionData;
 
@@ -47,10 +48,11 @@ const Question = ({
     return (
         <>
             {/* Questions */}
-
             <div className="border p-4 my-5 rounded-lg text-center bg-white relative">
                 <div className="relative flex justify-start items-start mb-2 gap-1">
+                    {/* 設問ナンバー */}
                     <h3 className="font-semibold">設問 {index + 1}</h3>
+                    {/* 必須マーク */}
                     {data.required && (
                         <span className="text-red-400 font-bold">
                             *{" "}
@@ -59,6 +61,7 @@ const Question = ({
                     )}
                 </div>
                 <div className="flex items-center mb-3 justify-between">
+                    {/* 設問内容 */}
                     <textarea
                         className="w-[67%] p-3 border rounded font-medium text-md resize-none"
                         placeholder="質問を入力してください"
@@ -66,17 +69,22 @@ const Question = ({
                         ref={textareaRef}
                         value={data.questionTitle}
                         onChange={handleTitleChange}
+                        readOnly={published}
                     />
+
+                    {/* 設問タイプの選択欄 */}
                     <QuestionType
                         questionData={questionData}
                         updateQuestionData={(newData) =>
                             updateQuestionData(data.id, newData)
                         }
                         className="w-[32%]"
+                        published={published}
                     />
                 </div>
                 <div className="space-y-3">
                     {questionData.questionType === "テキスト" ? (
+                        // テキストタイプの設問の場合
                         <textarea
                             rows={1}
                             placeholder="回答欄"
@@ -84,6 +92,7 @@ const Question = ({
                             disabled
                         />
                     ) : (
+                        // 選択式タイプの設問の場合
                         (data.options || []).map((option, i) => (
                             <div key={i} className="flex items-center gap-2">
                                 <QuestionTypeIcon
@@ -99,32 +108,40 @@ const Question = ({
                                         updateOptionValue(i, e.target.value)
                                     }
                                     className="w-full p-2 border-b rounded"
+                                    readOnly={published}
                                 />
-                                <RemoveOptionBtn
-                                    updateQuestionData={updateQuestionData}
-                                    data={data}
-                                    index={i}
-                                />
+
+                                {!published && (
+                                    <RemoveOptionBtn
+                                        updateQuestionData={updateQuestionData}
+                                        data={data}
+                                        index={i}
+                                    />
+                                )}
                             </div>
                         ))
                     )}
                 </div>
-                <AddOptionBtn
-                    updateQuestionData={updateQuestionData}
-                    data={data}
-                />
-                <div className="flex gap-3 justify-end items-center absolute bottom-5 right-5">
-                    <RequiredToggle
-                        data={data}
-                        updateQuestionData={updateQuestionData}
-                    />
-                    <button
-                        onClick={handleDelete}
-                        className="mt-12 text-gray-400 rounded-full font-bold hover:text-red-400 duration-200"
-                    >
-                        <MdDelete className="text-2xl" />
-                    </button>
-                </div>
+                {!published && (
+                    <>
+                        <AddOptionBtn
+                            updateQuestionData={updateQuestionData}
+                            data={data}
+                        />
+                        <div className="flex gap-3 justify-end items-center absolute bottom-5 right-5">
+                            <RequiredToggle
+                                data={data}
+                                updateQuestionData={updateQuestionData}
+                            />
+                            <button
+                                onClick={handleDelete}
+                                className="mt-12 text-gray-400 rounded-full font-bold hover:text-red-400 duration-200"
+                            >
+                                <MdDelete className="text-2xl" />
+                            </button>
+                        </div>
+                    </>
+                )}
             </div>
         </>
     );

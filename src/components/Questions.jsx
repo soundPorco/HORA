@@ -1,6 +1,11 @@
 import Question from "./Question";
 
-const Questions = ({ questionsData, updateQuestionData, deleteQuestion }) => {
+const Questions = ({
+    questionsData,
+    updateQuestionData,
+    deleteQuestion,
+    published,
+}) => {
     return (
         <>
             {
@@ -11,6 +16,7 @@ const Questions = ({ questionsData, updateQuestionData, deleteQuestion }) => {
                         index={index}
                         updateQuestionData={updateQuestionData}
                         deleteQuestion={deleteQuestion}
+                        published={published}
                     />
                 ))
             }
