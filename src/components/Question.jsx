@@ -49,8 +49,14 @@ const Question = ({
             {/* Questions */}
 
             <div className="border p-4 my-5 rounded-lg text-center bg-white relative">
-                <div className="flex justify-between items-start mb-2">
+                <div className="relative flex justify-start items-start mb-2 gap-1">
                     <h3 className="font-semibold">設問 {index + 1}</h3>
+                    {data.required && (
+                        <span className="text-red-400 font-bold">
+                            *{" "}
+                            <span className="font-semibold text-sm">必須</span>
+                        </span>
+                    )}
                 </div>
                 <div className="flex items-center mb-3 justify-between">
                     <textarea
@@ -114,7 +120,7 @@ const Question = ({
                     />
                     <button
                         onClick={handleDelete}
-                        className="mt-12 text-gray-400 rounded-full hover:text-red-500 duration-200"
+                        className="mt-12 text-gray-400 rounded-full font-bold hover:text-red-400 duration-200"
                     >
                         <RiDeleteBin6Line className="text-2xl" />
                     </button>
