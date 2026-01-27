@@ -26,7 +26,7 @@ const SubMenu = ({
                     className={`pe-6 ${
                         isEditPage
                             ? "cursor-default"
-                            : "hover:underline duration-200 text-gray-300"
+                            : "hover:text-white duration-200 text-gray-300"
                     }`}
                     disabled={isEditPage}
                     onClick={() => navigate(`/edit/${formId}`)}
