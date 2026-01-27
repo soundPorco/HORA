@@ -2,7 +2,7 @@ import { useRef, useEffect } from "react";
 import autosize from "autosize";
 
 // アイコン
-import { RiDeleteBin6Line } from "react-icons/ri";
+import { MdDelete } from "react-icons/md";
 
 // アンケート作成ページコンポーネント
 import QuestionType from "../components/QuestionType";
@@ -122,7 +122,7 @@ const Question = ({
                         onClick={handleDelete}
                         className="mt-12 text-gray-400 rounded-full font-bold hover:text-red-400 duration-200"
                     >
-                        <RiDeleteBin6Line className="text-2xl" />
+                        <MdDelete className="text-2xl" />
                     </button>
                 </div>
             </div>

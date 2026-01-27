@@ -1,19 +1,7 @@
 import { useLocation } from "react-router-dom";
-import { doc, updateDoc } from "firebase/firestore";
-import { db } from "../firebase";
-
 import { MdArrowDropDown } from "react-icons/md"; // 下向き矢印アイコン
 
-// コンポーネント
-import PublishToggle from "./PublishToggle";
-
-const SubMenu = ({
-    formId,
-    navigate,
-    // published,
-    // setFormData,
-    setOpenSettingModal,
-}) => {
+const SubMenu = ({ formId, navigate, published, setOpenSettingModal }) => {
     const location = useLocation();
 
     const isEditPage = location.pathname === `/edit/${formId}`;
@@ -55,7 +43,14 @@ const SubMenu = ({
                     className="flex items-center group"
                     onClick={() => setOpenSettingModal(true)}
                 >
-                    <span className="text-gray-300 group-hover:text-white duration-200">
+                    <span className="text-gray-300 group-hover:text-white duration-200 flex items-center gap-1">
+                        {published ? (
+                            <p className="text-[#e61b1b] group-hover:text-[#ff1616] duration-200">
+                                ●
+                            </p>
+                        ) : (
+                            ""
+                        )}
                         設定
                     </span>
                     <MdArrowDropDown className="text-3xl text-gray-300 group-hover:text-white duration-200" />

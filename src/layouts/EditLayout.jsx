@@ -68,7 +68,6 @@ const EditLayout = () => {
                     formId={formId}
                     navigate={navigate}
                     published={!!formData?.published}
-                    setFormData={setFormData}
                     setOpenSettingModal={setOpenSettingModal}
                 />
             </div>
