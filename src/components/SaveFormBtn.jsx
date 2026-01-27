@@ -1,11 +1,13 @@
 const SaveFormBtn = ({ saveFormData }) => {
     return (
-        <button
-            onClick={() => saveFormData()}
-            className="mt-4 w-[80px] py-2 bg-gray-400 text-white rounded-full duration-200 hover:bg-green-500"
-        >
-            保存
-        </button>
+        <div className="flex justify-end">
+            <button
+                onClick={() => saveFormData()}
+                className="w-[80px] border px-4 py-2 my-5 rounded-lg text-center bg-white text-gray-400 hover:text-gray-500 hover:border-blue-500 duration-200"
+            >
+                保存
+            </button>
+        </div>
     );
 };
 
