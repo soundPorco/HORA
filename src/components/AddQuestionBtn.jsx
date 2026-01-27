@@ -1,14 +1,14 @@
 // src/components/AddQuestionBtn.jsx
 
-import { MdAddCircleOutline } from "react-icons/md";
+import { MdOutlineArrowDropDownCircle } from "react-icons/md";
 
 const AddQuestionBtn = ({ addQuestion }) => {
     return (
         <button
             onClick={addQuestion}
-            className="flex items-center justify-center mt-4 w-[150px] py-2 gap-1 bg-gray-400 text-white rounded-full duration-200 m-auto hover:bg-gray-500"
+            className="flex justify-center border px-4 py-2 my-5 rounded-lg text-center bg-white w-full text-gray-400 hover:text-gray-500 hover:border-blue-500 duration-200"
         >
-            <MdAddCircleOutline /> 設問を追加
+            設問を追加する
         </button>
     );
 };
