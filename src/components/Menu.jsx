@@ -52,16 +52,6 @@ const Menu = ({ setOpenLinkModal }) => {
                         </button>
                     )}
 
-                    {/* 設定ボタン */}
-                    {formId && (
-                        <button
-                            className="relative text-2xl rounded-full p-2 hover:bg-gray-400 duration-200 group"
-                            onClick={() => navigate("/settings")}
-                        >
-                            <MdOutlineSettings />
-                        </button>
-                    )}
-
                     {/* アンケート一覧へ戻る */}
                     {formId && (
                         <button
