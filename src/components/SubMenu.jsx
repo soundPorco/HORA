@@ -52,11 +52,13 @@ const SubMenu = ({
                 <PublishToggle published={published} onToggle={togglePublish} /> */}
 
                 <button
-                    className="flex items-center"
+                    className="flex items-center group"
                     onClick={() => setOpenSettingModal(true)}
                 >
-                    <span>設定</span>
-                    <MdArrowDropDown className="text-3xl" />
+                    <span className="text-gray-300 group-hover:text-white duration-200">
+                        設定
+                    </span>
+                    <MdArrowDropDown className="text-3xl text-gray-300 group-hover:text-white duration-200" />
                 </button>
             </div>
         </div>
