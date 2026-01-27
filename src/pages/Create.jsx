@@ -8,6 +8,7 @@ import autosize from "autosize";
 // コンポーネント
 import Questions from "../components/Questions";
 import AddQuestionBtn from "../components/AddQuestionBtn";
+import SaveFormBtn from "../components/SaveFormBtn";
 
 const Create = () => {
     const { formData, setFormData } = useOutletContext() || {};
@@ -130,13 +131,8 @@ const Create = () => {
                 {/* 設問追加ボタン */}
                 <AddQuestionBtn addQuestion={addQuestion} />
 
-                {/* Submit Button（まだ無効） */}
-                <button
-                    onClick={saveFormData}
-                    className="mt-4 w-full py-2 bg-green-500 text-white rounded hover:bg-green-600"
-                >
-                    フォームを保存
-                </button>
+                {/* Submit Button */}
+                <SaveFormBtn saveFormData={() => saveFormData(localFormData)} />
             </div>
         </div>
     );
