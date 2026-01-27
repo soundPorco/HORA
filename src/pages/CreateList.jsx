@@ -78,9 +78,12 @@ const CreateList = () => {
     };
 
     return (
-        <div className="min-h-screen bg-gray-100">
-            <Menu />
-            <div className="h-12"></div>
+        <div className="min-h-screen bg-gray-100 pb-40">
+            <div className="fixed top-0 z-40">
+                <Menu />
+            </div>
+            {/* Menu(20)  + 余白(12) = 32 */}
+            <div className="h-32"></div>
 
             <div className="max-w-2xl mx-auto bg-white rounded-xl shadow-md p-6">
                 <h1 className="text-2xl font-bold mb-6">

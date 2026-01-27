@@ -8,7 +8,6 @@ import { MdLink } from "react-icons/md"; //リンクアイコン
 import { MdLinkOff } from "react-icons/md"; //リンク解除アイコン
 import { MdFormatListBulleted } from "react-icons/md"; //一覧アイコン
 import { MdLogout } from "react-icons/md"; // ログアウトアイコン
-import { MdOutlineSettings } from "react-icons/md"; // 設定アイコン
 
 const Menu = ({ setOpenLinkModal }) => {
     const navigate = useNavigate();
