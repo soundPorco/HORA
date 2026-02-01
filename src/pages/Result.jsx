@@ -25,7 +25,7 @@ const Result = () => {
             const questionAnswers = responseItem.answers;
             console.log(
                 "単一回答者の各設問に対する回答データ",
-                questionAnswers
+                questionAnswers,
             ); // デバッグ用ログ
 
             if (!questionAnswers) return; // questionAnswersが存在しない場合はスキップ
@@ -51,7 +51,7 @@ const Result = () => {
                         result[questionId][answerValue] =
                             (result[questionId][answerValue] || 0) + 1;
                     }
-                }
+                },
             );
         });
 
@@ -65,7 +65,7 @@ const Result = () => {
         const fetchResponseList = async () => {
             const responseListQuery = query(
                 collection(db, "answers"),
-                where("formId", "==", formId)
+                where("formId", "==", formId),
             );
 
             // snapshot = 特定の状態をコピーする変数の総称
@@ -79,7 +79,7 @@ const Result = () => {
             }));
             console.log(
                 "全ての回答者の回答データ(responseList):",
-                responseList
+                responseList,
             ); // デバッグ用ログ
 
             setResponseList(responseList);
@@ -94,10 +94,11 @@ const Result = () => {
         <div>
             {/* 回答結果の表示 */}
             <div className="max-w-3xl mx-auto bg-white p-6 rounded-xl shadow mb-10">
-                <h1 className="text-2xl font-bold mb-6">回答結果</h1>
-                <h2 className="text-xl font-bold mb-4">
-                    回答総数：{responseList.length}
-                </h2>
+                {/* <h1 className="text-2xl font-bold">回答結果</h1> */}
+                <h2 className="text-2xl font-bold text-center">回答総数</h2>
+                <h1 className="text-9xl font-bold text-center">
+                    {responseList.length}
+                </h1>
 
                 {/* 回答者がいない場合のメッセージ */}
                 {responseList.length === 0 ? (
