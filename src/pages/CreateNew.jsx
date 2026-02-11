@@ -55,7 +55,7 @@ const CreateNew = () => {
         setNewFormData((prev) => ({
             ...prev,
             questions: prev.questions.map((question) =>
-                question.id === id ? newData : question
+                question.id === id ? newData : question,
             ),
         }));
     };
@@ -122,11 +122,11 @@ const CreateNew = () => {
                                 title: e.target.value,
                             })
                         }
-                        className="w-full p-3 border rounded font-medium text-2xl"
+                        className="w-full p-3 border rounded font-bold text-2xl"
                         placeholder="タイトルを入力してください"
                     />
                     <textarea
-                        className="w-full p-3 border rounded mb-4 resize-none"
+                        className="w-full p-3 border rounded mb-4 font-medium resize-none"
                         placeholder="説明を入力してください"
                         rows={1}
                         ref={textareaRef}

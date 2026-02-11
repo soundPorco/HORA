@@ -105,12 +105,12 @@ const Create = () => {
                                 title: e.target.value,
                             })
                         }
-                        className="w-full p-3 border rounded font-medium text-2xl"
+                        className="w-full p-3 border rounded font-semibold text-2xl"
                         placeholder="タイトルを入力してください"
                         readOnly={localFormData.published}
                     />
                     <textarea
-                        className="w-full p-3 border rounded mb-4 resize-none"
+                        className="w-full p-3 border rounded mb-4 font-medium resize-none"
                         placeholder="説明を入力してください"
                         rows={1}
                         ref={textareaRef}
