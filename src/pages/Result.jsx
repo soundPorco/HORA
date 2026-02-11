@@ -94,11 +94,22 @@ const Result = () => {
         <div>
             {/* 回答結果の表示 */}
             <div className="max-w-3xl mx-auto bg-white p-6 rounded-xl shadow mb-10">
-                {/* <h1 className="text-2xl font-bold">回答結果</h1> */}
-                <h2 className="text-2xl font-bold text-center">回答総数</h2>
-                <h1 className="text-9xl font-bold text-center">
-                    {responseList.length}
-                </h1>
+                {/* フォームタイトル・説明 */}
+                <div className="border-b pb-4 mb-4">
+                    <h2 className="w-full px-3 py-1 font-bold text-3xl">
+                        {formData.title}
+                    </h2>
+                    <h3 className="w-full px-3 py-1 font-medium">
+                        {formData.description}
+                    </h3>
+                </div>
+                {/* 回答データ表示 */}
+                <div className="border rounded p-4 mb-4">
+                    <h2 className="text-2xl font-bold text-center">回答総数</h2>
+                    <h1 className="text-9xl font-bold text-center">
+                        {responseList.length}
+                    </h1>
+                </div>
 
                 {/* 回答者がいない場合のメッセージ */}
                 {responseList.length === 0 ? (

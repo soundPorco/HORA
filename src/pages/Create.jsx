@@ -53,7 +53,7 @@ const Create = () => {
         setLocalFormData((prev) => ({
             ...prev,
             questions: prev.questions.map((question) =>
-                question.id === id ? newData : question
+                question.id === id ? newData : question,
             ),
         }));
     };
