@@ -2,6 +2,19 @@ import { getDocs, where, collection, query } from "firebase/firestore";
 import { db } from "../firebase";
 import { useEffect, useState } from "react";
 import { useOutletContext } from "react-router-dom";
+import { onSnapshot } from "firebase/firestore";
+
+// 「累積回答数 × 時間」の折れ線グラフを描画するためのライブラリ
+import {
+    LineChart,
+    Line,
+    XAxis,
+    YAxis,
+    Tooltip,
+    CartesianGrid,
+    ResponsiveContainer,
+} from "recharts";
+import { orderBy } from "firebase/firestore";
 
 // コンポーネント
 import RenderResultByQuestionType from "../components/renderResultByQuestionType";
@@ -13,6 +26,36 @@ const Result = () => {
     const [responseList, setResponseList] = useState([]);
     const [resultSummary, setResultSummary] = useState({}); // ← 集計結果
     const questions = formData.questions || [];
+
+    const [chartData, setChartData] = useState([]);
+
+    useEffect(() => {
+        const q = query(
+            collection(db, "answers"),
+            where("formId", "==", formId),
+            orderBy("votedAt", "asc"),
+        );
+
+        const unsubscribe = onSnapshot(q, (snapshot) => {
+            let count = 0;
+
+            const cumulative = snapshot.docs.map((doc) => {
+                count++;
+                const data = doc.data();
+
+                return {
+                    time: data.votedAt?.toDate().toLocaleTimeString(),
+                    count: count,
+                };
+            });
+
+            setChartData(cumulative);
+        });
+
+        return () => unsubscribe();
+    }, [formId]);
+
+    //
 
     // ======================
     // 設問ごとの集計処理
@@ -102,6 +145,22 @@ const Result = () => {
                     <h3 className="w-full px-3 py-1 font-medium">
                         {formData.description}
                     </h3>
+                </div>
+                <div className="w-full h-80 mt-8">
+                    <ResponsiveContainer width="100%" height="100%">
+                        <LineChart data={chartData}>
+                            <CartesianGrid strokeDasharray="3 3" />
+                            <XAxis dataKey="time" />
+                            <YAxis />
+                            <Tooltip />
+                            <Line
+                                type="monotone"
+                                dataKey="count"
+                                stroke="#2563eb"
+                                strokeWidth={3}
+                            />
+                        </LineChart>
+                    </ResponsiveContainer>
                 </div>
                 {/* 回答データ表示 */}
                 <div className="border rounded p-4 mb-4">

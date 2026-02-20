@@ -45,7 +45,7 @@ const SubMenu = ({ formId, navigate, published, setOpenSettingModal }) => {
                 >
                     <span className="text-gray-300 group-hover:text-white duration-200 flex items-center gap-1">
                         {published ? (
-                            <p className="text-[#e61b1b] group-hover:text-[#ff1616] duration-200">
+                            <p className="text-[#b60000] group-hover:text-[#ff0000] duration-200 animate-blink">
                                 ●
                             </p>
                         ) : (
