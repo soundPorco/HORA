@@ -17,7 +17,7 @@ import {
 import { orderBy } from "firebase/firestore";
 
 // コンポーネント
-import RenderResultByQuestionType from "../components/renderResultByQuestionType";
+import RenderResultByQuestionType from "../components/renderResultByQuestionType"; // 設問タイプごとに集計結果の表示方法を切り替えるコンポーネント
 
 const Result = () => {
     const { formData } = useOutletContext();

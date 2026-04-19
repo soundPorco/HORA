@@ -62,34 +62,38 @@ const RenderResultByQuestionType = ({ questionType, values }) => {
                     ))}
 
                     {/* 円グラフ表示 */}
-                    <PieChart width={400} height={400} className="mx-auto">
-                        <Pie
-                            data={convertToChartData(values)}
-                            dataKey="value"
-                            nameKey="name"
-                            cx="50%"
-                            cy="50%"
-                            outerRadius={160}
-                            label={renderLabel} // ラベルをパーセント表示にする
-                        >
-                            {convertToChartData(values).map((_, index) => (
-                                <Cell
-                                    key={index}
-                                    // 色の配列から順番に色を割り当てる、選択肢が多い場合は色がループする
-                                    fill={
-                                        chartColors[index % chartColors.length]
-                                    }
-                                />
-                            ))}
-                        </Pie>
-                        <Tooltip /> {/* ホバー時のツールチップ */}
-                        <Legend
-                        // layout="vertical"
-                        // align="right"
-                        // verticalAlign="middle"
-                        />
-                        {/* 凡例 */}
-                    </PieChart>
+                    <ResponsiveContainer width="100%" height={450}>
+                        <PieChart className="mx-auto">
+                            <Pie
+                                data={convertToChartData(values)}
+                                dataKey="value"
+                                nameKey="name"
+                                cx="50%"
+                                cy="50%"
+                                outerRadius={160}
+                                label={renderLabel} // ラベルをパーセント表示にする
+                            >
+                                {convertToChartData(values).map((_, index) => (
+                                    <Cell
+                                        key={index}
+                                        // 色の配列から順番に色を割り当てる、選択肢が多い場合は色がループする
+                                        fill={
+                                            chartColors[
+                                                index % chartColors.length
+                                            ]
+                                        }
+                                    />
+                                ))}
+                            </Pie>
+                            <Tooltip /> {/* ホバー時のツールチップ */}
+                            <Legend
+                            // layout="vertical"
+                            // align="right"
+                            // verticalAlign="middle"
+                            />
+                            {/* 凡例 */}
+                        </PieChart>
+                    </ResponsiveContainer>
                 </ul>
             );
 
