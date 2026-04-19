@@ -1,6 +1,10 @@
 import { signOut } from "firebase/auth";
 import { auth } from "../firebase";
 import { useNavigate, useParams } from "react-router-dom";
+import { useState } from "react";
+
+// コンポーネント
+import HelpModal from "./HelpModal";
 
 // アイコン
 import { MdOutlineRemoveRedEye } from "react-icons/md"; // プレビューアイコン
@@ -17,6 +21,16 @@ const Menu = ({ setOpenLinkModal }) => {
     const handleLogout = async () => {
         await signOut(auth);
         navigate("/");
+    };
+
+    const [helpModalOpen, setHelpModalOpen] = useState(false);
+
+    const handleHelpClick = () => {
+        setHelpModalOpen(true); // ヘルプモーダルを表示
+    };
+
+    const handleHelpClose = () => {
+        setHelpModalOpen(false); // モーダルを非表示
     };
 
     return (
@@ -69,15 +83,19 @@ const Menu = ({ setOpenLinkModal }) => {
                     >
                         <MdLogout />
                     </button>
+
                     {/* ヘルプボタン */}
                     <button
-                        onClick={handleLogout}
+                        onClick={handleHelpClick}
                         className="relative text-2xl rounded-full p-2 hover:bg-gray-400 duration-200 group"
                     >
                         <MdHelpOutline />
                     </button>
                 </div>
             </div>
+
+            {/* ヘルプモーダル */}
+            <HelpModal isOpen={helpModalOpen} onClose={handleHelpClose} />
         </>
     );
 };
