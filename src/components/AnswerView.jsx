@@ -27,21 +27,35 @@ const AnswerView = ({ form, updateAnswer, handleSubmit, Preview, voted }) => {
     const renderOptions = (question) => (
         <div className="space-y-2 mt-3">
             {/* ラジオボタン */}
-            {question.questionType === "ラジオボタン" &&
-                question.options.map((opt, i) => (
-                    <label
-                        key={i}
-                        className="flex items-center gap-3 px-4 py-2.5 rounded-xl border border-gray-200 hover:border-[#00468b] hover:bg-blue-50 cursor-pointer transition"
-                    >
-                        <input
-                            type="radio"
-                            name={question.id}
-                            onChange={() => updateAnswer(question.id, opt)}
-                            className="accent-[#00468b]"
-                        />
-                        <span className="text-sm text-gray-700">{opt}</span>
-                    </label>
-                ))}
+            {question.questionType === "ラジオボタン" && (
+                <>
+                    {question.options.map((opt, i) => (
+                        <label
+                            key={i}
+                            className="flex items-center gap-3 px-4 py-2.5 rounded-xl border border-gray-200 hover:border-[#00468b] hover:bg-blue-50 cursor-pointer transition"
+                        >
+                            <input
+                                type="radio"
+                                name={question.id}
+                                onChange={() => updateAnswer(question.id, opt)}
+                                className="accent-[#00468b]"
+                            />
+                            <span className="text-sm text-gray-700">{opt}</span>
+                        </label>
+                    ))}
+                    {!question.required && (
+                        <label className="flex items-center gap-3 px-4 py-2.5 rounded-xl border border-dashed border-gray-200 hover:border-gray-400 cursor-pointer transition">
+                            <input
+                                type="radio"
+                                name={question.id}
+                                onChange={() => updateAnswer(question.id, "")}
+                                className="accent-gray-400"
+                            />
+                            <span className="text-sm text-gray-400">未回答</span>
+                        </label>
+                    )}
+                </>
+            )}
 
             {/* チェックボックス */}
             {question.questionType === "チェックボックス" &&
@@ -65,7 +79,7 @@ const AnswerView = ({ form, updateAnswer, handleSubmit, Preview, voted }) => {
                     className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm text-gray-700 outline-none focus:border-[#00468b] transition"
                     onChange={(e) => updateAnswer(question.id, e.target.value)}
                 >
-                    <option value="">選択してください</option>
+                    <option value="">{question.required ? "選択してください" : "未回答"}</option>
                     {question.options.map((opt, i) => (
                         <option key={i} value={opt}>{opt}</option>
                     ))}
