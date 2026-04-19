@@ -51,9 +51,9 @@ const HelpModal = ({ isOpen, onClose }) => {
     // 次のスライドへ移動
     const handleNext = () => {
         if (currentSlide < helpSlides.length - 1) {
-            setCurrentSlide(currentSlide + 1);
-        } else if (currentSlide === helpSlides.length - 1) {
-            onClose(); // 最後のスライドで「次へ」をクリックしたらモーダルを閉じる
+            setCurrentSlide((prev) => prev + 1); // prev を使って確実に更新
+        } else {
+            onClose(); // 最後のスライドでモーダルを閉じる
         }
     };
 
@@ -94,7 +94,6 @@ const HelpModal = ({ isOpen, onClose }) => {
                 {/* 次へボタン */}
                 <button
                     onClick={handleNext}
-                    disabled={currentSlide === helpSlides.length - 1}
                     className="px-4 py-2 mt-6 rounded w-full duration-150 
                         bg-blue-500 text-white hover:bg-blue-600"
                 >
