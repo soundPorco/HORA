@@ -120,14 +120,25 @@ const RenderResultByQuestionType = ({ questionType, values }) => {
                                 data={convertToChartData(values)}
                                 layout="vertical" // 横向きの棒グラフ
                                 margin={{
-                                    top: 10,
-                                    right: 30,
-                                    left: 20,
-                                    bottom: 10,
+                                    top: 20,
+                                    right: 10,
+                                    left: 10,
+                                    bottom: 20,
                                 }}
                             >
                                 <XAxis type="number" /> {/* 横軸は数値 */}
-                                <YAxis dataKey="name" type="category" />
+                                <YAxis
+                                    dataKey="name"
+                                    type="category"
+                                    width={140}
+                                    tickFormatter={(value) => {
+                                        const maxLength = 10; // 最大表示文字数
+                                        return value.length > maxLength
+                                            ? `${value.slice(0, maxLength)}...`
+                                            : value;
+                                    }}
+                                    tick={{ fontSize: 12, fill: "#333" }}
+                                />
                                 {/* 縦軸はカテゴリ */}
                                 <Tooltip /> {/* ホバー時のツールチップ */}
                                 <Bar dataKey="value" fill="#3e65a4" />
