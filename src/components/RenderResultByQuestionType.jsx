@@ -12,6 +12,8 @@ import {
     ResponsiveContainer,
 } from "recharts";
 
+import CustomTooltip from "./CustomTooltip"; // カスタムツールチップコンポーネント
+
 // 設問タイプに応じた表示を返すコンポーネント
 // renderとは「表示する」という意味
 const RenderResultByQuestionType = ({ questionType, values }) => {
@@ -85,7 +87,8 @@ const RenderResultByQuestionType = ({ questionType, values }) => {
                                     />
                                 ))}
                             </Pie>
-                            <Tooltip /> {/* ホバー時のツールチップ */}
+                            <Tooltip content={<CustomTooltip />} />{" "}
+                            {/* ホバー時のツールチップ */}
                             <Legend
                             // layout="vertical"
                             // align="right"
@@ -140,7 +143,8 @@ const RenderResultByQuestionType = ({ questionType, values }) => {
                                     tick={{ fontSize: 12, fill: "#333" }}
                                 />
                                 {/* 縦軸はカテゴリ */}
-                                <Tooltip /> {/* ホバー時のツールチップ */}
+                                <Tooltip content={<CustomTooltip />} />{" "}
+                                {/* ホバー時のツールチップ */}
                                 <Bar dataKey="value" fill="#3e65a4" />
                             </BarChart>
                         </ResponsiveContainer>
