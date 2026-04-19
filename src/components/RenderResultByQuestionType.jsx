@@ -63,40 +63,54 @@ const RenderResultByQuestionType = ({ questionType, values }) => {
                         </li>
                     ))}
 
+                    {/* グラフ表示エリアとのスペース */}
+                    <div className="h-[20px]"></div>
+
                     {/* 円グラフ表示 */}
-                    <ResponsiveContainer width="100%" height={450}>
-                        <PieChart className="mx-auto">
-                            <Pie
-                                data={convertToChartData(values)}
-                                dataKey="value"
-                                nameKey="name"
-                                cx="50%"
-                                cy="50%"
-                                outerRadius={160}
-                                label={renderLabel} // ラベルをパーセント表示にする
+                    <div className="w-full border rounded border-gray-300">
+                        <ResponsiveContainer width="100%" height={500}>
+                            <PieChart
+                                className="mx-auto"
+                                margin={{
+                                    top: 20,
+                                    right: 20,
+                                    bottom: 30,
+                                    left: 20,
+                                }} // 下に余白を追加
                             >
-                                {convertToChartData(values).map((_, index) => (
-                                    <Cell
-                                        key={index}
-                                        // 色の配列から順番に色を割り当てる、選択肢が多い場合は色がループする
-                                        fill={
-                                            chartColors[
-                                                index % chartColors.length
-                                            ]
-                                        }
-                                    />
-                                ))}
-                            </Pie>
-                            <Tooltip content={<CustomTooltip />} />{" "}
-                            {/* ホバー時のツールチップ */}
-                            <Legend
-                            // layout="vertical"
-                            // align="right"
-                            // verticalAlign="middle"
-                            />
-                            {/* 凡例 */}
-                        </PieChart>
-                    </ResponsiveContainer>
+                                <Pie
+                                    data={convertToChartData(values)}
+                                    dataKey="value"
+                                    nameKey="name"
+                                    cx="50%"
+                                    cy="50%"
+                                    outerRadius={160}
+                                    label={renderLabel} // ラベルをパーセント表示にする
+                                >
+                                    {convertToChartData(values).map(
+                                        (_, index) => (
+                                            <Cell
+                                                key={index}
+                                                // 色の配列から順番に色を割り当てる、選択肢が多い場合は色がループする
+                                                fill={
+                                                    chartColors[
+                                                        index %
+                                                            chartColors.length
+                                                    ]
+                                                }
+                                            />
+                                        ),
+                                    )}
+                                </Pie>
+                                <Tooltip content={<CustomTooltip />} />{" "}
+                                {/* ホバー時のツールチップ */}
+                                <Legend
+                                    margin={{ bottom: 500 }} // 凡例の下にマージンを追加
+                                />
+                                {/* 凡例 */}
+                            </PieChart>
+                        </ResponsiveContainer>
+                    </div>
                 </ul>
             );
 
@@ -110,9 +124,11 @@ const RenderResultByQuestionType = ({ questionType, values }) => {
                             <span>{count} 件</span>
                         </li>
                     ))}
+                    {/* グラフ表示エリアとのスペース */}
+                    <div className="h-[20px]"></div>
 
                     {/* 棒グラフ表示 */}
-                    <div className="w-full h-80">
+                    <div className="w-full h-80 border rounded border-gray-300">
                         {/* <ResponsiveContainer>がないと表示されない場合があるらしい */}
                         <ResponsiveContainer
                             width="100%"
@@ -124,7 +140,7 @@ const RenderResultByQuestionType = ({ questionType, values }) => {
                                 layout="vertical" // 横向きの棒グラフ
                                 margin={{
                                     top: 20,
-                                    right: 10,
+                                    right: 20,
                                     left: 10,
                                     bottom: 20,
                                 }}
