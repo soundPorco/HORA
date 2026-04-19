@@ -1,37 +1,44 @@
 import React from "react";
 import { useState } from "react";
 
+// スライドアイコン
+import { MdOutlineAutoAwesomeMotion } from "react-icons/md"; //メモ
+import { MdBarChart } from "react-icons/md"; //グラフアイコン
+import { MdEdit } from "react-icons/md"; //編集アイコン
+import { MdPublic } from "react-icons/md"; //公開アイコン
+import { MdLock } from "react-icons/md"; //ロックアイコン
+
 const HelpModal = ({ isOpen, onClose }) => {
     if (!isOpen) return null;
 
     // スライドデータ
     const helpSlides = [
         {
-            icon: "📝",
+            icon: <MdOutlineAutoAwesomeMotion />,
             title: "HORAとは？",
             description:
                 "HORAは、簡単にアンケートを作成し、回答を収集・分析できるツールです。",
         },
         {
-            icon: "✏️",
+            icon: <MdEdit />,
             title: "アンケートの作成",
             description:
                 "直感的な操作で、質問や選択肢を自由に追加・編集できます。",
         },
         {
-            icon: "📊",
+            icon: <MdBarChart />,
             title: "回答の収集",
             description:
                 "回答をリアルタイムで収集し、結果を簡単に確認できます。",
         },
         {
-            icon: "🌐",
+            icon: <MdPublic />,
             title: "公開と共有",
             description:
                 "アンケートを公開し、リンクを共有するだけで簡単に回答を集められます。",
         },
         {
-            icon: "🔒",
+            icon: <MdLock />,
             title: "安全なデータ管理",
             description:
                 "収集したデータは安全に管理され、プライバシーを保護します。",
@@ -80,7 +87,7 @@ const HelpModal = ({ isOpen, onClose }) => {
 
                 {/* スライドコンテイナー */}
                 <div className="text-center mt-[60px] mb-6 px-10">
-                    <div className="text-5xl mb-4">
+                    <div className="text-5xl mb-4 *:text-blue-500 bg-blue-100 rounded-full w-24 h-24 flex items-center justify-center mx-auto p-7">
                         {helpSlides[currentSlide].icon}
                     </div>
                     <h2 className="text-xl font-bold mb-4">

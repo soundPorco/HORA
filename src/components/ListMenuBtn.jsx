@@ -1,10 +1,10 @@
 import { useState } from "react";
 
 // アイコン
-import { RiDeleteBin6Line } from "react-icons/ri";
-import { MdBarChart } from "react-icons/md";
-import { MdEdit } from "react-icons/md";
-import { HiDotsVertical } from "react-icons/hi";
+import { RiDeleteBin6Line } from "react-icons/ri"; //ゴミ箱アイコン
+import { MdBarChart } from "react-icons/md"; //グラフアイコン
+import { MdEdit } from "react-icons/md"; //編集アイコン
+import { HiDotsVertical } from "react-icons/hi"; //三点アイコン
 
 const MenuButton = ({ onEdit, onResult, onDelete }) => {
     const [open, setOpen] = useState(false);
