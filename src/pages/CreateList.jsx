@@ -13,13 +13,11 @@ import { onAuthStateChanged } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 
 // アイコン
-import { MdEdit } from "react-icons/md";
-import { MdOutlineDataset } from "react-icons/md";
+import { MdEdit, MdBarChart, MdAdd, MdOutlineDataset } from "react-icons/md";
 import { RiDeleteBin6Line } from "react-icons/ri";
 
-// アンケート一覧ページコンポーネント
+// コンポーネント
 import Menu from "../components/Menu";
-import ListMenuBtn from "../components/ListMenuBtn";
 
 const CreateList = () => {
     const [forms, setForms] = useState([]);
@@ -37,39 +35,32 @@ const CreateList = () => {
         return () => unsubscribe();
     }, [navigate]);
 
-    // Firestore からユーザーのアンケート一覧を取得
     useEffect(() => {
-        if (!userId) return; // userId が設定されるまで待機
+        if (!userId) return;
 
         const fetchForms = async () => {
             const q = query(
                 collection(db, "forms"),
                 where("userId", "==", userId),
-                orderBy("updatedAt", "desc"), // updatedAt を基準に並び替え
+                orderBy("updatedAt", "desc"),
             );
-
             const snapshot = await getDocs(q);
             const list = snapshot.docs.map((doc) => ({
                 id: doc.id,
                 ...doc.data(),
             }));
-
             setForms(list);
         };
 
         fetchForms();
-    }, [userId]); // userId が変更されたときにクエリを再実行
+    }, [userId]);
 
-    // アンケート削除関数
     const deleteForm = async (formId) => {
         const isOk = window.confirm("このアンケートを削除しますか？");
         if (!isOk) return;
 
         try {
             await deleteDoc(doc(db, "forms", formId));
-            alert("削除しました");
-
-            // 画面からも即座に消す（再取得しなくて済む）
             setForms((prev) => prev.filter((form) => form.id !== formId));
         } catch (error) {
             console.error("削除に失敗しました", error);
@@ -78,63 +69,99 @@ const CreateList = () => {
     };
 
     return (
-        <div className="min-h-screen bg-gray-100 pb-40">
+        <div className="min-h-screen bg-slate-100 pb-40">
             <div className="fixed top-0 z-40">
                 <Menu />
             </div>
-            {/* Menu(20)  + 余白(12) = 32 */}
-            <div className="h-32"></div>
+            <div className="h-32" />
 
-            <div className="max-w-2xl mx-auto bg-white rounded-xl shadow-md pb-8">
-                <h1 className="text-xl text-center font-semibold border-b mb-6 border-gray-300 px-4 py-3 w-full">
-                    アンケート一覧
-                </h1>
-                {/* <div className="font-bold text-gray-400 mb-6 border-b border-gray-300  py-2 w-full flex items-center justify-around">
-                    <button>公開中のアンケート</button>
-                    <button>過去のアンケート</button>
-                </div> */}
+            <div className="max-w-2xl mx-auto px-4">
+                {/* ページヘッダー */}
+                <div className="flex items-center justify-between mb-4">
+                    <h1 className="text-xl font-bold text-gray-800">アンケート一覧</h1>
+                    <span className="text-sm text-gray-400">{forms.length} 件</span>
+                </div>
 
                 {/* アンケート一覧 */}
-                <div className="space-y-4 mx-8">
-                    {forms.map((form) => (
-                        <div
-                            key={form.id} //crypto.randomUUID()
-                            className="border rounded-lg p-3 flex justify-between items-center hover:bg-gray-50 transition"
-                        >
-                            {/* 左側：タイトルと日付 */}
-                            <div>
-                                <h3 className="font-semibold text-lg">
-                                    {form.title}
-                                </h3>
-                                <p className="text-sm text-gray-500 mt-1">
-                                    更新日：
-                                    {form.updatedAt
-                                        ?.toDate()
-                                        .toLocaleDateString()}
-                                </p>
-                            </div>
-
-                            {/* 右側：操作ボタン */}
-                            <ListMenuBtn
-                                onEdit={() => navigate(`/edit/${form.id}`)}
-                                onResult={() => navigate(`/result/${form.id}`)}
-                                onDelete={() => deleteForm(form.id)}
-                            />
+                <div className="space-y-2">
+                    {forms.length === 0 ? (
+                        <div className="bg-white rounded-xl py-16 flex flex-col items-center text-gray-300 shadow-sm">
+                            <MdOutlineDataset className="text-5xl mb-3" />
+                            <p className="text-sm">アンケートがまだありません</p>
                         </div>
-                    ))}
+                    ) : (
+                        forms.map((form) => (
+                            <div
+                                key={form.id}
+                                className="bg-white rounded-xl px-4 py-3.5 flex items-center justify-between shadow-sm hover:shadow-md transition-shadow"
+                            >
+                                {/* 左側：ステータスドット＋テキスト */}
+                                <div className="flex items-center gap-3 min-w-0">
+                                    <div
+                                        className={`w-2 h-2 rounded-full shrink-0 ${
+                                            form.published
+                                                ? "bg-green-500"
+                                                : "bg-gray-300"
+                                        }`}
+                                    />
+                                    <div className="min-w-0">
+                                        <h3 className="font-semibold text-gray-900 truncate">
+                                            {form.title || "無題のアンケート"}
+                                        </h3>
+                                        <p className="text-xs text-gray-400 mt-0.5">
+                                            {form.published ? "公開中" : "非公開"}
+                                            {form.updatedAt && (
+                                                <>
+                                                    {" · "}
+                                                    {form.updatedAt
+                                                        .toDate()
+                                                        .toLocaleDateString()}
+                                                    {" 更新"}
+                                                </>
+                                            )}
+                                        </p>
+                                    </div>
+                                </div>
+
+                                {/* 右側：アクションボタン */}
+                                <div className="flex items-center gap-0.5 shrink-0 ml-4">
+                                    <button
+                                        onClick={() => navigate(`/edit/${form.id}`)}
+                                        title="編集"
+                                        className="p-2 text-gray-400 hover:text-[#00468b] hover:bg-blue-50 rounded-lg transition text-lg"
+                                    >
+                                        <MdEdit />
+                                    </button>
+                                    <button
+                                        onClick={() => navigate(`/result/${form.id}`)}
+                                        title="結果"
+                                        className="p-2 text-gray-400 hover:text-[#00468b] hover:bg-blue-50 rounded-lg transition text-lg"
+                                    >
+                                        <MdBarChart />
+                                    </button>
+                                    <button
+                                        onClick={() => deleteForm(form.id)}
+                                        title="削除"
+                                        className="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition text-lg"
+                                    >
+                                        <RiDeleteBin6Line />
+                                    </button>
+                                </div>
+                            </div>
+                        ))
+                    )}
                 </div>
 
-                {/* 新規作成 */}
-                <div className="mx-8">
-                    <button
-                        onClick={() => navigate("/create-new")}
-                        className="mt-8 w-full py-4  border-2 border-dashed rounded-lg
-                    text-lg font-semibold text-gray-600
-                    hover:bg-gray-100 transition"
-                    >
-                        ＋ 新しいアンケートを作成
-                    </button>
-                </div>
+                {/* 新規作成ボタン */}
+                <button
+                    onClick={() => navigate("/create-new")}
+                    className="mt-4 w-full py-3.5 bg-[#00468b] text-white rounded-xl font-semibold
+                               hover:bg-[#003570] active:scale-[0.98] transition
+                               flex items-center justify-center gap-2 shadow-sm"
+                >
+                    <MdAdd className="text-xl" />
+                    新しいアンケートを作成
+                </button>
             </div>
         </div>
     );

@@ -135,67 +135,56 @@ const Result = () => {
 
     return (
         <div>
-            {/* 回答結果の表示 */}
             <div className="max-w-3xl mx-auto bg-white p-6 rounded-xl shadow mb-10">
                 {/* フォームタイトル・説明 */}
-                <div className="border-b pb-4 mb-4">
-                    <h2 className="w-full px-3 py-1 font-bold text-3xl">
+                <div className="border-b border-gray-200 pb-4 mb-6">
+                    <h2 className="font-bold text-2xl text-gray-900 px-1">
                         {formData.title}
                     </h2>
-                    <h3 className="w-full px-3 py-1 font-medium">
-                        {formData.description}
-                    </h3>
+                    {formData.description && (
+                        <p className="text-sm text-gray-500 mt-1 px-1">
+                            {formData.description}
+                        </p>
+                    )}
                 </div>
-                {/* <div className="w-full h-80 mt-8">
-                    <ResponsiveContainer width="100%" height="100%">
-                        <LineChart data={chartData}>
-                            <CartesianGrid strokeDasharray="3 3" />
-                            <XAxis dataKey="time" />
-                            <YAxis />
-                            <Tooltip />
-                            <Line
-                                type="monotone"
-                                dataKey="count"
-                                stroke="#2563eb"
-                                strokeWidth={3}
-                            />
-                        </LineChart>
-                    </ResponsiveContainer>
-                </div> */}
-                {/* 回答データ表示 */}
-                <div className="border rounded p-4 mb-4">
-                    <h2 className="text-2xl font-bold text-center">回答総数</h2>
-                    <h1 className="text-9xl font-bold text-center">
+
+                {/* 回答総数 */}
+                <div className="bg-[#00468b] rounded-xl p-5 mb-6 flex items-center justify-between">
+                    <span className="text-white font-semibold text-lg">回答総数</span>
+                    <span className="text-white font-bold text-6xl leading-none">
                         {responseList.length}
-                    </h1>
+                    </span>
                 </div>
 
-                {/* 回答者がいない場合のメッセージ */}
+                {/* 回答者がいない場合 */}
                 {responseList.length === 0 ? (
-                    <div>まだ回答がありません</div>
+                    <div className="text-center py-10 text-gray-300">
+                        <p className="text-sm">まだ回答がありません</p>
+                    </div>
                 ) : (
-                    questions.map((question, index) => {
-                        const questionId = question.id;
-                        const values = resultSummary[questionId] || {}; // 集計結果がない場合は空オブジェクト
-                        return (
-                            <div
-                                key={question}
-                                className="border rounded p-4 mb-4"
-                            >
-                                <h3 className="font-semibold">
-                                    設問 {index + 1}
-                                </h3>
-                                <h2 className="font-semibold mb-4 border-b pb-2 border-gray-300">
-                                    {question.questionTitle}
-                                </h2>
-
-                                <RenderResultByQuestionType
-                                    questionType={question.questionType}
-                                    values={values}
-                                />
-                            </div>
-                        );
-                    })
+                    <div className="space-y-4">
+                        {questions.map((question, index) => {
+                            const questionId = question.id;
+                            const values = resultSummary[questionId] || {};
+                            return (
+                                <div
+                                    key={question.id}
+                                    className="bg-slate-50 rounded-xl p-4"
+                                >
+                                    <span className="text-xs font-semibold text-[#00468b] uppercase tracking-wide">
+                                        Q{index + 1}
+                                    </span>
+                                    <h2 className="font-semibold text-gray-800 mt-1 mb-4 pb-3 border-b border-gray-200">
+                                        {question.questionTitle}
+                                    </h2>
+                                    <RenderResultByQuestionType
+                                        questionType={question.questionType}
+                                        values={values}
+                                    />
+                                </div>
+                            );
+                        })}
+                    </div>
                 )}
             </div>
         </div>
