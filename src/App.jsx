@@ -67,6 +67,13 @@ function App() {
                         >
                             Googleログイン
                         </button>
+
+                        <button
+                            className="text-white border border-white font-bold rounded-full px-4 py-2 hover:bg-white hover:text-[#00468B] transition duration-300"
+                            onClick={() => navigate("/demo")}
+                        >
+                            デモを見る
+                        </button>
                     </div>
                 </div>
             ) : (
