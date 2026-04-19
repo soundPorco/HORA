@@ -175,7 +175,7 @@ const RenderResultByQuestionType = ({ questionType, values }) => {
                         // break-all で長いテキストも改行して表示
                         <li
                             key={index}
-                            className="bg-white border border-gray-100 px-3 py-2 rounded-md break-all"
+                            className="bg-white border border-gray-150 px-3 py-2 rounded-md break-all"
                         >
                             {answer}{" "}
                             <span className="text-gray-500">({count} 件)</span>

@@ -44,47 +44,48 @@ const PublishModal = ({
             />
 
             {/* モーダル本体 */}
-            <div className="relative bg-white rounded-lg shadow-lg w-[90%] max-w-lg p-6 z-10">
-                {/* モーダル内容 */}
-                <div>
-                    <h2 className="text-xl font-bold mb-4 text-center">
-                        アンケート公開URL
-                    </h2>
-                    <div className="flex justify-center my-4">
+            <div className="relative bg-white rounded-2xl shadow-xl w-[90%] max-w-sm p-6 z-10">
+                <h2 className="text-base font-bold text-gray-900 text-center mb-5">
+                    アンケート公開URL
+                </h2>
+
+                {/* QRコード */}
+                <div className="flex justify-center mb-5">
+                    <div className="p-3 bg-slate-50 rounded-xl border border-gray-100">
                         <QRCodeCanvas
-                            value={url} // ← QR化したい文字列（URL）
-                            size={200} // サイズ(px)
-                            level="M" // 誤り訂正レベル（L/M/Q/H）
+                            value={url}
+                            size={160}
+                            level="M"
                         />
                     </div>
-
-                    <div
-                        className="bg-gray-100 p-3 rounded break-all flex
-                    items-center justify-between gap-2 max-w-[80%] mx-auto"
-                    >
-                        {/* URL */}
-                        <div className="truncate max-w-[90%]">{url}</div>
-                        {/* コピー用ボタン */}
-                        {toggleCopy ? (
-                            <MdCheck className="text-xl" />
-                        ) : (
-                            <MdContentCopy
-                                onClick={handleCopy}
-                                className="text-xl"
-                            />
-                        )}
-                    </div>
-
-                    {/* 閉じるボタン */}
-                    <div className="flex justify-center mt-6 gap-2">
-                        <button
-                            onClick={onClose}
-                            className="px-4 py-2 border rounded hover:bg-gray-100"
-                        >
-                            閉じる
-                        </button>
-                    </div>
                 </div>
+
+                {/* URLコピー欄 */}
+                <div className="flex items-center gap-2 bg-slate-50 border border-gray-200 rounded-xl px-3 py-2">
+                    <span className="flex-1 text-xs text-gray-500 truncate">{url}</span>
+                    <button
+                        onClick={handleCopy}
+                        className={`shrink-0 p-1.5 rounded-lg transition ${
+                            toggleCopy
+                                ? "text-green-500 bg-green-50"
+                                : "text-gray-400 hover:text-[#00468b] hover:bg-blue-50"
+                        }`}
+                    >
+                        {toggleCopy ? (
+                            <MdCheck className="text-lg" />
+                        ) : (
+                            <MdContentCopy className="text-lg" />
+                        )}
+                    </button>
+                </div>
+
+                {/* 閉じるボタン */}
+                <button
+                    onClick={onClose}
+                    className="mt-4 w-full py-2.5 rounded-xl border border-gray-200 text-sm font-semibold text-gray-500 hover:bg-gray-50 transition"
+                >
+                    閉じる
+                </button>
             </div>
         </div>
     );
