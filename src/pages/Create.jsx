@@ -4,6 +4,7 @@ import { serverTimestamp, doc, updateDoc } from "firebase/firestore";
 import { db } from "../firebase"; // Firestore の初期化をインポート
 import { useOutletContext } from "react-router-dom";
 import autosize from "autosize";
+import { MdLockOutline } from "react-icons/md";
 
 // コンポーネント
 import Questions from "../components/Questions";
@@ -92,6 +93,17 @@ const Create = () => {
 
     return (
         <div className="bg-slate-200 shadow-md rounded-lg px-6 pt-6 pb-1 mx-auto w-[min(calc(100%-2rem),800px)]">
+            {/* 公開中の編集ロックバナー */}
+            {localFormData.published && (
+                <div className="flex items-start gap-3 bg-amber-50 border border-amber-200 text-amber-900 rounded-lg px-4 py-3 mb-5">
+                    <MdLockOutline className="text-xl shrink-0 mt-0.5 text-amber-500" />
+                    <div>
+                        <p className="font-semibold text-sm">公開中のため編集できません</p>
+                        <p className="text-xs text-amber-700 mt-0.5">設定の公開トグルをオフにすると、編集が可能になります。</p>
+                    </div>
+                </div>
+            )}
+
             {/* アンケート作成フォーム */}
             <div className="">
                 {/* Title */}
