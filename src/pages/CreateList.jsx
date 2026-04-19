@@ -45,7 +45,7 @@ const CreateList = () => {
             const q = query(
                 collection(db, "forms"),
                 where("userId", "==", userId),
-                orderBy("updatedAt", "desc") // updatedAt を基準に並び替え
+                orderBy("updatedAt", "desc"), // updatedAt を基準に並び替え
             );
 
             const snapshot = await getDocs(q);
@@ -85,13 +85,17 @@ const CreateList = () => {
             {/* Menu(20)  + 余白(12) = 32 */}
             <div className="h-32"></div>
 
-            <div className="max-w-2xl mx-auto bg-white rounded-xl shadow-md p-6">
-                <h1 className="text-2xl font-bold mb-6">
-                    あなたのアンケート一覧
+            <div className="max-w-2xl mx-auto bg-white rounded-xl shadow-md pb-8">
+                <h1 className="text-xl text-center font-semibold border-b mb-6 border-gray-300 px-4 py-3 w-full">
+                    アンケート一覧
                 </h1>
+                {/* <div className="font-bold text-gray-400 mb-6 border-b border-gray-300  py-2 w-full flex items-center justify-around">
+                    <button>公開中のアンケート</button>
+                    <button>過去のアンケート</button>
+                </div> */}
 
                 {/* アンケート一覧 */}
-                <div className="space-y-4">
+                <div className="space-y-4 mx-8">
                     {forms.map((form) => (
                         <div
                             key={form.id} //crypto.randomUUID()
@@ -121,14 +125,16 @@ const CreateList = () => {
                 </div>
 
                 {/* 新規作成 */}
-                <button
-                    onClick={() => navigate("/create-new")}
-                    className="mt-8 w-full py-4 border-2 border-dashed rounded-lg
-                       text-lg font-semibold text-gray-600
-                       hover:bg-gray-100 transition"
-                >
-                    ＋ 新しいアンケートを作成
-                </button>
+                <div className="mx-8">
+                    <button
+                        onClick={() => navigate("/create-new")}
+                        className="mt-8 w-full py-4  border-2 border-dashed rounded-lg
+                    text-lg font-semibold text-gray-600
+                    hover:bg-gray-100 transition"
+                    >
+                        ＋ 新しいアンケートを作成
+                    </button>
+                </div>
             </div>
         </div>
     );

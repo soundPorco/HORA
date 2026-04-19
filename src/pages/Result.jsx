@@ -146,7 +146,7 @@ const Result = () => {
                         {formData.description}
                     </h3>
                 </div>
-                <div className="w-full h-80 mt-8">
+                {/* <div className="w-full h-80 mt-8">
                     <ResponsiveContainer width="100%" height="100%">
                         <LineChart data={chartData}>
                             <CartesianGrid strokeDasharray="3 3" />
@@ -161,7 +161,7 @@ const Result = () => {
                             />
                         </LineChart>
                     </ResponsiveContainer>
-                </div>
+                </div> */}
                 {/* 回答データ表示 */}
                 <div className="border rounded p-4 mb-4">
                     <h2 className="text-2xl font-bold text-center">回答総数</h2>
