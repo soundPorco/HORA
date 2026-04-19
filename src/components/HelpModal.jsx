@@ -52,30 +52,15 @@ const HelpModal = ({ isOpen, onClose }) => {
     const handleNext = () => {
         if (currentSlide < helpSlides.length - 1) {
             setCurrentSlide(currentSlide + 1);
+        } else if (currentSlide === helpSlides.length - 1) {
+            onClose(); // 最後のスライドで「次へ」をクリックしたらモーダルを閉じる
         }
     };
 
-    return (
-        // <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-        //     <div className="bg-white rounded-lg shadow-lg p-6 w-[90%] max-w-md relative">
-        //         <button
-        //             className="absolute top-2 right-4 text-xl text-gray-600 hover:text-gray-800"
-        //             onClick={onClose}
-        //         >
-        //             ×
-        //         </button>
-        //         <h2 className="text-xl font-bold mb-4">ヘルプ</h2>
-        //         <p className="text-gray-700">
-        //             ここにヘルプの内容を記載してください。
-        //         </p>
-        //         <div className="flex justify-end mt-4">
-        //             <button
-        //                 onClick={onClose}
-        //                 className="px-4 py-2 w-full bg-blue-500 text-white rounded hover:bg-blue-600"
-        //             >
-        //                 次へ
-        //             </button>
+    // 進行度の計算
+    const progress = ((currentSlide + 1) / helpSlides.length) * 100;
 
+    return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
             <div className="bg-white rounded-lg shadow-lg p-8 w-[90%] max-w-md relative">
                 <button
@@ -98,17 +83,22 @@ const HelpModal = ({ isOpen, onClose }) => {
                     </p>
                 </div>
 
+                {/* プログレスバー */}
+                <div className="w-full bg-gray-300 h-2 rounded-full mb-6">
+                    <div
+                        className="bg-blue-500 h-2 rounded-full transition-all duration-300"
+                        style={{ width: `${progress}%` }}
+                    ></div>
+                </div>
+
                 {/* 次へボタン */}
                 <button
                     onClick={handleNext}
                     disabled={currentSlide === helpSlides.length - 1}
-                    className={`px-4 py-2 mt-6 rounded w-full duration-150 ${
-                        currentSlide === helpSlides.length - 1
-                            ? "bg-gray-300 cursor-not-allowed"
-                            : "bg-blue-500 text-white hover:bg-blue-600"
-                    }`}
+                    className="px-4 py-2 mt-6 rounded w-full duration-150 
+                        bg-blue-500 text-white hover:bg-blue-600"
                 >
-                    次へ
+                    {currentSlide === helpSlides.length - 1 ? "閉じる" : "次へ"}
                 </button>
             </div>
         </div>
