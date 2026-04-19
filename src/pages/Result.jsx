@@ -137,7 +137,7 @@ const Result = () => {
         <div>
             <div className="max-w-3xl mx-auto bg-white p-6 rounded-xl shadow mb-10">
                 {/* フォームタイトル・説明 */}
-                <div className="border-b border-gray-200 pb-4 mb-6">
+                <div className="border-b border-gray-300 pb-4 mb-6">
                     <h2 className="font-bold text-2xl text-gray-900 px-1">
                         {formData.title}
                     </h2>
@@ -150,7 +150,9 @@ const Result = () => {
 
                 {/* 回答総数 */}
                 <div className="bg-[#00468b] rounded-xl p-5 mb-6 flex items-center justify-between">
-                    <span className="text-white font-semibold text-lg">回答総数</span>
+                    <span className="text-white font-semibold text-lg">
+                        回答総数
+                    </span>
                     <span className="text-white font-bold text-6xl leading-none">
                         {responseList.length}
                     </span>
@@ -169,12 +171,12 @@ const Result = () => {
                             return (
                                 <div
                                     key={question.id}
-                                    className="bg-slate-50 rounded-xl p-4"
+                                    className="bg-slate-100 rounded-xl p-4"
                                 >
                                     <span className="text-xs font-semibold text-[#00468b] uppercase tracking-wide">
                                         Q{index + 1}
                                     </span>
-                                    <h2 className="font-semibold text-gray-800 mt-1 mb-4 pb-3 border-b border-gray-200">
+                                    <h2 className="font-semibold text-gray-800 mt-1 mb-4 pb-3 border-b border-gray-300">
                                         {question.questionTitle}
                                     </h2>
                                     <RenderResultByQuestionType
