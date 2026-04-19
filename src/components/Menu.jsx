@@ -7,6 +7,7 @@ import { MdOutlineRemoveRedEye } from "react-icons/md"; // プレビューアイ
 import { MdLink } from "react-icons/md"; //リンクアイコン
 import { MdLinkOff } from "react-icons/md"; //リンク解除アイコン
 import { MdFormatListBulleted } from "react-icons/md"; //一覧アイコン
+import { MdHelpOutline } from "react-icons/md"; //ヘルプアイコン
 import { MdLogout } from "react-icons/md"; // ログアウトアイコン
 
 const Menu = ({ setOpenLinkModal }) => {
@@ -67,6 +68,13 @@ const Menu = ({ setOpenLinkModal }) => {
                         className="relative text-2xl rounded-full p-2 hover:bg-gray-400 duration-200 group"
                     >
                         <MdLogout />
+                    </button>
+                    {/* ヘルプボタン */}
+                    <button
+                        onClick={handleLogout}
+                        className="relative text-2xl rounded-full p-2 hover:bg-gray-400 duration-200 group"
+                    >
+                        <MdHelpOutline />
                     </button>
                 </div>
             </div>
