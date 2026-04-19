@@ -9,6 +9,9 @@ import { MdPublic } from "react-icons/md"; //公開アイコン
 import { MdLock } from "react-icons/md"; //ロックアイコン
 
 const HelpModal = ({ isOpen, onClose }) => {
+    // 現在のスライドインデックスを管理
+    const [currentSlide, setCurrentSlide] = useState(0);
+
     if (!isOpen) return null;
 
     // スライドデータ
@@ -44,9 +47,6 @@ const HelpModal = ({ isOpen, onClose }) => {
                 "収集したデータは安全に管理され、プライバシーを保護します。",
         },
     ];
-
-    // 現在のスライドインデックスを管理
-    const [currentSlide, setCurrentSlide] = useState(0);
 
     // 次のスライドへ移動
     const handleNext = () => {
