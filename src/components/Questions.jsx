@@ -5,6 +5,7 @@ const Questions = ({
     updateQuestionData,
     deleteQuestion,
     published,
+    isDemo,
 }) => {
     return (
         <>
@@ -17,6 +18,7 @@ const Questions = ({
                         updateQuestionData={updateQuestionData}
                         deleteQuestion={deleteQuestion}
                         published={published}
+                        isDemo={isDemo}
                     />
                 ))
             }

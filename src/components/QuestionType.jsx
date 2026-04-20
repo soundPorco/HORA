@@ -12,6 +12,7 @@ const QuestionType = ({
     updateQuestionData,
     className = "",
     published,
+    isDemo,
 }) => {
     const [open, setOpen] = useState(false);
 
@@ -40,14 +41,14 @@ const QuestionType = ({
     return (
         <div className={`relative ${className}`}>
             <button
-                onClick={() => (published ? null : setOpen(!open))}
+                onClick={() => (published || isDemo ? null : setOpen(!open))}
                 className="p-2 border rounded w-full flex items-center justify-between"
             >
                 <span className="flex items-center gap-2">
                     {getIcon(questionData.questionType)}{" "}
                     {questionData.questionType}
                 </span>
-                {published ? null : <span>▾</span>}
+                {published || isDemo ? null : <span>▾</span>}
             </button>
             {open && (
                 <ul className="absolute z-10 bg-white border rounded w-full mt-1 divide-y divide-gray-300 shadow-lg">

@@ -95,21 +95,33 @@ const Create = () => {
         <div className="bg-slate-200 shadow-md rounded-lg px-6 pt-6 pb-1 mx-auto w-[min(calc(100%-2rem),800px)]">
             {/* 編集ロックバナー：デモ優先、次に公開中 */}
             {(localFormData.isDemo || localFormData.published) && (
-                <div className={`flex items-start gap-3 rounded-lg px-4 py-3 mb-5 ${
-                    localFormData.isDemo
-                        ? "bg-slate-100 border border-slate-300 text-slate-800"
-                        : "bg-amber-50 border border-amber-200 text-amber-900"
-                }`}>
-                    <MdLockOutline className={`text-xl shrink-0 mt-0.5 ${localFormData.isDemo ? "text-slate-400" : "text-amber-500"}`} />
+                <div
+                    className={`flex items-start gap-3 rounded-lg px-4 py-3 mb-5 ${
+                        localFormData.isDemo
+                            ? "bg-slate-100 border border-slate-300 text-slate-800"
+                            : "bg-amber-50 border border-amber-200 text-amber-900"
+                    }`}
+                >
+                    <MdLockOutline
+                        className={`text-xl shrink-0 mt-0.5 ${localFormData.isDemo ? "text-slate-400" : "text-amber-500"}`}
+                    />
                     {localFormData.isDemo ? (
                         <div>
-                            <p className="font-semibold text-sm">サンプルデータのため編集できません</p>
-                            <p className="text-xs text-slate-500 mt-0.5">このアンケートはデモ用のサンプルデータです。編集するには、新しいアンケートを作成してください。</p>
+                            <p className="font-semibold text-sm">
+                                サンプルデータのため編集できません
+                            </p>
+                            <p className="text-xs text-slate-500 mt-0.5">
+                                このアンケートはデモ用のサンプルデータです。編集するには、新しいアンケートを作成してください。
+                            </p>
                         </div>
                     ) : (
                         <div>
-                            <p className="font-semibold text-sm">公開中のため編集できません</p>
-                            <p className="text-xs text-amber-700 mt-0.5">設定の公開トグルをオフにすると、編集が可能になります。</p>
+                            <p className="font-semibold text-sm">
+                                公開中のため編集できません
+                            </p>
+                            <p className="text-xs text-amber-700 mt-0.5">
+                                設定の公開トグルをオフにすると、編集が可能になります。
+                            </p>
                         </div>
                     )}
                 </div>
@@ -130,7 +142,9 @@ const Create = () => {
                         }
                         className="w-full p-3 border rounded font-semibold text-2xl"
                         placeholder="タイトルを入力してください"
-                        readOnly={localFormData.published}
+                        readOnly={
+                            localFormData.published || localFormData.isDemo
+                        }
                     />
                     <textarea
                         className="w-full p-3 border rounded mb-4 font-medium resize-none"
@@ -144,7 +158,9 @@ const Create = () => {
                                 description: e.target.value,
                             })
                         }
-                        readOnly={localFormData.published}
+                        readOnly={
+                            localFormData.published || localFormData.isDemo
+                        }
                     />
                 </div>
 
@@ -153,14 +169,16 @@ const Create = () => {
                     updateQuestionData={updateQuestionData}
                     deleteQuestion={deleteQuestion}
                     published={localFormData.published}
+                    isDemo={localFormData.isDemo}
                 />
+
                 {/* 設問追加ボタン */}
-                {!localFormData.published && (
+                {!localFormData.published && !localFormData.isDemo && (
                     <AddQuestionBtn addQuestion={addQuestion} />
                 )}
 
                 {/* Submit Button */}
-                {!localFormData.published && (
+                {!localFormData.published && !localFormData.isDemo && (
                     <SaveFormBtn
                         saveFormData={() => saveFormData(localFormData)}
                     />

@@ -17,6 +17,7 @@ const Question = ({
     updateQuestionData,
     deleteQuestion,
     published,
+    isDemo,
 }) => {
     const data = questionData;
 
@@ -69,7 +70,7 @@ const Question = ({
                         ref={textareaRef}
                         value={data.questionTitle}
                         onChange={handleTitleChange}
-                        readOnly={published}
+                        readOnly={published || isDemo}
                     />
 
                     {/* 設問タイプの選択欄 */}
@@ -80,6 +81,7 @@ const Question = ({
                         }
                         className="w-[32%]"
                         published={published}
+                        isDemo={isDemo}
                     />
                 </div>
                 <div className="space-y-3">
@@ -108,7 +110,7 @@ const Question = ({
                                         updateOptionValue(i, e.target.value)
                                     }
                                     className="w-full p-2 border-b rounded"
-                                    readOnly={published}
+                                    readOnly={published || isDemo}
                                 />
 
                                 {!published && (
