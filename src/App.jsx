@@ -68,26 +68,27 @@ function App() {
             />
 
             {!user ? (
-                <div className="text-center space-y-4">
-                    {/* フォントはOswald */}
+                <div className="text-center space-y-8">
                     <h2 className="text-9xl font-bold font-Oswald">HORA</h2>
-                    <div className="flex flex-col gap-3 w-56 mx-auto mt-8">
+                    <div className="flex flex-col gap-3 w-56 mx-auto">
                         <button
-                            className="text-black bg-[silver] font-bold rounded-full px-4 py-2 hover:bg-black hover:text-white transition duration-300"
+                            className="bg-white text-[#00468B] font-semibold rounded-full px-4 py-2.5 hover:bg-white/80 transition duration-300"
                             onClick={handleGuestLogin}
                         >
                             ゲストログイン
                         </button>
 
                         <button
-                            className="text-black bg-[silver] font-bold rounded-full px-4 py-2 hover:bg-black hover:text-white transition duration-300"
+                            className="bg-white text-[#00468B] font-semibold rounded-full px-4 py-2.5 hover:bg-white/80 transition duration-300"
                             onClick={handleGoogleLogin}
                         >
                             Googleログイン
                         </button>
 
+                        <div className="border-t border-white/20 my-1" />
+
                         <button
-                            className="text-white border border-white font-bold rounded-full px-4 py-2 hover:bg-white hover:text-[#00468B] transition duration-300"
+                            className="border border-white/40 text-white/70 font-semibold rounded-full px-4 py-2.5 hover:border-white hover:text-white transition duration-300"
                             onClick={() => navigate("/demo")}
                         >
                             デモを見る
@@ -95,21 +96,28 @@ function App() {
                     </div>
                 </div>
             ) : (
-                <div className="text-center space-y-4">
-                    <h2 className="text-2xl font-bold">ログイン中</h2>
-                    <p>UID: {user.uid}</p>
-                    <button
-                        className="p-2 bg-gray-800 text-white rounded"
-                        onClick={handleLogout}
-                    >
-                        ログアウト
-                    </button>
-                    <button
-                        onClick={() => navigate("/create-list")}
-                        className="p-2 bg-green-500 text-white rounded"
-                    >
-                        フォーム作成
-                    </button>
+                <div className="text-center space-y-8">
+                    <h2 className="text-9xl font-bold font-Oswald">HORA</h2>
+                    <div className="space-y-2">
+                        <p className="text-white/60 text-sm">ログイン中</p>
+                        <p className="text-white/40 text-xs font-mono">
+                            {user.uid}
+                        </p>
+                    </div>
+                    <div className="flex flex-col gap-3 w-56 mx-auto">
+                        <button
+                            onClick={() => navigate("/create-list")}
+                            className="bg-white text-[#00468B] font-bold rounded-full px-4 py-2 hover:bg-white/80 transition duration-300"
+                        >
+                            フォーム一覧へ
+                        </button>
+                        <button
+                            className="border border-white/40 text-white/70 font-bold rounded-full px-4 py-2 hover:border-white hover:text-white transition duration-300"
+                            onClick={handleLogout}
+                        >
+                            ログアウト
+                        </button>
+                    </div>
                 </div>
             )}
         </div>
