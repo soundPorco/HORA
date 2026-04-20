@@ -154,9 +154,7 @@ const CreateList = () => {
                             {/* 右側：アクションボタン */}
                             <div className="flex items-center gap-0.5 shrink-0 ml-4">
                                 <button
-                                    onClick={() =>
-                                        navigate(`/edit/${form.id}`)
-                                    }
+                                    onClick={() => navigate(`/edit/${form.id}`)}
                                     title="編集"
                                     className="p-2 text-gray-400 hover:text-[#00468b] hover:bg-blue-50 rounded-lg transition text-lg"
                                 >
@@ -171,13 +169,15 @@ const CreateList = () => {
                                 >
                                     <MdBarChart />
                                 </button>
-                                <button
-                                    onClick={() => deleteForm(form.id)}
-                                    title="削除"
-                                    className="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition text-lg"
-                                >
-                                    <RiDeleteBin6Line />
-                                </button>
+                                {form.id === "demo" && (
+                                    <button
+                                        onClick={() => deleteForm(form.id)}
+                                        title="削除"
+                                        className="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition text-lg"
+                                    >
+                                        <RiDeleteBin6Line />
+                                    </button>
+                                )}
                             </div>
                         </div>
                     );

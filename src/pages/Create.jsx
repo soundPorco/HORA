@@ -93,14 +93,25 @@ const Create = () => {
 
     return (
         <div className="bg-slate-200 shadow-md rounded-lg px-6 pt-6 pb-1 mx-auto w-[min(calc(100%-2rem),800px)]">
-            {/* 公開中の編集ロックバナー */}
-            {localFormData.published && (
-                <div className="flex items-start gap-3 bg-amber-50 border border-amber-200 text-amber-900 rounded-lg px-4 py-3 mb-5">
-                    <MdLockOutline className="text-xl shrink-0 mt-0.5 text-amber-500" />
-                    <div>
-                        <p className="font-semibold text-sm">公開中のため編集できません</p>
-                        <p className="text-xs text-amber-700 mt-0.5">設定の公開トグルをオフにすると、編集が可能になります。</p>
-                    </div>
+            {/* 編集ロックバナー：デモ優先、次に公開中 */}
+            {(localFormData.isDemo || localFormData.published) && (
+                <div className={`flex items-start gap-3 rounded-lg px-4 py-3 mb-5 ${
+                    localFormData.isDemo
+                        ? "bg-slate-100 border border-slate-300 text-slate-800"
+                        : "bg-amber-50 border border-amber-200 text-amber-900"
+                }`}>
+                    <MdLockOutline className={`text-xl shrink-0 mt-0.5 ${localFormData.isDemo ? "text-slate-400" : "text-amber-500"}`} />
+                    {localFormData.isDemo ? (
+                        <div>
+                            <p className="font-semibold text-sm">サンプルデータのため編集できません</p>
+                            <p className="text-xs text-slate-500 mt-0.5">このアンケートはデモ用のサンプルデータです。編集するには、新しいアンケートを作成してください。</p>
+                        </div>
+                    ) : (
+                        <div>
+                            <p className="font-semibold text-sm">公開中のため編集できません</p>
+                            <p className="text-xs text-amber-700 mt-0.5">設定の公開トグルをオフにすると、編集が可能になります。</p>
+                        </div>
+                    )}
                 </div>
             )}
 
