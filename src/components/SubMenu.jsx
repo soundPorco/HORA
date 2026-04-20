@@ -1,7 +1,12 @@
 import { useLocation } from "react-router-dom";
 import { MdArrowDropDown } from "react-icons/md"; // 下向き矢印アイコン
 
-const SubMenu = ({ formId, navigate, published, setOpenSettingModal }) => {
+const SubMenu = ({
+    formId,
+    navigate,
+    //  published,
+    setOpenSettingModal,
+}) => {
     const location = useLocation();
 
     const isEditPage = location.pathname === `/edit/${formId}`;
@@ -44,13 +49,13 @@ const SubMenu = ({ formId, navigate, published, setOpenSettingModal }) => {
                     onClick={() => setOpenSettingModal(true)}
                 >
                     <span className="text-gray-300 group-hover:text-white duration-200 flex items-center gap-1">
-                        {published ? (
+                        {/* {published ? (
                             <p className="text-[#b60000] group-hover:text-[#ff0000] duration-200 animate-blink">
                                 ●
                             </p>
                         ) : (
                             ""
-                        )}
+                        )} */}
                         設定
                     </span>
                     <MdArrowDropDown className="text-3xl text-gray-300 group-hover:text-white duration-200" />
