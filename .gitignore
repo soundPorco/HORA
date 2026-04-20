@@ -25,3 +25,6 @@ dist-ssr
 
 # build output
 dist/dist/
+
+# service account key　seedDemo.cjsの実行に必要なファイル
+serviceAccountKey.json
