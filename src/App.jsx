@@ -10,15 +10,27 @@ import {
     onAuthStateChanged,
 } from "./firebase";
 
+import HelpModal from "./components/HelpModal";
+
 function App() {
     const [user, setUser] = useState(null);
     const navigate = useNavigate();
+
+    // 初回起動チェックをuseStateの初期値で処理
+    const [isHelpModalOpen, setIsHelpModalOpen] = useState(() => {
+        const isFirstSession = sessionStorage.getItem("isFirstSession");
+        if (!isFirstSession) {
+            sessionStorage.setItem("isFirstSession", "true"); // フラグを保存
+            return true; // 初回起動時にモーダルを表示
+        }
+        return false;
+    });
 
     useEffect(() => {
         onAuthStateChanged(auth, (currentUser) => {
             setUser(currentUser);
             console.log(
-                currentUser ? "ログイン: " + currentUser.uid : "未ログイン"
+                currentUser ? "ログイン: " + currentUser.uid : "未ログイン",
             );
         });
     }, []);
@@ -49,6 +61,12 @@ function App() {
 
     return (
         <div className="w-full h-screen flex items-center justify-center bg-[#00468B] text-white">
+            {/* ヘルプモーダル */}
+            <HelpModal
+                isOpen={isHelpModalOpen}
+                onClose={() => setIsHelpModalOpen(false)}
+            />
+
             {!user ? (
                 <div className="text-center space-y-4">
                     {/* フォントはOswald */}

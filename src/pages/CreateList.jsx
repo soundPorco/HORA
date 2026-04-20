@@ -98,7 +98,7 @@ const CreateList = () => {
                         アンケート一覧
                     </h1>
                     <span className="text-sm text-gray-400">
-                        {forms.length} 件
+                        {forms.length - 1} 件{/*  (デモ用を除く) */}
                     </span>
                 </div>
 
