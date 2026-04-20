@@ -51,7 +51,9 @@ const AnswerView = ({ form, updateAnswer, handleSubmit, Preview, voted }) => {
                                 onChange={() => updateAnswer(question.id, "")}
                                 className="accent-gray-400"
                             />
-                            <span className="text-sm text-gray-400">未回答</span>
+                            <span className="text-sm text-gray-400">
+                                未回答
+                            </span>
                         </label>
                     )}
                 </>
@@ -66,7 +68,9 @@ const AnswerView = ({ form, updateAnswer, handleSubmit, Preview, voted }) => {
                     >
                         <input
                             type="checkbox"
-                            onChange={(e) => updateAnswer(question.id, opt, e.target.checked)}
+                            onChange={(e) =>
+                                updateAnswer(question.id, opt, e.target.checked)
+                            }
                             className="accent-[#00468b]"
                         />
                         <span className="text-sm text-gray-700">{opt}</span>
@@ -79,9 +83,13 @@ const AnswerView = ({ form, updateAnswer, handleSubmit, Preview, voted }) => {
                     className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm text-gray-700 outline-none focus:border-[#00468b] transition"
                     onChange={(e) => updateAnswer(question.id, e.target.value)}
                 >
-                    <option value="">{question.required ? "選択してください" : "未回答"}</option>
+                    <option value="">
+                        {question.required ? "選択してください" : "未回答"}
+                    </option>
                     {question.options.map((opt, i) => (
-                        <option key={i} value={opt}>{opt}</option>
+                        <option key={i} value={opt}>
+                            {opt}
+                        </option>
                     ))}
                 </select>
             )}
@@ -106,7 +114,9 @@ const AnswerView = ({ form, updateAnswer, handleSubmit, Preview, voted }) => {
                             Q{index + 1}
                         </span>
                         {question.required && (
-                            <span className="text-xs font-semibold text-red-400">必須</span>
+                            <span className="text-xs font-semibold text-red-400">
+                                必須
+                            </span>
                         )}
                     </div>
                     <p className="font-semibold text-gray-800 pb-3 border-b border-gray-200">
@@ -122,13 +132,17 @@ const AnswerView = ({ form, updateAnswer, handleSubmit, Preview, voted }) => {
         <button
             onClick={handleSubmit}
             className={`mt-6 w-full py-3 rounded-xl font-semibold text-white transition active:scale-[0.98] ${
-                form.published
-                    ? "bg-[#00468b] hover:bg-[#003570] shadow-sm"
-                    : "bg-gray-300 cursor-not-allowed"
+                form.isDemo || form.published
+                    ? "bg-gray-300 cursor-not-allowed"
+                    : "bg-[#00468b] hover:bg-[#003570] shadow-sm"
             }`}
-            disabled={!form.published}
+            disabled={form.isDemo || !form.published}
         >
-            {form.published ? "回答を送信" : "アンケートは非公開です"}
+            {form.isDemo
+                ? "サンプルのため回答できません"
+                : form.published
+                  ? "回答を送信"
+                  : "アンケートが非公開です"}
         </button>
     );
 
@@ -140,16 +154,22 @@ const AnswerView = ({ form, updateAnswer, handleSubmit, Preview, voted }) => {
                     <h2 className="text-xl font-bold text-gray-900 mb-2">
                         ご回答ありがとうございました！
                     </h2>
-                    <p className="text-sm text-gray-500">あなたの回答は正常に送信されました。</p>
+                    <p className="text-sm text-gray-500">
+                        あなたの回答は正常に送信されました。
+                    </p>
                 </div>
             ) : // シャッフル設定の分岐
             form.shuffleQuestions ? (
                 // シャッフル設定が有効な場合
                 <div className="max-w-2xl mx-auto bg-white p-6 rounded-2xl shadow-sm">
                     <div className="border-b border-gray-200 pb-4 mb-6">
-                        <h1 className="text-2xl font-bold text-gray-900">{form.title}</h1>
+                        <h1 className="text-2xl font-bold text-gray-900">
+                            {form.title}
+                        </h1>
                         {form.description && (
-                            <p className="mt-1 text-sm text-gray-500">{form.description}</p>
+                            <p className="mt-1 text-sm text-gray-500">
+                                {form.description}
+                            </p>
                         )}
                     </div>
                     {renderQuestions(shuffledQuestions)}
@@ -159,9 +179,13 @@ const AnswerView = ({ form, updateAnswer, handleSubmit, Preview, voted }) => {
                 // シャッフル設定が無効な場合
                 <div className="max-w-2xl mx-auto bg-white p-6 rounded-2xl shadow-sm">
                     <div className="border-b border-gray-200 pb-4 mb-6">
-                        <h1 className="text-2xl font-bold text-gray-900">{form.title}</h1>
+                        <h1 className="text-2xl font-bold text-gray-900">
+                            {form.title}
+                        </h1>
                         {form.description && (
-                            <p className="mt-1 text-sm text-gray-500">{form.description}</p>
+                            <p className="mt-1 text-sm text-gray-500">
+                                {form.description}
+                            </p>
                         )}
                     </div>
                     {renderQuestions(form.questions)}
