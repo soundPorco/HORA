@@ -14,6 +14,10 @@ const HelpModal = ({ isOpen, onClose }) => {
 
     if (!isOpen) return null;
 
+    const modalCloseHandler = () => {
+        setCurrentSlide(0); // モーダルを閉じるときにスライドをリセット
+        onClose();
+    };
     // スライドデータ
     const helpSlides = [
         {
@@ -53,7 +57,7 @@ const HelpModal = ({ isOpen, onClose }) => {
         if (currentSlide < helpSlides.length - 1) {
             setCurrentSlide((prev) => prev + 1); // prev を使って確実に更新
         } else {
-            onClose(); // 最後のスライドでモーダルを閉じる
+            modalCloseHandler(); // 最後のスライドならモーダルを閉じる
         }
     };
 
@@ -65,7 +69,7 @@ const HelpModal = ({ isOpen, onClose }) => {
             <div className="bg-white rounded-lg shadow-lg p-8 w-[90%] max-w-md relative">
                 <button
                     className="absolute top-4 right-6 text-xl text-gray-600 hover:text-gray-800"
-                    onClick={onClose}
+                    onClick={modalCloseHandler}
                 >
                     ×
                 </button>
