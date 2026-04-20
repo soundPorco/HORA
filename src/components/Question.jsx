@@ -124,7 +124,7 @@ const Question = ({
                         ))
                     )}
                 </div>
-                {!published && (
+                {!published && !isDemo && (
                     <>
                         <AddOptionBtn
                             updateQuestionData={updateQuestionData}
