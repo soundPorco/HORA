@@ -46,7 +46,7 @@ const EditLayout = () => {
         };
 
         fetchForm();
-    }, [formId, navigate]);
+    }, [formId]);
 
     // 設定をまとめて保存する関数、SettingModalから呼び出される
     const saveSettings = async (newSettings) => {
@@ -54,6 +54,12 @@ const EditLayout = () => {
 
         // state更新
         setFormData((prev) => ({
+            ...prev,
+            ...newSettings,
+        }));
+
+        // ローカルのフォームデータも更新（これがないとSettingModalを閉じたときにUIが更新されない）
+        setLocalFormData((prev) => ({
             ...prev,
             ...newSettings,
         }));
