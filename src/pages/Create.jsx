@@ -1,5 +1,9 @@
 // src/pages/Create.jsx
-import { useState, useRef, useEffect } from "react";
+import {
+    // useState,
+    useRef,
+    useEffect,
+} from "react";
 import { serverTimestamp, doc, updateDoc } from "firebase/firestore";
 import { db } from "../firebase"; // Firestore の初期化をインポート
 import { useOutletContext } from "react-router-dom";
@@ -12,27 +16,28 @@ import AddQuestionBtn from "../components/AddQuestionBtn";
 import SaveFormBtn from "../components/SaveFormBtn";
 
 const Create = () => {
-    const { formData, setFormData } = useOutletContext() || {};
+    const { formData, setFormData, localFormData, setLocalFormData } =
+        useOutletContext() || {};
     const formId = formData.id;
 
     // formId が undefined → 新規作成
     // フォームのタイトルと説明
-    const [localFormData, setLocalFormData] = useState({
-        userId: null,
-        published: false, // 公開状態
-        shuffleQuestions: false, // 質問のシャッフル状態
-        restrictToOneResponse: false, // 一人一回答の制限
-        title: "",
-        description: "",
-        questions: [],
-        // createdAt: null,
-        updatedAt: null,
-    });
+    // const [localFormData, setLocalFormData] = useState({
+    //     userId: null,
+    //     published: false, // 公開状態
+    //     shuffleQuestions: false, // 質問のシャッフル状態
+    //     restrictToOneResponse: false, // 一人一回答の制限
+    //     title: "",
+    //     description: "",
+    //     questions: [],
+    //     // createdAt: null,
+    //     updatedAt: null,
+    // });
 
     // ユーザーIDを取得してformDataにセット
-    useEffect(() => {
-        setLocalFormData(formData);
-    }, [formData]);
+    // useEffect(() => {
+    //     setLocalFormData(formData);
+    // }, [formData]);
 
     // フォームデータをFirestoreに保存する関数
     const saveFormData = async () => {

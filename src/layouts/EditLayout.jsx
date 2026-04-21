@@ -20,7 +20,14 @@ const EditLayout = () => {
     // 設定モーダルの状態管理
     const [openSettingModal, setOpenSettingModal] = useState(false);
 
+    // フォームデータの管理
     const [formData, setFormData] = useState(null);
+    // ローカルでのフォームデータ管理（Firestoreに保存する前の一時的な状態）
+    // 元々はCreate.jsx内で管理していたが、EditLayoutに移動して子コンポーネントと共有する形に変更
+    // 同レイアウト内ではlocalFormDataを使う仕様に変更。
+    const [localFormData, setLocalFormData] = useState(null);
+
+    // フォームデータの読み込み状態管理
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -34,6 +41,7 @@ const EditLayout = () => {
                 return;
             }
             setFormData({ id: snap.id, ...snap.data() });
+            setLocalFormData({ id: snap.id, ...snap.data() });
             setLoading(false);
         };
 
@@ -75,7 +83,14 @@ const EditLayout = () => {
             <div className="h-44"></div>
 
             {/* 子ページの表示場所 */}
-            <Outlet context={{ formData, setFormData }} />
+            <Outlet
+                context={{
+                    formData,
+                    setFormData,
+                    localFormData,
+                    setLocalFormData,
+                }}
+            />
 
             {/* 公開モーダル */}
             {openLinkModal && (
