@@ -10,6 +10,7 @@ import { MdLockOutline } from "react-icons/md";
 import Questions from "../components/Questions";
 import AddQuestionBtn from "../components/AddQuestionBtn";
 import SaveFormBtn from "../components/SaveFormBtn";
+import ConfirmModal from "../components/ConfirmModal"; // 確認モーダル
 
 const Create = () => {
     const { formData, setFormData, localFormData, setLocalFormData } =
@@ -34,6 +35,10 @@ const Create = () => {
     const handleModalCancel = () => {
         // 保存せずに遷移
         blocker.proceed(); // ブロック解除して遷移
+    };
+    // 確認モーダルを閉じる
+    const handleModalClose = () => {
+        () => blocker.reset();
     };
 
     // フォームデータをFirestoreに保存する関数
@@ -96,20 +101,12 @@ const Create = () => {
     return (
         <div className="bg-slate-200 shadow-md rounded-lg px-6 pt-6 pb-1 mx-auto w-[min(calc(100%-2rem),800px)]">
             {blocker.state === "blocked" && (
-                <div className="modal">
-                    <div className="modal-content">
-                        <p>未保存の変更があります。保存しますか？</p>
-                        <button onClick={handleModalConfirm}>
-                            保存して続行
-                        </button>
-                        <button onClick={handleModalCancel}>
-                            保存せずに続行
-                        </button>
-                        <button onClick={() => blocker.reset()}>
-                            キャンセル
-                        </button>
-                    </div>
-                </div>
+                <ConfirmModal
+                    message="保存されていない変更があります。保存してから移動しますか？"
+                    onConfirm={handleModalConfirm}
+                    onCancel={handleModalCancel}
+                    onClose={handleModalClose}
+                />
             )}
             {/* 編集ロックバナー：デモ優先、次に公開中 */}
             {(localFormData.isDemo || localFormData.published) && (
