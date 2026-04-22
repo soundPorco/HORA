@@ -2,19 +2,17 @@ import { getDocs, where, collection, query } from "firebase/firestore";
 import { db } from "../firebase";
 import { useEffect, useState } from "react";
 import { useOutletContext } from "react-router-dom";
-import { onSnapshot } from "firebase/firestore";
 
 // 「累積回答数 × 時間」の折れ線グラフを描画するためのライブラリ
-import {
-    LineChart,
-    Line,
-    XAxis,
-    YAxis,
-    Tooltip,
-    CartesianGrid,
-    ResponsiveContainer,
-} from "recharts";
-import { orderBy } from "firebase/firestore";
+// import {
+//     LineChart,
+//     Line,
+//     XAxis,
+//     YAxis,
+//     Tooltip,
+//     CartesianGrid,
+//     ResponsiveContainer,
+// } from "recharts";
 
 // コンポーネント
 import RenderResultByQuestionType from "../components/renderResultByQuestionType"; // 設問タイプごとに集計結果の表示方法を切り替えるコンポーネント
@@ -28,34 +26,6 @@ const Result = () => {
     const questions = formData.questions || [];
 
     const [chartData, setChartData] = useState([]);
-
-    useEffect(() => {
-        const q = query(
-            collection(db, "answers"),
-            where("formId", "==", formId),
-            orderBy("votedAt", "asc"),
-        );
-
-        const unsubscribe = onSnapshot(q, (snapshot) => {
-            let count = 0;
-
-            const cumulative = snapshot.docs.map((doc) => {
-                count++;
-                const data = doc.data();
-
-                return {
-                    time: data.votedAt?.toDate().toLocaleTimeString(),
-                    count: count,
-                };
-            });
-
-            setChartData(cumulative);
-        });
-
-        return () => unsubscribe();
-    }, [formId]);
-
-    //
 
     // ======================
     // 設問ごとの集計処理
@@ -126,8 +96,19 @@ const Result = () => {
             ); // デバッグ用ログ
 
             setResponseList(responseList);
-            // aggregate = 集計
-            aggregateResponses(responseList); // ← 集計処理
+            aggregateResponses(responseList);
+
+            // チャート用：回答数の累積データを計算
+            let count = 0;
+            const cumulative = responseListSnapshot.docs.map((doc) => {
+                count++;
+                const data = doc.data();
+                return {
+                    time: data.votedAt?.toDate().toLocaleTimeString(),
+                    count,
+                };
+            });
+            setChartData(cumulative);
         };
 
         fetchResponseList();
