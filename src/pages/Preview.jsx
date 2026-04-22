@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useParams, useOutletContext } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../firebase";
@@ -7,6 +7,9 @@ import { db } from "../firebase";
 import AnswerView from "../components/AnswerView";
 const Preview = () => {
     const { formId } = useParams();
+
+    const { formData, setFormData, localFormData, setLocalFormData } =
+        useOutletContext() || {};
 
     const [form, setForm] = useState(null);
 
@@ -41,6 +44,8 @@ const Preview = () => {
             updateAnswer={""}
             handleSubmit={""}
             Preview={true}
+            formData={formData}
+            localFormData={localFormData}
         />
     );
 };

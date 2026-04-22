@@ -1,7 +1,17 @@
 import React, { useEffect, useState } from "react";
 
-const AnswerView = ({ form, updateAnswer, handleSubmit, Preview, voted }) => {
+const AnswerView = ({
+    form,
+    updateAnswer,
+    handleSubmit,
+    Preview,
+    voted,
+    formData,
+    localFormData,
+}) => {
     const [shuffledQuestions, setShuffledQuestions] = useState([]);
+
+    const Unsaved = JSON.stringify(formData) !== JSON.stringify(localFormData);
 
     // 配列をシャッフルする関数（Fisher-Yatesアルゴリズム）
     const shuffle = (array) => {
@@ -164,7 +174,9 @@ const AnswerView = ({ form, updateAnswer, handleSubmit, Preview, voted }) => {
                 <div className="max-w-2xl mx-auto bg-white p-6 rounded-2xl shadow-sm">
                     <div className="border-b border-gray-200 pb-4 mb-6">
                         <h1 className="text-2xl font-bold text-gray-900">
-                            {form.title}
+                            {form.title}{" "}
+                            {Unsaved &&
+                                "（未保存の変更はプレビューに反映されません）"}
                         </h1>
                         {form.description && (
                             <p className="mt-1 text-sm text-gray-500">
@@ -180,7 +192,9 @@ const AnswerView = ({ form, updateAnswer, handleSubmit, Preview, voted }) => {
                 <div className="max-w-2xl mx-auto bg-white p-6 rounded-2xl shadow-sm">
                     <div className="border-b border-gray-200 pb-4 mb-6">
                         <h1 className="text-2xl font-bold text-gray-900">
-                            {form.title}
+                            {form.title}{" "}
+                            {Unsaved &&
+                                "（未保存の変更はプレビューに反映されません）"}
                         </h1>
                         {form.description && (
                             <p className="mt-1 text-sm text-gray-500">
