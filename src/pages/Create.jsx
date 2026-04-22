@@ -22,7 +22,13 @@ const Create = () => {
         JSON.stringify(localFormData) !== JSON.stringify(formData);
 
     // ユーザーが別ページへ移動しようとする時にuseBlockerが実行される
-    const blocker = useBlocker(hasUnsavedChanges);
+    const blocker = useBlocker(({ nextLocation }) => {
+        const stayInLayout =
+            nextLocation.pathname.startsWith("/result/") ||
+            nextLocation.pathname.startsWith("/preview/");
+
+        return hasUnsavedChanges && !stayInLayout; // レイアウト外への遷移で未保存の変更がある場合にブロック
+    });
 
     // 遷移を試みたときの処理
     const handleModalConfirm = async () => {
