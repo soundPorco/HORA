@@ -1,5 +1,5 @@
 import "./index.css";
-import { HashRouter, Routes, Route } from "react-router-dom";
+import { createHashRouter, RouterProvider } from "react-router-dom";
 import { StrictMode } from "react";
 import ReactDOM from "react-dom/client";
 
@@ -13,26 +13,24 @@ import Result from "./pages/Result.jsx";
 import EditLayout from "./layouts/EditLayout.jsx";
 import DemoPage from "./pages/DemoPage.jsx";
 
+const router = createHashRouter([
+    { path: "/", element: <App /> },
+    {
+        element: <EditLayout />,
+        children: [
+            { path: "edit/:formId", element: <Create /> },
+            { path: "preview/:formId", element: <Preview /> },
+            { path: "result/:formId", element: <Result /> },
+        ],
+    },
+    { path: "create-new", element: <CreateNew /> },
+    { path: "answer/:formId", element: <Answer /> },
+    { path: "create-list", element: <CreateList /> },
+    { path: "demo", element: <DemoPage /> },
+]);
+
 ReactDOM.createRoot(document.getElementById("root")).render(
     <StrictMode>
-        <HashRouter>
-            <Routes>
-                {/* トップ */}
-                <Route path="/" element={<App />} />
-
-                {/* 共通レイアウト */}
-                <Route element={<EditLayout />}>
-                    <Route path="edit/:formId" element={<Create />} />
-                    <Route path="preview/:formId" element={<Preview />} />
-                    <Route path="result/:formId" element={<Result />} />
-                </Route>
-
-                {/* 単独ページ */}
-                <Route path="create-new" element={<CreateNew />} />
-                <Route path="answer/:formId" element={<Answer />} />
-                <Route path="create-list" element={<CreateList />} />
-                <Route path="demo" element={<DemoPage />} />
-            </Routes>
-        </HashRouter>
-    </StrictMode>
+        <RouterProvider router={router} />
+    </StrictMode>,
 );
