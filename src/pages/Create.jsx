@@ -36,9 +36,8 @@ const Create = () => {
         // 保存せずに遷移
         blocker.proceed(); // ブロック解除して遷移
     };
-    // 確認モーダルを閉じる
     const handleModalClose = () => {
-        () => blocker.reset();
+        blocker.reset();
     };
 
     // フォームデータをFirestoreに保存する関数
