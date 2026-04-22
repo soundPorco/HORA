@@ -1,12 +1,8 @@
 // src/pages/Create.jsx
-import {
-    // useState,
-    useRef,
-    useEffect,
-} from "react";
+import { useState, useRef, useEffect } from "react";
 import { serverTimestamp, doc, updateDoc } from "firebase/firestore";
 import { db } from "../firebase"; // Firestore の初期化をインポート
-import { useOutletContext } from "react-router-dom";
+import { useOutletContext, useBlocker } from "react-router-dom";
 import autosize from "autosize";
 import { MdLockOutline } from "react-icons/md";
 
@@ -19,6 +15,29 @@ const Create = () => {
     const { formData, setFormData, localFormData, setLocalFormData } =
         useOutletContext() || {};
     const formId = formData.id;
+
+    const [isCheckModalOpen, setIsCheckModalOpen] = useState(false); // 確認モーダルの状態
+    //const [nextLocation, setNextLocation] = useState(null); // 次の遷移先の情報
+
+    // 未保存の変更があるかどうかを判定するフラグ
+    const hasUnsavedChanges =
+        JSON.stringify(localFormData) !== JSON.stringify(formData);
+
+    // ユーザーが別ページへ移動しようとする時にuseBlockerが実行される
+    const blocker = useBlocker(hasUnsavedChanges);
+
+    // 遷移を試みたときの処理
+    const handleModalConfirm = async () => {
+        // 保存して遷移
+        await saveFormData(); // データを保存
+        blocker.proceed(); // ブロック解除して遷移
+    };
+
+    // 保存せずに遷移する場合の処理
+    const handleModalCancel = () => {
+        // 保存せずに遷移
+        blocker.proceed(); // ブロック解除して遷移
+    };
 
     // formId が undefined → 新規作成
     // フォームのタイトルと説明
@@ -98,6 +117,22 @@ const Create = () => {
 
     return (
         <div className="bg-slate-200 shadow-md rounded-lg px-6 pt-6 pb-1 mx-auto w-[min(calc(100%-2rem),800px)]">
+            {isCheckModalOpen && (
+                <div className="modal">
+                    <div className="modal-content">
+                        <p>未保存の変更があります。保存しますか？</p>
+                        <button onClick={handleModalConfirm}>
+                            保存して続行
+                        </button>
+                        <button onClick={handleModalCancel}>
+                            保存せずに続行
+                        </button>
+                        <button onClick={() => setIsCheckModalOpen(false)}>
+                            キャンセル
+                        </button>
+                    </div>
+                </div>
+            )}
             {/* 編集ロックバナー：デモ優先、次に公開中 */}
             {(localFormData.isDemo || localFormData.published) && (
                 <div
