@@ -169,14 +169,7 @@ const CreateList = () => {
                                 >
                                     <MdBarChart />
                                 </button>
-                                <button
-                                    onClick={() => deleteForm(form.id)}
-                                    title="削除"
-                                    className="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition text-lg"
-                                >
-                                    <RiDeleteBin6Line />
-                                </button>
-                                {/* {!form.isDemo && (
+                                {!form.isDemo && (
                                     <button
                                         onClick={() => deleteForm(form.id)}
                                         title="削除"
@@ -184,7 +177,7 @@ const CreateList = () => {
                                     >
                                         <RiDeleteBin6Line />
                                     </button>
-                                )} */}
+                                )}
                             </div>
                         </div>
                     );
