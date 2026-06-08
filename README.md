@@ -75,7 +75,7 @@ https://soundporco.github.io/HORA/
 
 ---
 
-##　その他機能
+## その他の機能
 
 ### フォーム設定（管理者向け）
 
