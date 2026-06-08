@@ -169,7 +169,7 @@ const CreateList = () => {
                                 >
                                     <MdBarChart />
                                 </button>
-                                {form.id === "demo" || (
+                                {!form.isDemo && (
                                     <button
                                         onClick={() => deleteForm(form.id)}
                                         title="削除"
