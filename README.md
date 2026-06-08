@@ -1,6 +1,8 @@
 # HORA
 
-![](src/assets/readme-1.jpg)
+<p align="center">
+  <img src="src/assets/readme-1.jpg" width="100%" />
+</p>
 
 **HORA** は、アンケート・フォーム作成から回答収集、結果集計までを一貫して行える Web アプリケーションです。
 
