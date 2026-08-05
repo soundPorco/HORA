@@ -25,6 +25,9 @@ function App() {
         }
         return false;
     });
+    const [isIntroModalOpen, setIsIntroModalOpen] = useState(() => {
+        return sessionStorage.getItem("isIntroModalClosed") !== "true";
+    });
 
     useEffect(() => {
         onAuthStateChanged(auth, (currentUser) => {
@@ -59,6 +62,11 @@ function App() {
             .catch((err) => console.error("失敗:", err));
     };
 
+    const closeIntroModal = () => {
+        sessionStorage.setItem("isIntroModalClosed", "true");
+        setIsIntroModalOpen(false);
+    };
+
     return (
         <div className="w-full h-screen flex items-center justify-center bg-[#00468B] text-white">
             {/* ヘルプモーダル */}
@@ -66,6 +74,31 @@ function App() {
                 isOpen={isHelpModalOpen}
                 onClose={() => setIsHelpModalOpen(false)}
             />
+
+            {!user && !isHelpModalOpen && isIntroModalOpen && (
+                <div className="fixed inset-0 z-40 flex items-center justify-center bg-black/30 px-4 backdrop-blur-sm">
+                    <div className="relative w-full max-w-md rounded-3xl bg-white px-6 py-8 text-[#00468B] shadow-2xl">
+                        <button
+                            className="absolute right-4 top-4 text-2xl leading-none text-[#00468B]/60 transition hover:text-[#00468B]"
+                            onClick={closeIntroModal}
+                            aria-label="閉じる"
+                        >
+                            ×
+                        </button>
+                        <div className="space-y-4 pr-8">
+                            <p className="text-xs font-semibold tracking-[0.3em] text-[#00468B]/50">
+                                DEMO GUIDE
+                            </p>
+                            <h3 className="text-2xl font-bold leading-tight">
+                                まずはゲストログインで、操作感をご確認ください
+                            </h3>
+                            <p className="text-sm leading-7 text-[#00468B]/80">
+                                ゲストログインにてデモやアプリの機能、概要を体験できます。
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            )}
 
             {!user ? (
                 <div className="text-center space-y-8">
