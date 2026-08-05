@@ -77,7 +77,7 @@ function App() {
 
             {!user && !isHelpModalOpen && isIntroModalOpen && (
                 <div className="fixed inset-0 z-40 flex items-center justify-center bg-black/30 px-4 backdrop-blur-sm">
-                    <div className="relative w-full max-w-md rounded-3xl bg-white px-6 py-8 text-[#00468B] shadow-2xl">
+                    <div className="relative w-full max-w-md rounded-xl bg-white px-8 py-8 text-[#00468B] shadow-2xl">
                         <button
                             className="absolute right-4 top-4 text-2xl leading-none text-[#00468B]/60 transition hover:text-[#00468B]"
                             onClick={closeIntroModal}
@@ -85,15 +85,16 @@ function App() {
                         >
                             ×
                         </button>
-                        <div className="space-y-4 pr-8">
-                            <p className="text-xs font-semibold tracking-[0.3em] text-[#00468B]/50">
+                        <div className="space-y-4">
+                            <p className="text-xs font-semibold text-center tracking-[0.3em] text-[#00468B]/50">
                                 DEMO GUIDE
                             </p>
-                            <h3 className="text-2xl font-bold leading-tight">
-                                まずはゲストログインで、操作感をご確認ください
+
+                            <h3 className="text-md font-semibold leading-7 text-[#00468B]/80">
+                                まずはゲストログインで、操作感をご確認ください。デモやアプリの機能、概要を体験できます。
                             </h3>
-                            <p className="text-sm leading-7 text-[#00468B]/80">
-                                ゲストログインにてデモやアプリの機能、概要を体験できます。
+                            <p className="text-xs text-red-500">
+                                ※ゲストログインで作成したデータは保存されません。
                             </p>
                         </div>
                     </div>
