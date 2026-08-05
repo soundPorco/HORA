@@ -26,7 +26,6 @@ const router = createHashRouter([
     { path: "create-new", element: <CreateNew /> },
     { path: "answer/:formId", element: <Answer /> },
     { path: "create-list", element: <CreateList /> },
-    { path: "demo", element: <DemoPage /> },
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
