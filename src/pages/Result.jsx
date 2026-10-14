@@ -169,11 +169,15 @@ const Result = () => {
                     </span>
                 </div>
                 {/* 累積回答数の折れ線グラフ */}
-                <div className="bg-white rounded-xl p-5 mb-6">
-                    <h3 className="font-semibold text-gray-800 mb-4">
+                <div className="bg-slate-100 rounded-xl p-5 mb-6">
+                    <h3 className="font-semibold text-gray-800 mt-1 mb-4 pb-3 border-b border-gray-300">
                         累積回答数の推移
                     </h3>
-                    <ResponsiveContainer width="100%" height={300}>
+                    <ResponsiveContainer
+                        width="100%"
+                        height={300}
+                        className="pr-8"
+                    >
                         <LineChart data={cumulativeData}>
                             <CartesianGrid
                                 stroke="#eee"
