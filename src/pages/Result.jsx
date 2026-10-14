@@ -94,21 +94,29 @@ const Result = () => {
                 "全ての回答者の回答データ(responseList):",
                 responseList,
             ); // デバッグ用ログ
+            // ーーーーーーこの部分でresponseList内にvotedAtを含む回答データが確認できる ーーーーーー
 
             setResponseList(responseList);
             aggregateResponses(responseList);
 
             // チャート用：回答数の累積データを計算
-            let count = 0;
-            const cumulative = responseListSnapshot.docs.map((doc) => {
-                count++;
-                const data = doc.data();
-                return {
-                    time: data.votedAt?.toDate().toLocaleTimeString(),
-                    count,
-                };
-            });
-            setChartData(cumulative);
+
+            // ① 全回答者の回答日時を配列にする
+            const votedAtList = responseList
+                .map((response) => response.votedAt)
+                .filter((votedAt) => votedAt != null);
+
+            // ② 回答日時を昇順（古い順）にソート
+            votedAtList.sort((a, b) => a.toMillis() - b.toMillis());
+            // Firestoreの Timestamp は、toMillis() でミリ秒単位の数値に変換できる。この数値を比較することで、古い日時から順番に並べられる。
+
+            // ③ 累積回答数のデータを作成
+            const cumulativeData = votedAtList.map((votedAt, index) => ({
+                votedAt: votedAt.toDate(),
+                cumulativeCount: index + 1,
+            }));
+
+            console.log("チャート用の累積回答数データ:", cumulativeData); // デバッグ用ログ
         };
 
         fetchResponseList();

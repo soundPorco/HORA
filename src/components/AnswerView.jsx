@@ -142,7 +142,7 @@ const AnswerView = ({
         <button
             onClick={handleSubmit}
             className={`mt-6 w-full py-3 rounded-xl font-semibold text-white transition active:scale-[0.98] ${
-                form.isDemo || form.published
+                form.published || form.isDemo
                     ? "bg-gray-300 cursor-not-allowed"
                     : "bg-[#00468b] hover:bg-[#003570] shadow-sm"
             }`}
