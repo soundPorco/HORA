@@ -3,16 +3,16 @@ import { db } from "../firebase";
 import { useEffect, useState } from "react";
 import { useOutletContext } from "react-router-dom";
 
-// 「累積回答数 × 時間」の折れ線グラフを描画するためのライブラリ
-// import {
-//     LineChart,
-//     Line,
-//     XAxis,
-//     YAxis,
-//     Tooltip,
-//     CartesianGrid,
-//     ResponsiveContainer,
-// } from "recharts";
+// 「累積回答数 × 時間」の折れ線グラフを描画するためのライブラリのインポート
+import {
+    LineChart,
+    Line,
+    XAxis,
+    YAxis,
+    Tooltip,
+    CartesianGrid,
+    ResponsiveContainer,
+} from "recharts";
 
 // コンポーネント
 import RenderResultByQuestionType from "../components/renderResultByQuestionType"; // 設問タイプごとに集計結果の表示方法を切り替えるコンポーネント
@@ -25,7 +25,25 @@ const Result = () => {
     const [resultSummary, setResultSummary] = useState({}); // ← 集計結果
     const questions = formData.questions || [];
 
-    const [chartData, setChartData] = useState([]);
+    const [cumulativeData, setCumulativeData] = useState([]); // 累積回答数のデータを格納する状態変数
+
+    // ======================
+    // 累積回答数のチャート描画用コンポーネント
+    // ======================
+    const ResultChart = ({ data }) => {
+        return (
+            <LineChart width={600} height={300} data={data}>
+                <XAxis
+                    dataKey="time"
+                    tickFormatter={(t) => t.toLocaleTimeString()}
+                />
+                <YAxis />
+                <Tooltip labelFormatter={(t) => t.toLocaleString()} />
+                <CartesianGrid stroke="#eee" strokeDasharray="5 5" />
+                <Line type="monotone" dataKey="count" stroke="#8884d8" />
+            </LineChart>
+        );
+    };
 
     // ======================
     // 設問ごとの集計処理
@@ -99,7 +117,9 @@ const Result = () => {
             setResponseList(responseList);
             aggregateResponses(responseList);
 
+            // ======================
             // チャート用：回答数の累積データを計算
+            // ======================
 
             // ① 全回答者の回答日時を配列にする
             const votedAtList = responseList
@@ -113,9 +133,11 @@ const Result = () => {
             // ③ 累積回答数のデータを作成
             const cumulativeData = votedAtList.map((votedAt, index) => ({
                 votedAt: votedAt.toDate(),
+                timestamp: votedAt.toMillis(),
                 cumulativeCount: index + 1,
             }));
 
+            setCumulativeData(cumulativeData);
             console.log("チャート用の累積回答数データ:", cumulativeData); // デバッグ用ログ
         };
 
@@ -145,6 +167,57 @@ const Result = () => {
                     <span className="text-white font-bold text-6xl leading-none">
                         {responseList.length}
                     </span>
+                </div>
+                {/* 累積回答数の折れ線グラフ */}
+                <div className="bg-white rounded-xl p-5 mb-6">
+                    <h3 className="font-semibold text-gray-800 mb-4">
+                        累積回答数の推移
+                    </h3>
+                    <ResponsiveContainer width="100%" height={300}>
+                        <LineChart data={cumulativeData}>
+                            <CartesianGrid
+                                stroke="#eee"
+                                strokeDasharray="5 5"
+                            />
+
+                            <XAxis
+                                dataKey="timestamp"
+                                type="number"
+                                domain={["dataMin", "dataMax"]}
+                                tickFormatter={(timestamp) =>
+                                    new Date(timestamp).toLocaleTimeString(
+                                        "ja-JP",
+                                        {
+                                            hour: "2-digit",
+                                            minute: "2-digit",
+                                            second: "2-digit",
+                                        },
+                                    )
+                                }
+                            />
+
+                            <YAxis
+                                dataKey="cumulativeCount"
+                                type="number"
+                                domain={[0, "auto"]}
+                            />
+
+                            <Tooltip
+                                labelFormatter={(timestamp) =>
+                                    new Date(Number(timestamp)).toLocaleString(
+                                        "ja-JP",
+                                    )
+                                }
+                            />
+
+                            <Line
+                                type="linear"
+                                dataKey="cumulativeCount"
+                                stroke="#8884d8"
+                                dot
+                            />
+                        </LineChart>
+                    </ResponsiveContainer>
                 </div>
 
                 {/* 回答者がいない場合 */}
