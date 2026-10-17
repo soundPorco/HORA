@@ -149,15 +149,24 @@ const Result = () => {
         <div>
             <div className="max-w-3xl mx-auto bg-white p-6 rounded-xl shadow mb-10">
                 {/* フォームタイトル・説明 */}
-                <div className="border-b border-gray-300 pb-4 mb-6">
-                    <h2 className="font-bold text-2xl text-gray-900 px-1">
-                        {formData.title}
-                    </h2>
-                    {formData.description && (
-                        <p className="text-sm text-gray-500 mt-1 px-1">
-                            {formData.description}
-                        </p>
-                    )}
+                <div className="border-b border-gray-300 pb-4 mb-6 flex items-center gap-1 justify-between">
+                    <div>
+                        <h2 className="font-bold text-2xl text-gray-900 px-1">
+                            {formData.title}
+                        </h2>
+                        {formData.description && (
+                            <p className="text-sm text-gray-500 mt-1 px-1">
+                                {formData.description}
+                            </p>
+                        )}
+                    </div>
+                    {/* CSVエクスポートボタン */}
+                    <div className="">
+                        <ExportCsvBtn
+                            responseList={responseList}
+                            formData={formData}
+                        />
+                    </div>
                 </div>
 
                 {/* 回答総数 */}
@@ -258,12 +267,12 @@ const Result = () => {
                     </div>
                 )}
                 {/* CSVエクスポートボタン */}
-                <div className="mt-6">
+                {/* <div className="mt-6">
                     <ExportCsvBtn
                         responseList={responseList}
                         formData={formData}
                     />
-                </div>
+                </div> */}
             </div>
         </div>
     );

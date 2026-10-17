@@ -1,4 +1,4 @@
-// import { TbDownloadFilled } from "react-icons/tb";
+import { TbDownload } from "react-icons/tb";
 
 const ExportCsvBtn = ({ responseList, formData }) => {
     // ------------------------------
@@ -119,12 +119,18 @@ const ExportCsvBtn = ({ responseList, formData }) => {
             type="button"
             onClick={handleExportCsv}
             disabled={responseList.length === 0}
-            className="bg-blue-600 text-white px-4 py-2 rounded-lg
-             hover:bg-blue-700 disabled:opacity-50
-             disabled:cursor-not-allowed"
+            className=" text-gray-600
+             disabled:opacity-50
+             disabled:cursor-not-allowed
+             text-2xl rounded-full p-2 hover:bg-gray-200 duration-200 group
+              relative"
         >
-            {/* <TbDownloadFilled /> */}
-            CSVをダウンロード
+            {/* CSVをダウンロード */}
+            <TbDownload />
+            {/* hover時のツールチップ */}
+            <span className="absolute z-10 top-full left-1/2 -translate-x-1/2 mt-2 bg-gray-600 text-white text-xs font-medium px-3 py-1.5 rounded-md shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap pointer-events-none">
+                CSVをダウンロード
+            </span>
         </button>
     );
 };
