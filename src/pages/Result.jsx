@@ -16,6 +16,7 @@ import {
 
 // コンポーネント
 import RenderResultByQuestionType from "../components/renderResultByQuestionType"; // 設問タイプごとに集計結果の表示方法を切り替えるコンポーネント
+import ExportCsvBtn from "../components/ExportCsvBtn"; // CSVエクスポートボタンのコンポーネント
 
 const Result = () => {
     const { formData } = useOutletContext();
@@ -256,6 +257,13 @@ const Result = () => {
                         })}
                     </div>
                 )}
+                {/* CSVエクスポートボタン */}
+                <div className="mt-6">
+                    <ExportCsvBtn
+                        responseList={responseList}
+                        formData={formData}
+                    />
+                </div>
             </div>
         </div>
     );
