@@ -98,7 +98,7 @@ const EditLayout = () => {
                 }}
             />
 
-            {/* 公開モーダル */}
+            {/* 公開リンクモーダル */}
             {openLinkModal && (
                 <PublishModal
                     openLinkModal={openLinkModal}
@@ -124,6 +124,11 @@ const EditLayout = () => {
                         restrictToOneResponse: !!formData.restrictToOneResponse,
                     }}
                     saveSettings={saveSettings}
+                    hasUnsavedChanges={
+                        !!localFormData &&
+                        JSON.stringify(localFormData) !==
+                            JSON.stringify(formData)
+                    }
                 />
             )}
         </div>

@@ -6,6 +6,7 @@ const SettingModal = ({
     setOpenSettingModal,
     initialSettings, // 親から渡される初期設定
     saveSettings, // 親へ設定をまとめて渡す関数
+    hasUnsavedChanges, // 未保存の変更があるかどうか
 }) => {
     // ローカルで設定を管理するstate
     const [settings, setSettings] = useState(initialSettings);
@@ -20,6 +21,7 @@ const SettingModal = ({
             [key]: !prev[key],
         }));
         console.log("値が変更されました:", key, !settings[key]);
+        console.log("SettingModalのhasUnsavedChanges:", hasUnsavedChanges);
     };
 
     // 設定保存用の関数
@@ -52,11 +54,18 @@ const SettingModal = ({
                     <div className="flex flex-col gap-4">
                         {/* 公開状態のトグル */}
                         <div className="flex justify-between items-center">
-                            <p>公開</p>
+                            <div>
+                                <p>公開</p>
+                                <p className="text-sm text-gray-500">
+                                    ※未保存の変更がある場合はクリックできません。
+                                </p>
+                            </div>
                             <button
                                 onClick={() => toggleSetting("published")}
+                                disabled={hasUnsavedChanges} // 未保存の変更がない場合はボタンを無効化
                                 className={`w-12 h-7 rounded-full flex items-center px-1 transition
-                            ${settings.published ? "bg-blue-500" : "bg-gray-300"}`}
+                            ${settings.published ? "bg-blue-500" : "bg-gray-300"}
+                        ${!hasUnsavedChanges ? "" : "cursor-not-allowed opacity-50"}`}
                             >
                                 <div
                                     className={`w-5 h-5 bg-white rounded-full shadow transform transition
