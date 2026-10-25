@@ -18,6 +18,7 @@ const Create = () => {
     const formId = formData.id;
 
     // 未保存の変更があるかどうかを判定するフラグ
+    // trueなら未保存あり、falseならなし
     const hasUnsavedChanges =
         JSON.stringify(localFormData) !== JSON.stringify(formData);
 
@@ -201,6 +202,7 @@ const Create = () => {
                 {!localFormData.published && !localFormData.isDemo && (
                     <SaveFormBtn
                         saveFormData={() => saveFormData(localFormData)}
+                        hasUnsavedChanges={hasUnsavedChanges}
                     />
                 )}
             </div>
