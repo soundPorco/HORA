@@ -15,7 +15,7 @@ import { MdFormatListBulleted } from "react-icons/md"; //一覧アイコン
 import { MdHelpOutline } from "react-icons/md"; //ヘルプアイコン
 import { MdLogout } from "react-icons/md"; // ログアウトアイコン
 
-const Menu = ({ setOpenLinkModal }) => {
+const Menu = ({ setOpenLinkModal, hasUnsavedChanges }) => {
     const navigate = useNavigate();
     const { formId } = useParams();
 
@@ -59,12 +59,21 @@ const Menu = ({ setOpenLinkModal }) => {
                     {/* プレビューボタン */}
                     {formId && (
                         <button
-                            className="relative text-2xl rounded-full p-2 hover:bg-gray-400 duration-200 group"
                             onClick={togglePreview}
+                            disabled={hasUnsavedChanges} // 未保存の変更がある場合はボタンを無効化
+                            className={`relative text-2xl rounded-full p-2 hover:bg-gray-400 duration-200 group ${
+                                hasUnsavedChanges
+                                    ? "cursor-not-allowed opacity-50"
+                                    : ""
+                            }`}
                         >
                             {isPreviewing ? <IoMdEyeOff /> : <IoMdEye />}
                             <span className="absolute z-50 top-full left-1/2 -translate-x-1/2 mt-2 bg-gray-900 text-white text-xs font-medium px-3 py-1.5 rounded-md shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap pointer-events-none">
-                                {isPreviewing ? "プレビュー終了" : "プレビュー"}
+                                {hasUnsavedChanges
+                                    ? "未保存の変更があるためプレビューできません"
+                                    : isPreviewing
+                                      ? "プレビュー終了"
+                                      : "プレビュー"}
                             </span>
                         </button>
                     )}
