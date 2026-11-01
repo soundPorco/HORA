@@ -15,6 +15,8 @@ import { useNavigate } from "react-router-dom";
 // アイコン
 import { MdEdit, MdBarChart, MdAdd, MdOutlineDataset } from "react-icons/md";
 import { RiDeleteBin6Line } from "react-icons/ri";
+import { IoMdLock } from "react-icons/io";
+import { IoEllipsisVerticalSharp } from "react-icons/io5"; // 3点リーダーアイコン
 
 // コンポーネント
 import Menu from "../components/Menu";
@@ -22,6 +24,7 @@ import Menu from "../components/Menu";
 const CreateList = () => {
     const [forms, setForms] = useState([]); // アンケートフォームのリストを保存するstate
     const [userId, setUserId] = useState(null);
+    const [selectedEllipsis, setSelectedEllipsis] = useState(null); // 3点リーダーの選択状態を管理するstate
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -169,7 +172,7 @@ const CreateList = () => {
                                 >
                                     <MdBarChart />
                                 </button>
-                                {!form.isDemo && (
+                                {/* {!form.isDemo && (
                                     <button
                                         onClick={() => deleteForm(form.id)}
                                         title="削除"
@@ -177,7 +180,25 @@ const CreateList = () => {
                                     >
                                         <RiDeleteBin6Line />
                                     </button>
-                                )}
+                                )} */}
+                                {/* {!form.isDemo && (
+                                    <button
+                                        onClick={() =>
+                                            navigate(`/result/${form.id}`)
+                                        }
+                                        title="削除防止ロック"
+                                        className="p-2 text-gray-400 hover:text-[#00468b] hover:bg-blue-50 rounded-lg transition text-lg"
+                                    >
+                                        <IoMdLock />
+                                    </button>
+                                )} */}
+                                <button
+                                    onClick={() => setSelectedEllipsis(form)}
+                                    title="その他"
+                                    className={`p-2 text-gray-400 hover:text-[#00468b] hover:bg-blue-50 rounded-lg transition text-lg${selectedEllipsis?.id === form.id ? " bg-blue-50 text-[#00468b]" : ""}`}
+                                >
+                                    <IoEllipsisVerticalSharp />
+                                </button>
                             </div>
                         </div>
                     );
@@ -208,6 +229,87 @@ const CreateList = () => {
                                         {demoForms.map((form) =>
                                             renderCard(form, true),
                                         )}
+                                    </div>
+                                </div>
+                            )}
+                            {/* ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー */}
+                            {/* 3点リーダーモーダル */}
+                            {/* ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー */}
+                            {selectedEllipsis && (
+                                <div className="fixed inset-0 z-50 flex items-center justify-center">
+                                    {/* 背景をクリックすると閉じる */}
+                                    <div
+                                        className="absolute inset-0"
+                                        onClick={() =>
+                                            setSelectedEllipsis(null)
+                                        }
+                                    />
+
+                                    {/* モーダル本体 */}
+                                    <div className="relative z-10 w-[90%] max-w-xs rounded-xl bg-white p-2 shadow-xl">
+                                        <div className="flex flex-col gap-1">
+                                            {/* 編集 */}
+                                            <button
+                                                onClick={() => {
+                                                    const id =
+                                                        selectedEllipsis.id;
+                                                    setSelectedEllipsis(null);
+                                                    navigate(`/edit/${id}`);
+                                                }}
+                                                className="flex items-center gap-2 rounded-lg px-3 py-2 text-left text-sm hover:bg-gray-100"
+                                            >
+                                                <MdEdit />
+                                                編集
+                                            </button>
+
+                                            {/* 結果 */}
+                                            <button
+                                                onClick={() => {
+                                                    const id =
+                                                        selectedEllipsis.id;
+                                                    setSelectedEllipsis(null);
+                                                    navigate(`/result/${id}`);
+                                                }}
+                                                className="flex items-center gap-2 rounded-lg px-3 py-2 text-left text-sm hover:bg-gray-100"
+                                            >
+                                                <MdBarChart />
+                                                結果を見る
+                                            </button>
+
+                                            {/* 削除防止ロック */}
+                                            {!selectedEllipsis.isDemo && (
+                                                <button
+                                                    onClick={() => {
+                                                        console.log(
+                                                            "削除防止ロック:",
+                                                            selectedEllipsis.id,
+                                                        );
+                                                    }}
+                                                    className="flex items-center gap-2 text-sm rounded-lg px-3 py-2 text-left hover:bg-gray-100"
+                                                >
+                                                    <IoMdLock />
+                                                    削除防止ロック
+                                                </button>
+                                            )}
+
+                                            {/* 削除 */}
+                                            {!selectedEllipsis.isDemo && (
+                                                <button
+                                                    onClick={() => {
+                                                        const id =
+                                                            selectedEllipsis.id;
+                                                        setSelectedEllipsis(
+                                                            null,
+                                                        );
+                                                        deleteForm(id);
+                                                    }}
+                                                    className="flex items-center gap-2 rounded-lg px-3 py-2 text-left text-sm text-red-500 hover:bg-red-50"
+                                                >
+                                                    <RiDeleteBin6Line />
+                                                    削除
+                                                </button>
+                                            )}
+                                        </div>
                                     </div>
                                 </div>
                             )}
