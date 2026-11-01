@@ -192,13 +192,100 @@ const CreateList = () => {
                                         <IoMdLock />
                                     </button>
                                 )} */}
-                                <button
-                                    onClick={() => setSelectedEllipsis(form)}
-                                    title="その他"
-                                    className={`p-2 text-gray-400 hover:text-[#00468b] hover:bg-blue-50 rounded-lg transition text-lg${selectedEllipsis?.id === form.id ? " bg-blue-50 text-[#00468b]" : ""}`}
-                                >
-                                    <IoEllipsisVerticalSharp />
-                                </button>
+                                {/* 3点リーダー＋ドロップダウンメニュー */}
+                                <div className="relative">
+                                    <button
+                                        onClick={() =>
+                                            setSelectedEllipsis(
+                                                selectedEllipsis?.id === form.id
+                                                    ? null
+                                                    : form,
+                                            )
+                                        }
+                                        title="その他"
+                                        className={`p-2 rounded-lg transition text-lg ${
+                                            selectedEllipsis?.id === form.id
+                                                ? "bg-blue-50 text-[#00468b]"
+                                                : "text-gray-400 hover:text-[#00468b] hover:bg-blue-50"
+                                        }`}
+                                    >
+                                        <IoEllipsisVerticalSharp />
+                                    </button>
+
+                                    {/* メニュー */}
+                                    {selectedEllipsis?.id === form.id && (
+                                        <div className="absolute right-0 top-full mt-2 z-50 w-48 rounded-xl bg-white p-2 shadow-lg border border-gray-100">
+                                            <div className="flex flex-col gap-1">
+                                                {/* 編集 */}
+                                                <button
+                                                    onClick={() => {
+                                                        setSelectedEllipsis(
+                                                            null,
+                                                        );
+                                                        navigate(
+                                                            `/edit/${form.id}`,
+                                                        );
+                                                    }}
+                                                    className="flex items-center gap-2 rounded-lg px-3 py-2 text-left text-sm hover:bg-gray-100"
+                                                >
+                                                    <MdEdit />
+                                                    編集
+                                                </button>
+
+                                                {/* 結果 */}
+                                                <button
+                                                    onClick={() => {
+                                                        setSelectedEllipsis(
+                                                            null,
+                                                        );
+                                                        navigate(
+                                                            `/result/${form.id}`,
+                                                        );
+                                                    }}
+                                                    className="flex items-center gap-2 rounded-lg px-3 py-2 text-left text-sm hover:bg-gray-100"
+                                                >
+                                                    <MdBarChart />
+                                                    結果を見る
+                                                </button>
+
+                                                {/* 削除防止ロック */}
+                                                {!isDemo && (
+                                                    <button
+                                                        onClick={() => {
+                                                            console.log(
+                                                                "削除防止ロック:",
+                                                                form.id,
+                                                            );
+                                                            setSelectedEllipsis(
+                                                                null,
+                                                            );
+                                                        }}
+                                                        className="flex items-center gap-2 rounded-lg px-3 py-2 text-left text-sm hover:bg-gray-100"
+                                                    >
+                                                        <IoMdLock />
+                                                        削除防止ロック
+                                                    </button>
+                                                )}
+
+                                                {/* 削除 */}
+                                                {!isDemo && (
+                                                    <button
+                                                        onClick={() => {
+                                                            setSelectedEllipsis(
+                                                                null,
+                                                            );
+                                                            deleteForm(form.id);
+                                                        }}
+                                                        className="flex items-center gap-2 rounded-lg px-3 py-2 text-left text-sm text-red-500 hover:bg-red-50"
+                                                    >
+                                                        <RiDeleteBin6Line />
+                                                        削除
+                                                    </button>
+                                                )}
+                                            </div>
+                                        </div>
+                                    )}
+                                </div>
                             </div>
                         </div>
                     );
@@ -229,87 +316,6 @@ const CreateList = () => {
                                         {demoForms.map((form) =>
                                             renderCard(form, true),
                                         )}
-                                    </div>
-                                </div>
-                            )}
-                            {/* ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー */}
-                            {/* 3点リーダーモーダル */}
-                            {/* ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー */}
-                            {selectedEllipsis && (
-                                <div className="fixed inset-0 z-50 flex items-center justify-center">
-                                    {/* 背景をクリックすると閉じる */}
-                                    <div
-                                        className="absolute inset-0"
-                                        onClick={() =>
-                                            setSelectedEllipsis(null)
-                                        }
-                                    />
-
-                                    {/* モーダル本体 */}
-                                    <div className="relative z-10 w-[90%] max-w-xs rounded-xl bg-white p-2 shadow-xl">
-                                        <div className="flex flex-col gap-1">
-                                            {/* 編集 */}
-                                            <button
-                                                onClick={() => {
-                                                    const id =
-                                                        selectedEllipsis.id;
-                                                    setSelectedEllipsis(null);
-                                                    navigate(`/edit/${id}`);
-                                                }}
-                                                className="flex items-center gap-2 rounded-lg px-3 py-2 text-left text-sm hover:bg-gray-100"
-                                            >
-                                                <MdEdit />
-                                                編集
-                                            </button>
-
-                                            {/* 結果 */}
-                                            <button
-                                                onClick={() => {
-                                                    const id =
-                                                        selectedEllipsis.id;
-                                                    setSelectedEllipsis(null);
-                                                    navigate(`/result/${id}`);
-                                                }}
-                                                className="flex items-center gap-2 rounded-lg px-3 py-2 text-left text-sm hover:bg-gray-100"
-                                            >
-                                                <MdBarChart />
-                                                結果を見る
-                                            </button>
-
-                                            {/* 削除防止ロック */}
-                                            {!selectedEllipsis.isDemo && (
-                                                <button
-                                                    onClick={() => {
-                                                        console.log(
-                                                            "削除防止ロック:",
-                                                            selectedEllipsis.id,
-                                                        );
-                                                    }}
-                                                    className="flex items-center gap-2 text-sm rounded-lg px-3 py-2 text-left hover:bg-gray-100"
-                                                >
-                                                    <IoMdLock />
-                                                    削除防止ロック
-                                                </button>
-                                            )}
-
-                                            {/* 削除 */}
-                                            {!selectedEllipsis.isDemo && (
-                                                <button
-                                                    onClick={() => {
-                                                        const id =
-                                                            selectedEllipsis.id;
-                                                        setSelectedEllipsis(
-                                                            null,
-                                                        );
-                                                        deleteForm(id);
-                                                    }}
-                                                    className="flex items-center gap-2 rounded-lg px-3 py-2 text-left text-sm text-red-500 hover:bg-red-50"
-                                                >
-                                                    <RiDeleteBin6Line />
-                                                    削除
-                                                </button>
-                                            )}
-                                        </div>
                                     </div>
                                 </div>
                             )}
