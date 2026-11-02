@@ -115,28 +115,34 @@ const AnswerView = ({
         </div>
     );
 
-    const renderQuestions = (questions) => (
-        <div className="space-y-4">
-            {questions.map((question, index) => (
-                <div key={question.id} className="bg-slate-50 rounded-xl p-4">
-                    <div className="flex items-center gap-2 mb-1">
-                        <span className="text-xs font-semibold text-[#00468b] uppercase tracking-wide">
-                            Q{index + 1}
-                        </span>
-                        {question.required && (
-                            <span className="text-xs font-semibold text-red-400">
-                                必須
+    const renderQuestions = (questions, formPublished) =>
+        formPublished ? (
+            <div className="space-y-4">
+                {questions.map((question, index) => (
+                    <div
+                        key={question.id}
+                        className="bg-slate-50 rounded-xl p-4"
+                    >
+                        <div className="flex items-center gap-2 mb-1">
+                            <span className="text-xs font-semibold text-[#00468b] uppercase tracking-wide">
+                                Q{index + 1}
                             </span>
-                        )}
+                            {question.required && (
+                                <span className="text-xs font-semibold text-red-400">
+                                    必須
+                                </span>
+                            )}
+                        </div>
+                        <p className="font-semibold text-gray-800 pb-3 border-b border-gray-200">
+                            {question.questionTitle}
+                        </p>
+                        {renderOptions(question)}
                     </div>
-                    <p className="font-semibold text-gray-800 pb-3 border-b border-gray-200">
-                        {question.questionTitle}
-                    </p>
-                    {renderOptions(question)}
-                </div>
-            ))}
-        </div>
-    );
+                ))}
+            </div>
+        ) : (
+            <p className="text-sm text-gray-500">アンケートは非公開です。</p>
+        );
 
     const submitButton = (
         <button
