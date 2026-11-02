@@ -16,6 +16,7 @@ import { useNavigate } from "react-router-dom";
 import { MdEdit, MdBarChart, MdAdd, MdOutlineDataset } from "react-icons/md";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { IoMdLock } from "react-icons/io";
+import { IoMdUnlock } from "react-icons/io"; // アンロックアイコン
 import { IoEllipsisVerticalSharp } from "react-icons/io5"; // 3点リーダーアイコン
 
 // コンポーネント
@@ -25,6 +26,7 @@ const CreateList = () => {
     const [forms, setForms] = useState([]); // アンケートフォームのリストを保存するstate
     const [userId, setUserId] = useState(null);
     const [selectedEllipsis, setSelectedEllipsis] = useState(null); // 3点リーダーの選択状態を管理するstate
+    const [lockedForm, setLockedForm] = useState(null); // ロックされたフォームのIDを保存するstate
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -75,6 +77,10 @@ const CreateList = () => {
     }, [userId]);
 
     const deleteForm = async (formId) => {
+        if (lockedForm?.id === formId) {
+            alert("このアンケートはロックされているため削除できません。");
+            return;
+        }
         const isOk = window.confirm("このアンケートを削除しますか？");
         if (!isOk) return;
 
@@ -172,45 +178,29 @@ const CreateList = () => {
                                 >
                                     <MdBarChart />
                                 </button>
-                                {/* {!form.isDemo && (
-                                    <button
-                                        onClick={() => deleteForm(form.id)}
-                                        title="削除"
-                                        className="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition text-lg"
-                                    >
-                                        <RiDeleteBin6Line />
-                                    </button>
-                                )} */}
-                                {/* {!form.isDemo && (
-                                    <button
-                                        onClick={() =>
-                                            navigate(`/result/${form.id}`)
-                                        }
-                                        title="削除防止ロック"
-                                        className="p-2 text-gray-400 hover:text-[#00468b] hover:bg-blue-50 rounded-lg transition text-lg"
-                                    >
-                                        <IoMdLock />
-                                    </button>
-                                )} */}
+
                                 {/* 3点リーダー＋ドロップダウンメニュー */}
                                 <div className="relative">
-                                    <button
-                                        onClick={() =>
-                                            setSelectedEllipsis(
+                                    {!isDemo && (
+                                        <button
+                                            onClick={() =>
+                                                setSelectedEllipsis(
+                                                    selectedEllipsis?.id ===
+                                                        form.id
+                                                        ? null
+                                                        : form,
+                                                )
+                                            }
+                                            title="その他"
+                                            className={`p-2 rounded-lg transition text-lg ${
                                                 selectedEllipsis?.id === form.id
-                                                    ? null
-                                                    : form,
-                                            )
-                                        }
-                                        title="その他"
-                                        className={`p-2 rounded-lg transition text-lg ${
-                                            selectedEllipsis?.id === form.id
-                                                ? "bg-blue-50 text-[#00468b]"
-                                                : "text-gray-400 hover:text-[#00468b] hover:bg-blue-50"
-                                        }`}
-                                    >
-                                        <IoEllipsisVerticalSharp />
-                                    </button>
+                                                    ? "bg-blue-50 text-[#00468b]"
+                                                    : "text-gray-400 hover:text-[#00468b] hover:bg-blue-50"
+                                            }`}
+                                        >
+                                            <IoEllipsisVerticalSharp />
+                                        </button>
+                                    )}
 
                                     {/* メニュー */}
                                     {selectedEllipsis?.id === form.id && (
@@ -252,9 +242,11 @@ const CreateList = () => {
                                                 {!isDemo && (
                                                     <button
                                                         onClick={() => {
-                                                            console.log(
-                                                                "削除防止ロック:",
-                                                                form.id,
+                                                            setLockedForm(
+                                                                lockedForm?.id ===
+                                                                    form.id
+                                                                    ? null
+                                                                    : form,
                                                             );
                                                             setSelectedEllipsis(
                                                                 null,
@@ -262,8 +254,18 @@ const CreateList = () => {
                                                         }}
                                                         className="flex items-center gap-2 rounded-lg px-3 py-2 text-left text-sm hover:bg-gray-100"
                                                     >
-                                                        <IoMdLock />
-                                                        削除防止ロック
+                                                        {lockedForm?.id ===
+                                                        form.id ? (
+                                                            <>
+                                                                <IoMdUnlock />
+                                                                アンロック
+                                                            </>
+                                                        ) : (
+                                                            <>
+                                                                <IoMdLock />
+                                                                ロック
+                                                            </>
+                                                        )}
                                                     </button>
                                                 )}
 
@@ -271,15 +273,39 @@ const CreateList = () => {
                                                 {!isDemo && (
                                                     <button
                                                         onClick={() => {
+                                                            if (
+                                                                lockedForm?.id ===
+                                                                form.id
+                                                            ) {
+                                                                return;
+                                                            }
                                                             setSelectedEllipsis(
                                                                 null,
                                                             );
                                                             deleteForm(form.id);
                                                         }}
-                                                        className="flex items-center gap-2 rounded-lg px-3 py-2 text-left text-sm text-red-500 hover:bg-red-50"
+                                                        disabled={
+                                                            lockedForm?.id ===
+                                                            form.id
+                                                        }
+                                                        className={`flex items-center gap-2 rounded-lg px-3 py-2 text-left text-sm text-red-500 hover:bg-red-50 ${
+                                                            lockedForm?.id ===
+                                                            form.id
+                                                                ? "cursor-not-allowed"
+                                                                : ""
+                                                        }`}
                                                     >
-                                                        <RiDeleteBin6Line />
-                                                        削除
+                                                        {lockedForm?.id ===
+                                                        form.id ? (
+                                                            <span className="text-xs text-gray-400">
+                                                                ロック中のため削除不可
+                                                            </span>
+                                                        ) : (
+                                                            <>
+                                                                <RiDeleteBin6Line />
+                                                                削除
+                                                            </>
+                                                        )}
                                                     </button>
                                                 )}
                                             </div>
