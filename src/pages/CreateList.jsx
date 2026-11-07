@@ -7,6 +7,7 @@ import {
     orderBy,
     deleteDoc,
     doc,
+    updateDoc, //アンケートロック機能をリロード後も保持するために追加（2026/11/07）
 } from "firebase/firestore";
 import { auth, db } from "../firebase";
 import { onAuthStateChanged } from "firebase/auth";
@@ -26,7 +27,8 @@ const CreateList = () => {
     const [forms, setForms] = useState([]); // アンケートフォームのリストを保存するstate
     const [userId, setUserId] = useState(null);
     const [selectedEllipsis, setSelectedEllipsis] = useState(null); // 3点リーダーの選択状態を管理するstate
-    const [lockedForm, setLockedForm] = useState(null); // ロックされたフォームのIDを保存するstate
+    // const [lockedForm, setLockedForm] = useState(null);
+    // ロックされたフォームのIDを保存するstate
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -76,8 +78,8 @@ const CreateList = () => {
         fetchDemoForms();
     }, [userId]);
 
-    const deleteForm = async (formId) => {
-        if (lockedForm?.id === formId) {
+    const deleteForm = async (form) => {
+        if (form.isLocked) {
             alert("このアンケートはロックされているため削除できません。");
             return;
         }
@@ -85,11 +87,33 @@ const CreateList = () => {
         if (!isOk) return;
 
         try {
-            await deleteDoc(doc(db, "forms", formId));
-            setForms((prev) => prev.filter((form) => form.id !== formId));
+            await deleteDoc(doc(db, "forms", form.id));
+
+            setForms((prev) => prev.filter((item) => item.id !== form.id));
         } catch (error) {
             console.error("削除に失敗しました", error);
             alert("削除に失敗しました");
+        }
+    };
+
+    // アンケートロック機能。firestoreのドキュメントにislockedフィールドを追加し、true/falseでロック状態を管理する。
+    const toggleLock = async (form) => {
+        const nextLocked = !form.isLocked;
+        try {
+            await updateDoc(doc(db, "forms", form.id), {
+                isLocked: nextLocked,
+            });
+            setForms((prev) =>
+                prev.map((item) =>
+                    item.id === form.id
+                        ? { ...item, isLocked: nextLocked }
+                        : item,
+                ),
+            );
+            setSelectedEllipsis(null);
+        } catch (error) {
+            console.error("ロック状態の変更に失敗しました", error);
+            alert("ロック状態の変更に失敗しました");
         }
     };
 
@@ -242,20 +266,11 @@ const CreateList = () => {
                                                 {!isDemo && (
                                                     <button
                                                         onClick={() => {
-                                                            setLockedForm(
-                                                                lockedForm?.id ===
-                                                                    form.id
-                                                                    ? null
-                                                                    : form,
-                                                            );
-                                                            setSelectedEllipsis(
-                                                                null,
-                                                            );
+                                                            toggleLock(form);
                                                         }}
                                                         className="flex items-center gap-2 rounded-lg px-3 py-2 text-left text-sm hover:bg-gray-100"
                                                     >
-                                                        {lockedForm?.id ===
-                                                        form.id ? (
+                                                        {form.isLocked ? (
                                                             <>
                                                                 <IoMdUnlock />
                                                                 アンロック
@@ -273,30 +288,22 @@ const CreateList = () => {
                                                 {!isDemo && (
                                                     <button
                                                         onClick={() => {
-                                                            if (
-                                                                lockedForm?.id ===
-                                                                form.id
-                                                            ) {
+                                                            if (form.isLocked) {
                                                                 return;
                                                             }
                                                             setSelectedEllipsis(
                                                                 null,
                                                             );
-                                                            deleteForm(form.id);
+                                                            deleteForm(form);
                                                         }}
-                                                        disabled={
-                                                            lockedForm?.id ===
-                                                            form.id
-                                                        }
+                                                        disabled={form.isLocked}
                                                         className={`flex items-center gap-2 rounded-lg px-3 py-2 text-left text-sm text-red-500 hover:bg-red-50 ${
-                                                            lockedForm?.id ===
-                                                            form.id
+                                                            form.isLocked
                                                                 ? "cursor-not-allowed"
                                                                 : ""
                                                         }`}
                                                     >
-                                                        {lockedForm?.id ===
-                                                        form.id ? (
+                                                        {form.isLocked ? (
                                                             <span className="text-xs text-gray-400">
                                                                 ロック中のため削除不可
                                                             </span>
