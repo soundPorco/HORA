@@ -150,8 +150,8 @@ const AnswerView = ({
             onClick={handleSubmit}
             className={`mt-6 w-full py-3 rounded-xl font-semibold text-white transition active:scale-[0.98] ${
                 form.published || form.isDemo
-                    ? "bg-gray-300 cursor-not-allowed"
-                    : "bg-[#00468b] hover:bg-[#003570] shadow-sm"
+                    ? "bg-[#00468b] hover:bg-[#003570] shadow-sm"
+                    : "bg-gray-300 cursor-not-allowed"
             }`}
             disabled={form.isDemo || !form.published}
         >
