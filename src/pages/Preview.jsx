@@ -46,6 +46,7 @@ const Preview = () => {
             Preview={true}
             formData={formData}
             localFormData={localFormData}
+            isPreview={true}
         />
     );
 };

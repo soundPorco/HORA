@@ -8,6 +8,7 @@ const AnswerView = ({
     voted,
     formData,
     localFormData,
+    isPreview = false,
 }) => {
     const [shuffledQuestions, setShuffledQuestions] = useState([]);
 
@@ -116,7 +117,9 @@ const AnswerView = ({
     );
 
     const renderQuestions = (questions, formPublished) =>
-        formPublished ? (
+        !formPublished && !isPreview ? (
+            <p className="text-sm text-gray-500">アンケートは非公開です。</p>
+        ) : (
             <div className="space-y-4">
                 {questions.map((question, index) => (
                     <div
@@ -140,8 +143,6 @@ const AnswerView = ({
                     </div>
                 ))}
             </div>
-        ) : (
-            <p className="text-sm text-gray-500">アンケートは非公開です。</p>
         );
 
     const submitButton = (
@@ -190,7 +191,7 @@ const AnswerView = ({
                             </p>
                         )}
                     </div>
-                    {renderQuestions(shuffledQuestions)}
+                    {renderQuestions(shuffledQuestions, form.published)}
                     {!Preview && submitButton}
                 </div>
             ) : (
@@ -208,7 +209,7 @@ const AnswerView = ({
                             </p>
                         )}
                     </div>
-                    {renderQuestions(form.questions)}
+                    {renderQuestions(form.questions, form.published)}
                     <div>
                         {/* デバッグ用：現在の設定を表示 */}
                         {/* <button onClick={() => console.log(form)}>debug</button> */}
