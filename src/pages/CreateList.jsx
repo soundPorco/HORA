@@ -273,12 +273,12 @@ const CreateList = () => {
                                                         {form.isLocked ? (
                                                             <>
                                                                 <IoMdUnlock />
-                                                                アンロック
+                                                                アクセス制限
                                                             </>
                                                         ) : (
                                                             <>
                                                                 <IoMdLock />
-                                                                ロック
+                                                                アクセス制限
                                                             </>
                                                         )}
                                                     </button>
