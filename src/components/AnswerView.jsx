@@ -90,19 +90,39 @@ const AnswerView = ({
 
             {/* プルダウン */}
             {question.questionType === "プルダウン" && (
-                <select
-                    className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm text-gray-700 outline-none focus:border-[#00468b] transition"
-                    onChange={(e) => updateAnswer(question.id, e.target.value)}
-                >
-                    <option value="">
-                        {question.required ? "選択してください" : "未回答"}
-                    </option>
-                    {question.options.map((opt, i) => (
-                        <option key={i} value={opt}>
-                            {opt}
+                <div className="relative">
+                    <select
+                        className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm text-gray-700 outline-none focus:border-[#00468b] transition appearance-none"
+                        onChange={(e) =>
+                            updateAnswer(question.id, e.target.value)
+                        }
+                    >
+                        <option value="">
+                            {question.required ? "選択してください" : "未回答"}
                         </option>
-                    ))}
-                </select>
+                        {question.options.map((opt, i) => (
+                            <option key={i} value={opt}>
+                                {opt}
+                            </option>
+                        ))}
+                    </select>
+                    {/* 下矢印 */}
+                    <div className="absolute inset-y-0 right-3 flex items-center pointer-events-none text-gray-400">
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="18"
+                            height="18"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                        >
+                            <path d="m6 9 6 6 6-6" />
+                        </svg>
+                    </div>
+                </div>
             )}
 
             {/* テキスト */}
