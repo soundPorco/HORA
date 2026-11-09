@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 
 const AnswerView = ({
     form,
+    answers = {},
     updateAnswer,
     handleSubmit,
     Preview,
@@ -70,6 +71,24 @@ const AnswerView = ({
                                     その他
                                 </span>
                             </label>
+                            {/* その他を選択した場合のみ自由記述欄を表示 */}
+                            {answers[question.id] === "その他" && (
+                                <input
+                                    type="text"
+                                    value={
+                                        answers[`${question.id}_other`] || ""
+                                    }
+                                    placeholder="その他の回答を入力してください"
+                                    className="w-full mt-2 p-3 border border-gray-200 rounded-xl text-sm"
+                                    onChange={(e) =>
+                                        updateAnswer(
+                                            question.id,
+                                            e.target.value,
+                                            "other",
+                                        )
+                                    }
+                                />
+                            )}
                         </div>
                     )}
 
@@ -115,21 +134,41 @@ const AnswerView = ({
 
                     {/* その他 */}
                     {question.hasOtherOption && (
-                        <label className="flex items-center gap-3 px-4 py-2.5 rounded-xl border border-gray-200 hover:border-[#00468b] hover:bg-blue-50 cursor-pointer transition">
-                            <input
-                                type="checkbox"
-                                onChange={(e) =>
-                                    updateAnswer(
-                                        question.id,
-                                        "その他",
-                                        e.target.checked,
-                                    )
-                                }
-                            />
-                            <span className="text-sm text-gray-700">
-                                その他
-                            </span>
-                        </label>
+                        <div>
+                            <label className="flex items-center gap-3 px-4 py-2.5 rounded-xl border border-gray-200 hover:border-[#00468b] hover:bg-blue-50 cursor-pointer transition">
+                                <input
+                                    type="checkbox"
+                                    onChange={(e) =>
+                                        updateAnswer(
+                                            question.id,
+                                            "その他",
+                                            e.target.checked,
+                                        )
+                                    }
+                                />
+                                <span className="text-sm text-gray-700">
+                                    その他
+                                </span>
+                            </label>
+                            {/* その他にチェックした場合のみ自由記述欄を表示 */}
+                            {answers[question.id]?.includes("その他") && (
+                                <input
+                                    type="text"
+                                    value={
+                                        answers[`${question.id}_other`] || ""
+                                    }
+                                    placeholder="その他の回答を入力してください"
+                                    className="w-full mt-2 p-3 border border-gray-200 rounded-xl text-sm"
+                                    onChange={(e) =>
+                                        updateAnswer(
+                                            question.id,
+                                            e.target.value,
+                                            "other",
+                                        )
+                                    }
+                                />
+                            )}
+                        </div>
                     )}
                 </>
             )}

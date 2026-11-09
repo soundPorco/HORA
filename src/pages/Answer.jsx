@@ -69,7 +69,7 @@ const Answer = () => {
                 collection(db, "answers"),
                 // 同じフォームIDかつ同じユーザーIDの回答を検索
                 where("formId", "==", formId),
-                where("userId", "==", uid)
+                where("userId", "==", uid),
             );
 
             const snapshot = await getDocs(q);
@@ -87,30 +87,52 @@ const Answer = () => {
     // 回答を更新する関数
     const updateAnswer = (questionId, value, checked) => {
         setAnswers((prev) => {
-            // checked が undefined の場合（ラジオ/プルダウン/テキスト等）は単一回答として保存
-            if (typeof checked === "undefined") {
+            // 自由記述の回答を保存する場合
+            if (checked === "other") {
                 return {
                     ...prev,
-                    [questionId]: value, // questionId をキーにして値を保存
+                    [`${questionId}_other`]: value,
                 };
             }
 
-            // checkbox：配列で管理
+            // ラジオ/プルダウン/テキストは単一回答として保存（checked が undefined の場合）
+            if (typeof checked === "undefined") {
+                // その他の回答とは別の箱で保存しておくことで、後で「その他」の回答を表示する際に便利
+                const newAnswers = {
+                    ...prev,
+                    [questionId]: value, // questionId をキーにして値を保存
+                };
+                // 「その他」以外を選択したら自由記述を削除
+                if (value !== "その他") {
+                    delete newAnswers[`${questionId}_other`];
+                }
+
+                return newAnswers;
+            }
+
+            // チェックボックスの場合：配列で管理
             const current = Array.isArray(prev[questionId])
                 ? prev[questionId]
                 : [];
 
+            // チェックを入れた場合
             if (checked) {
                 // 追加（重複防止）
                 if (current.includes(value)) return prev;
                 return { ...prev, [questionId]: [...current, value] };
-            } else {
-                // 削除
-                return {
-                    ...prev,
-                    [questionId]: current.filter((v) => v !== value),
-                };
             }
+            // チェックを外した場合
+            const newAnswers = {
+                ...prev,
+                [questionId]: current.filter((v) => v !== value),
+            };
+
+            // 「その他」のチェックを外したら自由記述も削除
+            if (value === "その他") {
+                delete newAnswers[`${questionId}_other`];
+            }
+
+            return newAnswers;
         });
     };
 
@@ -126,7 +148,7 @@ const Answer = () => {
 
         if (!auth.currentUser) {
             return alert(
-                "ログイン状態を確認できません。再度ページを読み込んでください。"
+                "ログイン状態を確認できません。再度ページを読み込んでください。",
             );
         }
 
@@ -153,6 +175,7 @@ const Answer = () => {
     return (
         <AnswerView
             form={form}
+            answers={answers}
             updateAnswer={updateAnswer}
             handleSubmit={handleSubmit}
             Preview={false}
