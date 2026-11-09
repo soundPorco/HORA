@@ -42,7 +42,7 @@ const Question = ({
     const toggleOtherOption = (e) => {
         updateQuestionData(data.id, {
             ...data,
-            hasOther: e.target.checked,
+            hasOtherOption: e.target.checked,
         });
     };
 
@@ -142,7 +142,7 @@ const Question = ({
                         <label className="flex items-center gap-2 text-sm text-gray-600 cursor-pointer">
                             <input
                                 type="checkbox"
-                                checked={!!data.hasOther}
+                                checked={!!data.hasOtherOption}
                                 onChange={toggleOtherOption}
                                 disabled={published || isDemo}
                                 className="accent-[#00468b]"

@@ -54,6 +54,26 @@ const AnswerView = ({
                             <span className="text-sm text-gray-700">{opt}</span>
                         </label>
                     ))}
+
+                    {/* その他 */}
+                    {question.hasOtherOption && (
+                        <div>
+                            <label className="flex items-center gap-3 px-4 py-2.5 rounded-xl border border-gray-200 hover:border-[#00468b] hover:bg-blue-50 cursor-pointer transition">
+                                <input
+                                    type="radio"
+                                    name={question.id}
+                                    onChange={() =>
+                                        updateAnswer(question.id, "その他")
+                                    }
+                                />
+                                <span className="text-sm text-gray-700">
+                                    その他
+                                </span>
+                            </label>
+                        </div>
+                    )}
+
+                    {/* 未回答表示。必須回答の場合は未回答を許可しない */}
                     {!question.required && (
                         <label className="flex items-center gap-3 px-4 py-2.5 rounded-xl border border-dashed border-gray-200 hover:border-gray-400 cursor-pointer transition">
                             <input
@@ -71,22 +91,48 @@ const AnswerView = ({
             )}
 
             {/* チェックボックス */}
-            {question.questionType === "チェックボックス" &&
-                question.options.map((opt, i) => (
-                    <label
-                        key={i}
-                        className="flex items-center gap-3 px-4 py-2.5 rounded-xl border border-gray-200 hover:border-[#00468b] hover:bg-blue-50 cursor-pointer transition"
-                    >
-                        <input
-                            type="checkbox"
-                            onChange={(e) =>
-                                updateAnswer(question.id, opt, e.target.checked)
-                            }
-                            className="accent-[#00468b]"
-                        />
-                        <span className="text-sm text-gray-700">{opt}</span>
-                    </label>
-                ))}
+            {question.questionType === "チェックボックス" && (
+                <>
+                    {question.options.map((opt, i) => (
+                        <label
+                            key={i}
+                            className="flex items-center gap-3 px-4 py-2.5 rounded-xl border border-gray-200 hover:border-[#00468b] hover:bg-blue-50 cursor-pointer transition"
+                        >
+                            <input
+                                type="checkbox"
+                                onChange={(e) =>
+                                    updateAnswer(
+                                        question.id,
+                                        opt,
+                                        e.target.checked,
+                                    )
+                                }
+                                className="accent-[#00468b]"
+                            />
+                            <span className="text-sm text-gray-700">{opt}</span>
+                        </label>
+                    ))}
+
+                    {/* その他 */}
+                    {question.hasOtherOption && (
+                        <label className="flex items-center gap-3 px-4 py-2.5 rounded-xl border border-gray-200 hover:border-[#00468b] hover:bg-blue-50 cursor-pointer transition">
+                            <input
+                                type="checkbox"
+                                onChange={(e) =>
+                                    updateAnswer(
+                                        question.id,
+                                        "その他",
+                                        e.target.checked,
+                                    )
+                                }
+                            />
+                            <span className="text-sm text-gray-700">
+                                その他
+                            </span>
+                        </label>
+                    )}
+                </>
+            )}
 
             {/* プルダウン */}
             {question.questionType === "プルダウン" && (
