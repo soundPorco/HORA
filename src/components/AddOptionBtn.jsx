@@ -10,12 +10,14 @@ const AddOptionBtn = ({ updateQuestionData, data }) => {
     };
 
     return (
-        <button
-            onClick={addOption}
-            className="mt-4 bg-gray-400 text-white rounded-full hover:bg-gray-500 duration-200"
-        >
-            <MdAddCircleOutline className="text-2xl" />
-        </button>
+        <>
+            <button
+                onClick={addOption}
+                className=" hover:bg-gray-100 duration-200 mt-2 p-2 text-sm rounded-md text-blue-500"
+            >
+                <span>選択肢を追加</span>
+            </button>
+        </>
     );
 };
 

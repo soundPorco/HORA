@@ -38,6 +38,14 @@ const Question = ({
         updateQuestionData(data.id, { ...data, options: newOptions });
     };
 
+    //  その他の選択肢の有無を切り替える
+    const toggleOtherOption = (e) => {
+        updateQuestionData(data.id, {
+            ...data,
+            hasOther: e.target.checked,
+        });
+    };
+
     // 自動でテキストエリアの高さを調整するための設定
     const textareaRef = useRef(null);
 
@@ -46,6 +54,7 @@ const Question = ({
             autosize(textareaRef.current);
         }
     }, []);
+
     return (
         <>
             {/* Questions */}
@@ -124,6 +133,25 @@ const Question = ({
                         ))
                     )}
                 </div>
+
+                {/* その他の設定 */}
+                {["ラジオボタン", "チェックボックス"].includes(
+                    data.questionType,
+                ) && (
+                    <div className="flex justify-start mt-4">
+                        <label className="flex items-center gap-2 text-sm text-gray-600 cursor-pointer">
+                            <input
+                                type="checkbox"
+                                checked={!!data.hasOther}
+                                onChange={toggleOtherOption}
+                                disabled={published || isDemo}
+                                className="accent-[#00468b]"
+                            />
+                            その他を追加
+                        </label>
+                    </div>
+                )}
+
                 {!published && !isDemo && (
                     <>
                         <AddOptionBtn
