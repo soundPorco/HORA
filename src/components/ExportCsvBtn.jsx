@@ -50,8 +50,25 @@ const ExportCsvBtn = ({ responseList, formData }) => {
             ),
         ];
 
+        // 回答日時の古い順（昇順）に並び替える
+        const sortedResponseList = [...responseList].sort((a, b) => {
+            const dateA = a.votedAt?.toDate
+                ? a.votedAt.toDate()
+                : a.votedAt instanceof Date
+                  ? a.votedAt
+                  : new Date(0);
+
+            const dateB = b.votedAt?.toDate
+                ? b.votedAt.toDate()
+                : b.votedAt instanceof Date
+                  ? b.votedAt
+                  : new Date(0);
+
+            return dateA - dateB;
+        });
+
         // 2行目以降：回答データ
-        const rows = responseList.map((response) => {
+        const rows = sortedResponseList.map((response) => {
             const votedAt = response.votedAt?.toDate
                 ? response.votedAt.toDate()
                 : response.votedAt instanceof Date
