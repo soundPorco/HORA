@@ -142,6 +142,44 @@ const Answer = () => {
             return alert("このアンケートは現在公開されていません。");
         }
 
+        // 必須項目の入力チェック
+        const unansweredRequired = form.questions.filter((question) => {
+            if (!question.required) return false;
+
+            const answer = answers[question.id];
+
+            // 未回答チェック
+            if (answer === undefined || answer === null || answer === "") {
+                return true;
+            }
+
+            // チェックボックスの場合：1つも選択されていない
+            if (Array.isArray(answer) && answer.length === 0) {
+                return true;
+            }
+
+            // その他を選択しているのに自由記述が空欄
+            if (Array.isArray(answer) && answer.includes("その他")) {
+                return !answers[`${question.id}_other`]?.trim();
+            }
+
+            // ラジオボタンでその他を選択している場合
+            if (answer === "その他") {
+                return !answers[`${question.id}_other`]?.trim();
+            }
+
+            // テキスト回答で空白だけの場合
+            if (typeof answer === "string" && !answer.trim()) {
+                return true;
+            }
+
+            return false;
+        });
+
+        if (unansweredRequired.length > 0) {
+            return alert("必須項目が入力されていません。");
+        }
+
         if (Object.keys(answers).length === 0) {
             return alert("回答が入力されていません。");
         }
