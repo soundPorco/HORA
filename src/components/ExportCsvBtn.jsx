@@ -89,9 +89,38 @@ const ExportCsvBtn = ({ responseList, formData }) => {
 
             const answers = response.answers || {};
 
-            const answerValues = questions.map((question) =>
-                formatCsvCell(answers[question.id]),
-            );
+            const answerValues = questions.map((question) => {
+                const answer = answers[question.id];
+                const otherAnswer = answers[`${question.id}_other`];
+
+                // ラジオボタンの「その他」
+                if (
+                    question.questionType === "ラジオボタン" &&
+                    answer === "その他"
+                ) {
+                    return formatCsvCell(
+                        otherAnswer ? `その他：${otherAnswer}` : "その他",
+                    );
+                }
+
+                // チェックボックスの「その他」
+                if (
+                    question.questionType === "チェックボックス" &&
+                    Array.isArray(answer) &&
+                    answer.includes("その他")
+                ) {
+                    const updatedAnswers = answer.map((item) =>
+                        item === "その他" && otherAnswer
+                            ? `その他：${otherAnswer}`
+                            : item,
+                    );
+
+                    return formatCsvCell(updatedAnswers);
+                }
+
+                // 通常の回答
+                return formatCsvCell(answer);
+            });
 
             return [formatCsvCell(dateText), ...answerValues];
         });
