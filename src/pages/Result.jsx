@@ -151,9 +151,27 @@ const Result = () => {
                 {/* フォームタイトル・説明 */}
                 <div className="border-b border-gray-300 pb-4 mb-6 flex items-center gap-1 justify-between">
                     <div>
-                        <h2 className="font-bold text-2xl text-gray-900 px-1">
-                            {formData.title}
-                        </h2>
+                        <div className="flex items-center gap-2">
+                            <h2 className="font-bold text-2xl text-gray-900 px-1">
+                                {formData.title}
+                            </h2>
+                            {/* フォームの公開状態を示すラベル */}
+                            {formData.published ? (
+                                <div className="flex items-center gap-1 rounded-md px-2 py-1 bg-green-100 border border-green-200">
+                                    <div className="w-2 h-2 rounded-full shrink-0 bg-green-500" />
+                                    <span className="text-xs text-gray-500">
+                                        公開中
+                                    </span>
+                                </div>
+                            ) : (
+                                <div className="flex items-center gap-1 rounded-md px-2 py-1 bg-gray-100 border border-gray-200">
+                                    <div className="w-2 h-2 rounded-full shrink-0 bg-gray-500" />
+                                    <span className="text-xs text-gray-500">
+                                        非公開
+                                    </span>
+                                </div>
+                            )}
+                        </div>
                         {formData.description && (
                             <p className="text-sm text-gray-500 mt-1 px-1">
                                 {formData.description}
