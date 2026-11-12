@@ -222,7 +222,7 @@ const AnswerView = ({
     );
 
     const renderQuestions = (questions, formPublished) =>
-        !formPublished && !isPreview ? (
+        !formPublished && !form.allowUnpublishedView && !isPreview ? (
             <p className="text-sm text-gray-500">アンケートは非公開です。</p>
         ) : (
             <div className="space-y-4">
@@ -297,7 +297,12 @@ const AnswerView = ({
                         )}
                     </div>
                     {renderQuestions(shuffledQuestions, form.published)}
-                    {!Preview && submitButton}
+                    {!Preview && form.published && submitButton}
+                    {!Preview && !form.published && (
+                        <p className="mt-6 text-md text-gray-500 text-center border border-gray-200 rounded-xl py-3 bg-gray-100">
+                            このアンケートは非公開です
+                        </p>
+                    )}
                 </div>
             ) : (
                 // シャッフル設定が無効な場合
@@ -319,7 +324,12 @@ const AnswerView = ({
                         {/* デバッグ用：現在の設定を表示 */}
                         {/* <button onClick={() => console.log(form)}>debug</button> */}
                     </div>
-                    {!Preview && submitButton}
+                    {!Preview && form.published && submitButton}
+                    {!Preview && !form.published && (
+                        <p className="mt-6 text-md text-gray-500 text-center border border-gray-200 rounded-xl py-3 bg-gray-100">
+                            このアンケートは非公開です
+                        </p>
+                    )}
                 </div>
             )}
         </div>
