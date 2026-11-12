@@ -129,6 +129,10 @@ const EditLayout = () => {
                         published: !!formData.published,
                         shuffleQuestions: !!formData.shuffleQuestions,
                         restrictToOneResponse: !!formData.restrictToOneResponse,
+                        // allowUnpublishedViewがundefinedの場合はfalseをデフォルト値として設定
+                        // 非公開フォームの内容を閲覧できるかどうかの設定
+                        allowUnpublishedView:
+                            formData.allowUnpublishedView ?? false,
                     }}
                     saveSettings={saveSettings}
                     hasUnsavedChanges={
