@@ -74,6 +74,29 @@ const SettingModal = ({
                             </button>
                         </div>
 
+                        {/* 非公開時の内容表示トグル */}
+                        <div className="flex justify-between items-center">
+                            <div>
+                                <p>非公開時も内容を表示</p>
+                                <p className="text-sm text-gray-500 w-[350px]">
+                                    ※非公開でもリンクからアンケートの内容を閲覧できます。回答はできません。
+                                </p>
+                            </div>
+
+                            <button
+                                onClick={() =>
+                                    toggleSetting("allowUnpublishedView")
+                                }
+                                className={`w-12 h-7 rounded-full flex items-center px-1 transition
+        ${settings.allowUnpublishedView ? "bg-blue-500" : "bg-gray-300"}`}
+                            >
+                                <div
+                                    className={`w-5 h-5 bg-white rounded-full shadow transform transition
+            ${settings.allowUnpublishedView ? "translate-x-5" : ""}`}
+                                />
+                            </button>
+                        </div>
+
                         {/* 選択肢シャッフルのトグル */}
                         <div className="flex justify-between items-center">
                             <div>
