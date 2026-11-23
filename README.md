@@ -112,7 +112,7 @@ https://soundporco.github.io/HORA/
 
 ---
 
-## データ設計（例）
+## データ設計
 
 ```txt
 forms
